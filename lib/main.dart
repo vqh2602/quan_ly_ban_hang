@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       getPages: routes,
       locale: Get.deviceLocale,
       translations: Messages(),
-      navigatorObservers: [
+      navigatorObservers: const [
         // firebaseAnalyticsService.appAnalyticsObserver(),
       ],
       fallbackLocale: const Locale('vi', 'VN'),

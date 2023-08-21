@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:quan_ly_ban_hang/data/repositories/imgur_repo.dart';
 import 'package:quan_ly_ban_hang/data/storage.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:quan_ly_ban_hang/modules/home/home_screen.dart';
@@ -8,6 +9,8 @@ import 'package:quan_ly_ban_hang/modules/home/home_screen.dart';
 class SplashController extends GetxController
     with GetTickerProviderStateMixin, StateMixin {
   GetStorage box = GetStorage();
+  ImgurRepo imgurRepo = ImgurRepo();
+  var arguments = Get.arguments;
 
   @override
   Future<void> onInit() async {
@@ -36,7 +39,7 @@ class SplashController extends GetxController
       databaseId: '64c8b7b0c8f4f758c52d',
       collectionId: '64c8b7e68b4d6d089c46',
     );
-    print(result.documents);
+    // print(result.documents);
   }
 
   Future<void> checkLogin() async {
@@ -46,6 +49,9 @@ class SplashController extends GetxController
     // //   Get.offAndToNamed(HomeScreen.routeName);
     // // });
     // if (dataUser != null && await checkLoginTimeOut()) {
+      if(arguments?["refreshToken"] ?? false){
+       await imgurRepo.resetTokenImgur();
+      }
       Future.delayed(const Duration(seconds: 4), () {
         Get.offAndToNamed(HomeScreen.routeName);
       });

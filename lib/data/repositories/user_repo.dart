@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:get_storage/get_storage.dart';
 import 'package:quan_ly_ban_hang/data/repositories/repo.dart';
-
 
 class UserRepo extends Repo {
   GetStorage box = GetStorage();
@@ -38,5 +36,4 @@ class UserRepo extends Repo {
       //   buildToast(type: TypeToast.failure, title: result["message"]);
     }
   }
-
 }

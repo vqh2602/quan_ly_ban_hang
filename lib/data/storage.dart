@@ -15,6 +15,10 @@ class Storages {
   static const String dataQuote = 'data_quote';
   // data biến tự động làm mới giao dịch mua
   static const String dataRenewSub = 'data_renewSub';
+  // lưu token api imgur
+  static const String dataTokenImgur = 'data_token_imgur';
+  // refresh_token imgur giúp lấy lại token khi đã hết hạn
+    static const String dataRefreshTokenImgur = 'data_refresh_token_imgur';
 }
 
 class Config {

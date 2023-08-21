@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'library/shimmer/shimmer.dart';
+
 Widget imageNetwork(
     {required String url,
     BoxFit? fit,
@@ -38,7 +40,7 @@ Widget imageNetwork(
         height: double.infinity,
         child: Image.asset(
           'assets/images/image_notfound.jpg',
-          fit: BoxFit.fill,
+          fit: fit ?? BoxFit.fill,
         ),
       );
     },
@@ -51,12 +53,10 @@ Widget imageNetwork(
         (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
       if (loadingProgress == null) return child;
       return Center(
-        child: CircularProgressIndicator(
-          value: loadingProgress.expectedTotalBytes != null
-              ? loadingProgress.cumulativeBytesLoaded /
-                  loadingProgress.expectedTotalBytes!
-              : null,
-        ),
+        child:  ShimmerPro.sized(
+          scaffoldBackgroundColor: Colors.grey.shade200,
+          height: double.infinity,
+          width: double.infinity)
       );
     },
   );

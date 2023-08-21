@@ -8,5 +8,6 @@ class Environment extends ModuleConfig {
     idADSNativeIos = 'ca-app-pub-3940256099942544/3986624511';
     idADSInterstitialAdAndroid = 'ca-app-pub-3940256099942544/1033173712';
     idADSInterstitialAdIos = 'ca-app-pub-3940256099942544/4411468910';
+    imgurApi = 'https://api.imgur.com';
   }
 }

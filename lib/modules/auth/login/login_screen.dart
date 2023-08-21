@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         color: Colors.white,
                         text: "Tiếp tục với Google".tr,
-                        textStyle: josefinSans(
+                        textStyle: textStyleCustom(
                             fontSize: 16, fontWeight: FontWeight.bold),
                         textColor: Colors.black,
                         shape: GFButtonShape.pills,
@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         color: Colors.white,
                         text: "Tiếp tục với Apple".tr,
-                        textStyle: josefinSans(
+                        textStyle: textStyleCustom(
                             fontSize: 16, fontWeight: FontWeight.bold),
                         textColor: Colors.black,
                         shape: GFButtonShape.pills,

@@ -23,7 +23,7 @@ Widget searchBar(
       onChanged: onChange,
       controller: controller,
       textAlign: TextAlign.left,
-      style: josefinSans(
+      style: textStyleCustom(
         fontSize: 14,
         color: Colors.white,
       ),
@@ -46,7 +46,7 @@ Widget searchBar(
           ),
         ),
         hintText: "Tìm kiếm ...",
-        hintStyle: josefinSans(
+        hintStyle: textStyleCustom(
           fontSize: 14,
           color: Colors.white,
         ),

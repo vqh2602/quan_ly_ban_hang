@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 class DraggableHome extends StatefulWidget {
   @override
-  _DraggableHomeState createState() => _DraggableHomeState();
+  State<DraggableHome> createState() => _DraggableHomeState();
 
   /// Leading: A widget to display before the toolbar's title.
   final Widget? leading;
@@ -261,7 +261,7 @@ class _DraggableHomeState extends State<DraggableHome> {
                     expandedTitleScale: 1,
                     collapseMode: CollapseMode.pin,
                     titlePadding:
-                        EdgeInsetsDirectional.only(start: 0, bottom: 0),
+                        const EdgeInsetsDirectional.only(start: 0, bottom: 0),
                     background: Container(
                       margin: const EdgeInsets.only(bottom: 0.0),
                       child: fullyExpanded

@@ -4,10 +4,14 @@ import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_controller.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_screen.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/compoment/block_statistical.dart';
 import 'package:quan_ly_ban_hang/widgets/library/dragghome/draggable_home.dart';
+import 'package:quan_ly_ban_hang/widgets/list_item/list_item_bill_of_sale.dart';
+import 'package:quan_ly_ban_hang/widgets/list_item/list_item_product.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
-import 'package:quan_ly_ban_hang/widgets/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
@@ -76,7 +80,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                         ],
                       ))),
 
-              expandedHeight: Get.height * 0.58,
+              expandedHeight: 460,
               // actions: [
               //   IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
               // ],
@@ -95,7 +99,9 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                         color: Colors.black,
                       ),
                       IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(ListSalesOrderSreen.routeName);
+                          },
                           icon: const Icon(
                             FontAwesomeIcons.ellipsis,
                             color: Colors.black,
@@ -104,21 +110,56 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                   ),
                 ),
                 Container(
+                  // margin: alignment_20_0(),
+                  constraints: const BoxConstraints(maxHeight: 450),
                   child: ListView.builder(
-                      itemCount: 5,
+                      itemCount: 3,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(top: 12),
                       itemBuilder: (context, indext) {
-                        return Container(
-                          decoration: BoxDecoration(),
-                        );
+                        return itemBillOfSale();
                       }),
                 ),
-                cHeight(800),
-                textBodyLarge(text: 'dsjfh ')
+                Container(
+                  margin: alignment_20_0(),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      textTitleLarge(
+                        text: 'Sản phẩm bán chạy',
+                        color: Colors.black,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            Get.toNamed(ListProductSreen.routeName);
+                          },
+                          icon: const Icon(
+                            FontAwesomeIcons.ellipsis,
+                            color: Colors.black,
+                          ))
+                    ],
+                  ),
+                ),
+                Container(
+                  // margin: alignment_20_0(),
+                  constraints: const BoxConstraints(maxHeight: 750),
+                  child: ListView.builder(
+                      itemCount: 5,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(top: 12),
+                      itemBuilder: (context, indext) {
+                        return itemProduct();
+                      }),
+                ),
+                cHeight(100)
               ],
               // headerExpandedHeight: 0.3,
               fullyStretchable: false,
               // expandedBody: Container(color: Colors.amber),
-              backgroundColor: Get.theme.colorScheme.background,
+              backgroundColor: bg500,
               appBarColor: Get.theme.primaryColor,
             ),
         onLoading: const LoadingCustom());
@@ -201,66 +242,5 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
             ],
           ),
         ));
-  }
-
-  Widget blockStatistical(
-      {required String title,
-      required String date,
-      required String value,
-      required Color color,
-      required Function onTap}) {
-    return Container(
-      margin: const EdgeInsets.only(top: 12, left: 20, right: 20),
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(20)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                border: Border.all(width: 5, color: color),
-                borderRadius: BorderRadius.circular(100)),
-            child: CircleAvatar(
-              radius: 30.0,
-              backgroundColor: Colors.white,
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    textTitleMedium(text: '18', fontWeight: FontWeight.w900),
-                    textTitleSmall(text: 'N', fontWeight: FontWeight.w900),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          cWidth(8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    textTitleSmall(text: title),
-                    textBodySmall(text: date, color: Colors.grey),
-                  ],
-                ),
-                textTitleMedium(text: formatCurrency(num.parse(value)))
-              ],
-            ),
-          ),
-          IconButton(
-              onPressed: () {
-                onTap();
-              },
-              icon: const Icon(LucideIcons.moreHorizontal, color: Colors.black))
-        ],
-      ),
-    );
   }
 }

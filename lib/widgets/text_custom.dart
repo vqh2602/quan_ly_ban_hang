@@ -35,7 +35,7 @@ Widget textDisplayLarge(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -89,7 +89,7 @@ Widget textDisplayMedium(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -143,7 +143,7 @@ Widget textDisplaySmall(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -197,7 +197,7 @@ Widget textHeadlineLarge(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -251,7 +251,7 @@ Widget textHeadlineMedium(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -305,7 +305,7 @@ Widget textHeadlineSmall(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -359,7 +359,7 @@ Widget textTitleLarge(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -413,7 +413,7 @@ Widget textTitleMedium(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -467,7 +467,7 @@ Widget textTitleSmall(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -521,7 +521,7 @@ Widget textLableLarge(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -575,7 +575,7 @@ Widget textLableMedium(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -629,7 +629,7 @@ Widget textLableSmall(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -683,7 +683,7 @@ Widget textBodyLarge(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -737,7 +737,7 @@ Widget textBodyMedium(
     textDirection: textDirection,
     maxLines: maxLines,
     textAlign: textAlign,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -792,7 +792,7 @@ Widget textBodySmall(
     maxLines: maxLines,
     textAlign: textAlign,
     overflow: overflow,
-    style: josefinSans(
+    style: textStyleCustom(
       fontSize: fontSize,
       color: color,
       decoration: decoration,
@@ -816,7 +816,7 @@ Widget textBodySmall(
   );
 }
 
-TextStyle josefinSans(
+TextStyle textStyleCustom(
     {required double fontSize,
     Color? color,
     FontStyle? fontStyle,

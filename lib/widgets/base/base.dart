@@ -1,8 +1,8 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 
 Widget buildBody(
@@ -12,13 +12,14 @@ Widget buildBody(
     Widget? bottomNavigationBar,
     Widget? createFloatingActionButton,
     bool isCheckBeforePop = false,
+    Color? backgroundColor,
     FloatingActionButtonLocation? floatingActionButtonLocation}) {
   return WillPopScope(
       child: Scaffold(
           extendBodyBehindAppBar: true,
           extendBody: true,
           appBar: appBar,
-          backgroundColor: Get.theme.colorScheme.background,
+          backgroundColor: backgroundColor ?? bg500,
           bottomNavigationBar: bottomNavigationBar,
           floatingActionButton: createFloatingActionButton,
           floatingActionButtonLocation: floatingActionButtonLocation,

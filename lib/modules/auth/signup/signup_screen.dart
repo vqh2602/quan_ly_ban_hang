@@ -88,7 +88,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Expanded(
                             child: TextFormField(
                               onTap: () {},
-                              style: josefinSans(fontSize: 16),
+                              style: textStyleCustom(fontSize: 16),
                               decoration:
                                   textFieldInputStyle(label: 'Họ & đệm (*)'),
                               validator: signupController.validateString,
@@ -101,7 +101,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Expanded(
                             child: TextFormField(
                               onTap: () {},
-                              style: josefinSans(fontSize: 16),
+                              style: textStyleCustom(fontSize: 16),
                               decoration: textFieldInputStyle(label: 'Tên (*)'),
                               validator: signupController.validateString,
                               controller: signupController.lastNameTE,
@@ -116,7 +116,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   TextFormField(
                     onTap: () {},
-                    style: josefinSans(fontSize: 16),
+                    style: textStyleCustom(fontSize: 16),
                     keyboardType: TextInputType.emailAddress,
                     decoration: textFieldInputStyle(label: 'Email (*)'),
                     maxLines: 1,
@@ -128,7 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   TextFormField(
                     onTap: () {},
-                    style: josefinSans(fontSize: 16),
+                    style: textStyleCustom(fontSize: 16),
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: passwordVisible,
                     decoration: textFieldInputStyle(
@@ -154,7 +154,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   TextFormField(
                     onTap: () {},
-                    style: josefinSans(fontSize: 16),
+                    style: textStyleCustom(fontSize: 16),
                     keyboardType: TextInputType.visiblePassword,
                     decoration: textFieldInputStyle(
                         label: 'Nhập lại mật khẩu (*)',
@@ -191,7 +191,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     controller: signupController.birthTE,
                     showCursor: false,
                     readOnly: true,
-                    style: josefinSans(fontSize: 16),
+                    style: textStyleCustom(fontSize: 16),
                     decoration: textFieldInputStyle(label: 'Năm sinh (*)'),
                   ),
                   const SizedBox(
@@ -258,7 +258,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   TextFormField(
                     onTap: () {},
                     controller: signupController.addressTE,
-                    style: josefinSans(fontSize: 16),
+                    style: textStyleCustom(fontSize: 16),
                     decoration: textFieldInputStyle(label: 'Địa chỉ'),
                     maxLines: 3,
                   ),
@@ -270,7 +270,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       Expanded(
                         child: TextFormField(
                           onTap: () {},
-                          style: josefinSans(fontSize: 16),
+                          style: textStyleCustom(fontSize: 16),
                           validator: signupController.numberValidator,
                           controller: signupController.heightTE,
                           decoration:
