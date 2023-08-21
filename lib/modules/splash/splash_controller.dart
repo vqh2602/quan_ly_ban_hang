@@ -28,14 +28,17 @@ class SplashController extends GetxController
     // ng dùng ẩn danh
     final account = Account(client);
     try {
-      final session = await account.get();
+      // final session =
+      await account.get();
     } on Exception catch (_) {
-      final user = await account.createAnonymousSession();
+      // final user =
+      await account.createAnonymousSession();
     }
 
     //db
     Databases databases = Databases(client); // Your project ID
-    var result = await databases.listDocuments(
+    // var result =
+    await databases.listDocuments(
       databaseId: '64c8b7b0c8f4f758c52d',
       collectionId: '64c8b7e68b4d6d089c46',
     );
@@ -49,12 +52,12 @@ class SplashController extends GetxController
     // //   Get.offAndToNamed(HomeScreen.routeName);
     // // });
     // if (dataUser != null && await checkLoginTimeOut()) {
-      if(arguments?["refreshToken"] ?? false){
-       await imgurRepo.resetTokenImgur();
-      }
-      Future.delayed(const Duration(seconds: 4), () {
-        Get.offAndToNamed(HomeScreen.routeName);
-      });
+    if (arguments?["refreshToken"] ?? false) {
+      await imgurRepo.resetTokenImgur();
+    }
+    Future.delayed(const Duration(seconds: 4), () {
+      Get.offAndToNamed(HomeScreen.routeName);
+    });
     // } else {
     //   Future.delayed(const Duration(seconds: 4), () {
     //     Get.offAndToNamed(LoginScreen.routeName);
