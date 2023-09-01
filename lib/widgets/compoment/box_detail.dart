@@ -25,6 +25,9 @@ Widget boxDetail({required Widget child}) {
 Widget titleEditTitle(
     {required String title,
     required String value,
+    FontWeight? boldTitle,
+    Color? colorValue,
+    Widget? valueWidget,
     Function()? onTap,
     bool showEdit = true}) {
   return Row(
@@ -33,7 +36,8 @@ Widget titleEditTitle(
     children: [
       Row(
         children: [
-          textBodyMedium(text: title),
+          textBodyMedium(
+              text: title, fontWeight: boldTitle ?? FontWeight.normal),
           if (showEdit)
             IconButton(
               onPressed: () {
@@ -44,9 +48,11 @@ Widget titleEditTitle(
             ),
         ],
       ),
-      Expanded(
-        child: textTitleMedium(text: value, textAlign: TextAlign.right),
-      )
+      valueWidget ??
+          Expanded(
+            child: textTitleMedium(
+                text: value, textAlign: TextAlign.right, color: colorValue),
+          )
     ],
   );
 }

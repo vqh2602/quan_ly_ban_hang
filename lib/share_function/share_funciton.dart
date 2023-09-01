@@ -28,8 +28,8 @@ void dateTimePicker(
 
 enum TypeDate { ddMMyyyy, yyyyMMdd, ddMMyyyyhhmm, hhmm, dd, yyyy, mM }
 
-String? formatDate({required TypeDate type, required DateTime? dateTime}) {
-  if (dateTime == null) return null;
+String formatDate({required TypeDate type, required DateTime? dateTime}) {
+  if (dateTime == null) return 'Trống'.tr;
   switch (type) {
     case TypeDate.ddMMyyyy:
       return DateFormat('dd-MM-yyyy').format(dateTime);

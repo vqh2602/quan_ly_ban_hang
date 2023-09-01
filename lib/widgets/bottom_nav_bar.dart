@@ -1,5 +1,6 @@
 import 'package:bottom_bar_matu/bottom_bar_matu.dart';
 import 'package:get/get.dart';
+import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_screen.dart';
 
 import 'package:flutter/material.dart';
@@ -28,10 +29,6 @@ List<Widget> widgetOptions = <Widget>[
   Container(
     color: Colors.red,
   ),
-  Container(
-    color: Colors.green,
-  ),
-  Container(
-    color: Colors.blue,
-  ),
+ const AccountDetailScreen()
+
 ];

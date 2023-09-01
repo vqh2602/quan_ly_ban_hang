@@ -58,6 +58,9 @@ dependencies:
   qr_code_scanner: ^1.0.1
   flutx_ui: ^0.2.0
   expandable_text: ^2.3.0
+  auto_animated: ^3.2.0
+  dart_appwrite: ^8.0.1
+  custom_refresh_indicator: ^2.2.1
 
 dev_dependencies:
   flutter_test:

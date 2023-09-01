@@ -5,18 +5,27 @@ import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_screen.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_title.dart';
 import 'package:quan_ly_ban_hang/widgets/image_custom.dart';
-import 'package:quan_ly_ban_hang/widgets/share_function/share_funciton.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
-Widget itemProduct() {
+Widget itemProduct({
+  EdgeInsets? margin,
+  double? quantity,
+  Function?
+      onHoverDelete, // ấn giữ xoá sp ra khỏi list - dùng cho các màn hoá đơn
+}) {
   return GestureDetector(
-    onTap: (){
+    onTap: () {
       Get.toNamed(DetailProductSreen.routeName);
     },
+    onLongPress: () {
+      if (onHoverDelete != null) onHoverDelete();
+    },
     child: Container(
-      margin: const EdgeInsets.only(top: 0, bottom: 20, left: 20, right: 20),
-      padding: const EdgeInsets.only(top: 4, bottom: 4, left: 12, right: 12),
+      margin: margin ??
+          const EdgeInsets.only(top: 0, bottom: 20, left: 20, right: 20),
+      padding: const EdgeInsets.only(top: 12, bottom: 12, left: 12, right: 12),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -36,7 +45,8 @@ Widget itemProduct() {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: imageNetwork(
-                    url: 'https://i.imgur.com/UYT3Gnu.jpeg', fit: BoxFit.cover)),
+                    url: 'https://i.imgur.com/UYT3Gnu.jpeg',
+                    fit: BoxFit.cover)),
           ),
           cWidth(8),
           Expanded(
@@ -64,8 +74,19 @@ Widget itemProduct() {
                     icon: null),
                 Align(
                   alignment: Alignment.centerRight,
-                  child:
-                      textTitleMedium(text: formatCurrency(550000), color: a500),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (quantity != null)
+                        textTitleMedium(text: 'x$quantity', color: b500),
+                      Expanded(
+                        child: textTitleMedium(
+                            text: formatCurrency(550000),
+                            color: a500,
+                            textAlign: TextAlign.right),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),

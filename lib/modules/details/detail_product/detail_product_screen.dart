@@ -11,21 +11,20 @@ import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_c
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/box_detail.dart';
 import 'package:quan_ly_ban_hang/widgets/image_custom.dart';
-import 'package:quan_ly_ban_hang/widgets/share_function/share_funciton.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
 class DetailProductSreen extends StatefulWidget {
   const DetailProductSreen({super.key});
-  static const String routeName = '/list_product';
+  static const String routeName = '/detail_product';
 
   @override
   State<DetailProductSreen> createState() => _DetailProductState();
 }
 
 class _DetailProductState extends State<DetailProductSreen> {
-  DetailProductController detailProductController =
-      Get.put(DetailProductController());
+  DetailProductController detailProductController = Get.find();
   final ImagePicker picker = ImagePicker();
 
   @override

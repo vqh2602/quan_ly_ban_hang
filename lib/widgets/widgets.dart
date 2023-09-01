@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:quan_ly_ban_hang/data/models/tag.dart' as tag;
 
 Widget searchBar(
     {double? width,
@@ -205,83 +204,3 @@ Widget cWidth(double val) => SizedBox(
 Widget cHeight(double val) => SizedBox(
       height: val,
     );
-
-Widget filterChip(
-    {required tag.Data tagData,
-    required bool isSelect,
-    required Function(tag.Data?) onChange}) {
-  return ChoiceChip(
-    label: textBodySmall(
-      text: tagData.name ?? '',
-      color: Colors.black,
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20.0),
-      side: BorderSide(color: colorF1),
-    ),
-    selectedColor: colorF3,
-    disabledColor: Get.theme.colorScheme.background,
-    selected: isSelect,
-    avatar: null,
-    onSelected: (bool value) {
-      onChange(tagData);
-    },
-  );
-}
-
-filterAlertTags(
-    {required List<tag.Data> result,
-    required List<tag.Data?> choices,
-    required Function(tag.Data?) onChange,
-    required Function onSubmit}) {
-  Get.dialog(
-    AlertDialog(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextButton(
-            onPressed: () {
-              Get.back();
-            },
-            style: TextButton.styleFrom(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: textBodyMedium(text: 'Huỷ'.tr),
-          ),
-          textTitleMedium(text: 'Lọc'.tr),
-          TextButton(
-            onPressed: () {
-              Get.back();
-              onSubmit();
-            },
-            style: TextButton.styleFrom(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: textBodyMedium(text: 'Xác nhận'.tr),
-          ),
-        ],
-      ),
-      content: StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) => Wrap(
-          spacing: 4,
-          children: [
-            for (var item1 in result) ...[
-              filterChip(
-                tagData: item1,
-                isSelect: choices.contains(item1) ? true : false,
-                onChange: (item1) {
-                  onChange(item1);
-                  setState(() {});
-                },
-              )
-            ]
-          ],
-        ),
-      ),
-    ),
-  );
-}

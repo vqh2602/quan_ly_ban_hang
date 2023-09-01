@@ -78,6 +78,13 @@ class ImgurRepo {
             message: 'Đang làm mới token');
         return true;
       }
+      if (statusCode == 429) {
+        buildToast(
+            status: TypeToast.toastError,
+            title: 'Máy chủ lưu trữ đang quá tải',
+            message: 'Máy chủ lưu trữ đang quá tải');
+        return true;
+      }
       if (statusCode == 422 || statusCode == 400) {
         // your http status code
         return true;
@@ -139,7 +146,7 @@ class ImgurRepo {
     } else {
       buildToast(
           title: 'Có lỗi sảy ra',
-          message: '${result?['error']}',
+          message: '${result?['errors'][0]["status"]}',
           status: TypeToast.getError);
       return null;
     }

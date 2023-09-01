@@ -3,14 +3,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
+import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_controller.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_screen.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/block_bottomsheet.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/block_statistical.dart';
 import 'package:quan_ly_ban_hang/widgets/library/dragghome/draggable_home.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_bill_of_sale.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_product.dart';
+import 'package:quan_ly_ban_hang/widgets/list_item/list_item_tool.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
@@ -71,7 +75,15 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                           textTitleMedium(
                               text: 'Trang chủ', color: Colors.white),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showBottomSheetFilter(
+                                  child: const AccountDetailScreen(
+                                    isEdit: false,
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20)));
+                            },
                             icon: const Icon(
                               LucideIcons.user,
                               color: Colors.white,
@@ -111,7 +123,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                 ),
                 Container(
                   // margin: alignment_20_0(),
-                  constraints: const BoxConstraints(maxHeight: 450),
+                  constraints: const BoxConstraints(maxHeight: 460),
                   child: ListView.builder(
                       itemCount: 3,
                       shrinkWrap: true,
@@ -144,7 +156,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                 ),
                 Container(
                   // margin: alignment_20_0(),
-                  constraints: const BoxConstraints(maxHeight: 750),
+                  constraints: const BoxConstraints(maxHeight: 760),
                   child: ListView.builder(
                       itemCount: 5,
                       shrinkWrap: true,
@@ -199,7 +211,9 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                       color: Colors.white,
                     ),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.toNamed(ListToolsSreen.routeName);
+                        },
                         icon: const Icon(
                           FontAwesomeIcons.lightEllipsisStroke,
                           color: Colors.white,
@@ -214,29 +228,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 alignment: WrapAlignment.start,
                 children: [
-                  for (int i = 0; i < 4; i++) ...[
-                    InkWell(
-                      child: SizedBox(
-                        width: 70,
-                        child: Column(children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 30,
-                            child: Icon(
-                              FontAwesomeIcons.ballotCheck,
-                              color: b500,
-                            ),
-                          ),
-                          cHeight(4),
-                          textBodySmall(
-                            text: 'tạo hoá đơn bán',
-                            textAlign: TextAlign.center,
-                            color: Colors.white,
-                          )
-                        ]),
-                      ),
-                    )
-                  ]
+                  for (int i = 0; i < 4; i++) ...[itemTool()]
                 ],
               )
             ],

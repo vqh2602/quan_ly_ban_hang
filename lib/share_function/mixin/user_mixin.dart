@@ -17,27 +17,7 @@ mixin UserMixin {
     await box.write(Storages.dataUser, user.toJson());
   }
 
-// kiểm tra dịch vụ app còn khả dụng?
-  bool checkExpiry({required User user}) {
-    switch (user.identifier) {
-      case '1_month':
-        if (user.latestPurchaseDate != null &&
-            DateTime.now().isBefore(
-                user.latestPurchaseDate!.add(const Duration(days: 30)))) {
-          return true;
-        }
-        return false;
-      case '1_year':
-        if (user.latestPurchaseDate != null &&
-            DateTime.now().isBefore(
-                user.latestPurchaseDate!.add(const Duration(days: 365)))) {
-          return true;
-        }
-        return false;
-      default:
-        return false;
-    }
-  }
+
 
   Future<void> clearDataUser() async {
     await box.remove(Storages.dataUser);
