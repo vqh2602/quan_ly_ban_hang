@@ -6,7 +6,7 @@ InputDecoration textFieldInputStyle(
   return InputDecoration(
     //helperText: 'Helper Text',
     //counterText: '0 characters',
-    label: textBodyMedium(text: label, color: Colors.grey),
+    label: textBodyMedium( label, color: Colors.grey),
     floatingLabelBehavior: FloatingLabelBehavior.always,
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(4),

@@ -58,7 +58,7 @@ class _ListToolsState extends State<ListToolsSreen> {
         ),
       ),
       appBar: AppBar(
-        title: textTitleLarge(text: 'Danh sách tính năng'),
+        title: textTitleLarge( 'Danh sách tính năng'),
         surfaceTintColor: bg500,
         backgroundColor: bg500,
         actions: [
@@ -110,7 +110,7 @@ class _ListToolsState extends State<ListToolsSreen> {
               child: FxButton.block(
                 onPressed: () {},
                 borderRadiusAll: 20,
-                child: textTitleMedium(text: 'Tìm kiếm', color: Colors.white),
+                child: textTitleMedium( 'Tìm kiếm', color: Colors.white),
               ),
             )
           ]),

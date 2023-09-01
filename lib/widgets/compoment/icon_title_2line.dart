@@ -16,7 +16,7 @@ Widget iconTitle2Line({required String title, required IconData icon}) {
         ),
       ),
       cWidth(8),
-      Expanded(child: textBodyMedium(text: title))
+      Expanded(child: textBodyMedium( title))
     ],
   );
 }

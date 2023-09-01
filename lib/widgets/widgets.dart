@@ -13,7 +13,7 @@ Widget searchBar(
     required TextEditingController controller}) {
   return Container(
     // margin: const EdgeInsets.symmetric(horizontal: 4 * 5),
-    width:width ?? Get.width ,
+    width: width ?? Get.width,
     decoration: BoxDecoration(
       color: colorF3.withOpacity(0.3),
       borderRadius: BorderRadius.circular(30),
@@ -143,7 +143,7 @@ Widget buttonSetting({
                 iconStart,
                 size: 4 * 6,
               ),
-              textTitleSmall(text: title),
+              textTitleSmall(title),
             ],
           ),
           isToggle
@@ -181,7 +181,7 @@ Widget noData({required Function inReload}) {
               child: Lottie.asset('assets/animate/nodata.json',
                   width: Get.width, fit: BoxFit.fill)),
           textBodyMedium(
-            text: 'Không có dữ liệu',
+            'Không có dữ liệu',
             color: Get.theme.colorScheme.onBackground,
           ),
           GFButton(

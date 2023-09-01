@@ -26,7 +26,7 @@ class CustomError extends StatelessWidget {
               fit: BoxFit.cover,
             ),
             textHeadlineMedium(
-                text: kDebugMode
+                 kDebugMode
                     ? errorDetails.summary.toString()
                     : 'Oups! Hình như đã có lỗi sảy ra!',
                 textAlign: TextAlign.center,

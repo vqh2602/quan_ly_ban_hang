@@ -5,6 +5,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_controller.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_controller.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_screen.dart';
@@ -29,6 +30,7 @@ class DashBroadScreen extends StatefulWidget {
 
 class _DashBroadScreenState extends State<DashBroadScreen> {
   DashBroadController dashBroadController = Get.find();
+  ListProductController listProductController = Get.find();
   bool showHeader = true;
   ScrollController scrollController = ScrollController();
 
@@ -73,16 +75,21 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                             ),
                           ),
                           textTitleMedium(
-                              text: 'Trang chủ', color: Colors.white),
+                               'Trang chủ', color: Colors.white),
                           IconButton(
                             onPressed: () {
-                              showBottomSheetFilter(
-                                  child: const AccountDetailScreen(
-                                    isEdit: false,
-                                  ),
-                                  borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20)));
+                              Get.bottomSheet(
+                                  showBottomSheetFilter(
+                                      child: const AccountDetailScreen(
+                                        isEdit: false,
+                                      ),
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20))),
+                                  isScrollControlled: true,
+                                  isDismissible: true,
+                                  elevation: 0,
+                                  backgroundColor: Colors.grey.withOpacity(0));
                             },
                             icon: const Icon(
                               LucideIcons.user,
@@ -107,7 +114,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       textTitleLarge(
-                        text: 'Đơn hàng bán',
+                         'Đơn hàng bán',
                         color: Colors.black,
                       ),
                       IconButton(
@@ -140,7 +147,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       textTitleLarge(
-                        text: 'Sản phẩm bán chạy',
+                         'Sản phẩm bán chạy',
                         color: Colors.black,
                       ),
                       IconButton(
@@ -154,17 +161,23 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                     ],
                   ),
                 ),
-                Container(
-                  // margin: alignment_20_0(),
-                  constraints: const BoxConstraints(maxHeight: 760),
-                  child: ListView.builder(
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.only(top: 12),
-                      itemBuilder: (context, indext) {
-                        return itemProduct();
-                      }),
+                listProductController.obx(
+                  (state) => Container(
+                    // margin: alignment_20_0(),
+                    constraints: const BoxConstraints(maxHeight: 760),
+                    child: ListView.builder(
+                        itemCount:
+                            listProductController.listProduct?.length ?? 0,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.only(top: 12),
+                        itemBuilder: (context, indext) {
+                          return itemProduct(
+                              product:
+                                  listProductController.listProduct?[indext],
+                              listUnit: listProductController.listUnit);
+                        }),
+                  ),
                 ),
                 cHeight(100)
               ],
@@ -207,7 +220,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textTitleLarge(
-                      text: 'Tiện ích',
+                       'Tiện ích',
                       color: Colors.white,
                     ),
                     IconButton(

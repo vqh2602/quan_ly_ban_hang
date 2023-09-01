@@ -23,6 +23,6 @@ Widget statusWidget(String title, Color color) {
         color: color.withOpacity(0.2),
         borderRadius: BorderRadius.circular(100)),
     child:
-        textTitleSmall(text: title, color: color, textAlign: TextAlign.center),
+        textTitleSmall( title, color: color, textAlign: TextAlign.center),
   );
 }

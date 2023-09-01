@@ -58,7 +58,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                             cWidth(4 * 5),
                             Expanded(
                               child: textTitleLarge(
-                                  text: 'Đã Giao Hàng',
+                                   'Đã Giao Hàng',
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -75,7 +75,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                             ),
                             cWidth(4 * 5),
                             textTitleLarge(
-                                text: 'Đơn Hàng Đã Thanh Toán',
+                                 'Đơn Hàng Đã Thanh Toán',
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ],
@@ -92,7 +92,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      textTitleMedium(text: 'Thông tin khách hàng'),
+                      textTitleMedium( 'Thông tin khách hàng'),
                       IconButton(
                         onPressed: () {},
                         icon: const Icon(FontAwesomeIcons.lightPenToSquare),
@@ -124,7 +124,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      textTitleMedium(text: 'Danh sách sản phẩm'),
+                      textTitleMedium( 'Danh sách sản phẩm'),
                       IconButton(
                         onPressed: () {},
                         icon: const Icon(FontAwesomeIcons.lightPenToSquare),
@@ -148,7 +148,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                   bottom: 12, top: 8, left: 8, right: 8),
                               quantity: 8,
                               onHoverDelete: () {
-                                onPopDialog(
+                                ShareFuntion.onPopDialog(
                                     context: context,
                                     onCancel: () {},
                                     onSubmit: () {},
@@ -164,22 +164,28 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // textTitleMedium(text: 'Thông tin'),
+                  // textTitleMedium( 'Thông tin'),
                   cHeight(4),
                   titleEditTitle(
-                      title: 'Tổng tiền', value: formatCurrency(59000008)),
+                      title: 'Tổng tiền',
+                      value: ShareFuntion.formatCurrency(59000008)),
                   titleEditTitle(
-                      title: 'Chiết khấu (giảm giá)', value: formatCurrency(0)),
-                  titleEditTitle(title: 'Phụ phí', value: formatCurrency(0)),
-                  titleEditTitle(title: 'Thuế', value: formatCurrency(20000)),
+                      title: 'Chiết khấu (giảm giá)',
+                      value: ShareFuntion.formatCurrency(0)),
+                  titleEditTitle(
+                      title: 'Phụ phí', value: ShareFuntion.formatCurrency(0)),
+                  titleEditTitle(
+                      title: 'Thuế', value: ShareFuntion.formatCurrency(20000)),
                   titleEditTitle(
                       title: 'Thành tiền',
-                      value: formatCurrency(1588858850),
+                      value: ShareFuntion.formatCurrency(1588858850),
                       colorValue: a500),
                   titleEditTitle(
-                      title: 'Tiền khách đưa', value: formatCurrency(20000)),
+                      title: 'Tiền khách đưa',
+                      value: ShareFuntion.formatCurrency(20000)),
                   titleEditTitle(
-                      title: 'Trả lại', value: formatCurrency(20000)),
+                      title: 'Trả lại',
+                      value: ShareFuntion.formatCurrency(20000)),
                 ],
               )),
               cHeight(16),
@@ -187,23 +193,23 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  textTitleMedium(text: 'Thông tin'),
+                  textTitleMedium( 'Thông tin'),
                   cHeight(4),
                   titleEditTitle(
                       title: 'Mã hoá đơn', value: 'HD.20282023.UUIFV4'),
                   titleEditTitle(
                       title: 'Tg đặt hàng',
-                      value: formatDate(
+                      value: ShareFuntion.formatDate(
                           dateTime: DateTime.now(),
                           type: TypeDate.ddMMyyyyhhmm)),
                   titleEditTitle(
                       title: 'Tg thanh toán',
-                      value: formatDate(
+                      value: ShareFuntion.formatDate(
                           dateTime: DateTime.now(),
                           type: TypeDate.ddMMyyyyhhmm)),
                   titleEditTitle(
                       title: 'Tg giao hàng',
-                      value: formatDate(
+                      value: ShareFuntion.formatDate(
                           dateTime: DateTime.now(),
                           type: TypeDate.ddMMyyyyhhmm)),
                   titleEditTitle(
@@ -226,7 +232,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      textTitleMedium(text: 'Ghi chú'),
+                      textTitleMedium( 'Ghi chú'),
                       IconButton(
                         onPressed: () {},
                         icon: const Icon(FontAwesomeIcons.lightPenToSquare),
@@ -235,7 +241,8 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                     ],
                   ),
                   titleEditTitle(
-                      title: 'Thanh toán 1 phần', value: formatCurrency(20000)),
+                      title: 'Thanh toán 1 phần',
+                      value: ShareFuntion.formatCurrency(20000)),
                   titleEditTitle(
                       title: 'Nhân viên bán', value: 'Nguyễn Thị Quỳnh Như'),
                   titleEditTitle(
@@ -274,7 +281,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
         )),
       ),
       appBar: AppBar(
-        title: textTitleLarge(text: 'SP.12082023.YYSB'),
+        title: textTitleLarge( 'SP.12082023.YYSB'),
         surfaceTintColor: bg500,
         backgroundColor: bg500,
         actions: [
@@ -283,7 +290,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
             child: FxButton.medium(
               onPressed: () {},
               shadowColor: Colors.transparent,
-              child: textTitleMedium(text: 'Sửa', color: Colors.white),
+              child: textTitleMedium( 'Sửa', color: Colors.white),
             ),
           ),
         ],

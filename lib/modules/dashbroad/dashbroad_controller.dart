@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
+import 'package:quan_ly_ban_hang/share_function/mixin/appwrite_mixin.dart';
 
 class DashBroadController extends GetxController
-    with GetTickerProviderStateMixin, StateMixin {
+    with GetTickerProviderStateMixin, StateMixin,AppWriteMixin {
   @override
-  void onInit() {
+  Future<void> onInit() async {
     changeUI();
+    await initMixin();
     super.onInit();
   }
 

@@ -48,12 +48,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 4 * 20,
                         ),
                         textHeadlineLarge(
-                            text: 'Đăng nhập', fontWeight: FontWeight.w700),
+                             'Đăng nhập', fontWeight: FontWeight.w700),
                         const SizedBox(
                           height: 4 * 1,
                         ),
                         textBodySmall(
-                          text:
+                          
                               'Đăng nhập để truy cập quản lý',
                         ),
                         const SizedBox(
@@ -101,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           child: Ink(
                             child: textBodyMedium(
-                                text:
+                                
                                     'Quyên mật khẩu? liên hệ với quản lí để cấp lại mật khẩu.',
                                 decoration: TextDecoration.underline),
                           ),
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     textTitleSmall(
-                                        text: 'Đăng nhập'.toUpperCase(),
+                                         'Đăng nhập'.toUpperCase(),
                                         color: Colors.white),
                                     const Icon(
                                       LucideIcons.arrowRight,

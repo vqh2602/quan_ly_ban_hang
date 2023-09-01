@@ -1,6 +1,7 @@
 import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx_ui/flutx.dart';
+import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
@@ -59,15 +60,20 @@ class _ListSalesOrderState extends State<ListSalesOrderSreen> {
           //     }),
           ),
       appBar: AppBar(
-        title: textTitleLarge(text: 'Danh sách đơn hàng'),
+        title: textTitleLarge( 'Danh sách đơn hàng'),
         surfaceTintColor: bg500,
         backgroundColor: bg500,
         actions: [
           IconButton(
             icon: const Icon(LucideIcons.filter),
             onPressed: () {
-              showBottomSheetFilter(
-                  widgetBottom: _widgetBottom(), child: _widgetChild());
+              Get.bottomSheet(
+                  showBottomSheetFilter(
+                      widgetBottom: _widgetBottom(), child: _widgetChild()),
+                  isScrollControlled: true,
+                  isDismissible: true,
+                  elevation: 0,
+                  backgroundColor: Colors.grey.withOpacity(0));
             },
           )
         ],
@@ -81,7 +87,7 @@ class _ListSalesOrderState extends State<ListSalesOrderSreen> {
       child: FxButton.block(
         onPressed: () {},
         borderRadiusAll: 20,
-        child: textTitleMedium(text: 'Tìm kiếm', color: Colors.white),
+        child: textTitleMedium( 'Tìm kiếm', color: Colors.white),
       ),
     );
   }

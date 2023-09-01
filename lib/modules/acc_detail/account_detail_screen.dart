@@ -36,7 +36,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
       body: _buildBody(),
       appBar: (widget.isEdit ?? true)
           ? AppBar(
-              title: textLableLarge(text: 'Chỉnh sửa tài khoản'),
+              title: textLableLarge( 'Chỉnh sửa tài khoản'),
               // leading: const SizedBox(),
               actions: [
                 Container(
@@ -48,7 +48,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                         }
                       },
                       shadowColor: Colors.transparent,
-                      child: textBodyMedium(text: 'Lưu', color: Colors.white)),
+                      child: textBodyMedium('Lưu', color: Colors.white)),
                 )
               ],
             )
@@ -156,7 +156,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                   //                     : Colors.grey)),
                   //         child: Center(
                   //           child: textBodyMedium(
-                  //               text: 'Nam',
+                  //                'Nam',
                   //               color: accountDetailController.sex == 1
                   //                   ? Colors.black
                   //                   : Colors.grey),
@@ -181,7 +181,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                   //                     : Colors.grey)),
                   //         child: Center(
                   //           child: textBodyMedium(
-                  //               text: 'Nữ',
+                  //                'Nữ',
                   //               color: accountDetailController.sex == 0
                   //                   ? Colors.black
                   //                   : Colors.grey),

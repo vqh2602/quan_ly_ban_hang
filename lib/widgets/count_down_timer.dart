@@ -41,13 +41,13 @@ Widget buildTimeCard(
                 color: Colors.white30,
                 borderRadius: BorderRadius.circular(100)),
             child: textTitleMedium(
-              text: time,
+               time,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
           cHeight(12),
-          textBodySmall(text: header, color: Colors.white54),
+          textBodySmall( header, color: Colors.white54),
         ],
       ),
     );
@@ -55,6 +55,6 @@ Widget buildTimeCard(
 Widget lineTime() {
   return Container(
     margin: const EdgeInsets.only(bottom: 4 * 9),
-    child: textTitleLarge(text: ':', color: Colors.white54),
+    child: textTitleLarge( ':', color: Colors.white54),
   );
 }

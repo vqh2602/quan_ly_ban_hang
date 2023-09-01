@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_controller.dart';
 import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_controller.dart';
 import 'package:quan_ly_ban_hang/modules/home/home_controller.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_controller.dart';
 import 'package:quan_ly_ban_hang/modules/qr_scan/qr_controller.dart';
 
 Future<void> initialize() async {
@@ -19,5 +20,8 @@ Future<void> initialize() async {
   );
   Get.lazyPut<AccountDetailController>(
     () => AccountDetailController(),
+  );
+  Get.lazyPut<ListProductController>(
+    () => ListProductController(),
   );
 }

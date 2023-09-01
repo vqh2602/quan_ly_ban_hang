@@ -18,38 +18,31 @@ void showBlockDetail({required Widget widget}) {
       isScrollControlled: true);
 }
 
-showBottomSheetFilter(
+Widget showBottomSheetFilter(
     {BorderRadiusGeometry? borderRadius,
     required Widget child,
     Widget? widgetBottom}) {
-  Get.bottomSheet(
+  return Container(
+    height: Get.height * 0.8,
+    decoration: BoxDecoration(
+        color: bg500,
+        borderRadius: borderRadius ??
+            const BorderRadius.only(
+                topLeft: Radius.circular(100), topRight: Radius.circular(0))),
+    child: Column(children: [
       Container(
-        height: Get.height * 0.8,
-        decoration: BoxDecoration(
-            color: bg500,
-            borderRadius: borderRadius ??
-                const BorderRadius.only(
-                    topLeft: Radius.circular(100),
-                    topRight: Radius.circular(0))),
-        child: Column(children: [
-          Container(
-            margin: const EdgeInsets.only(top: 12, bottom: 12),
-            child: Container(
-              width: 100,
-              height: 5,
-              decoration: BoxDecoration(
-                color: Get.theme.primaryColor,
-                borderRadius: BorderRadius.circular(100),
-              ),
-            ),
+        margin: const EdgeInsets.only(top: 12, bottom: 12),
+        child: Container(
+          width: 100,
+          height: 5,
+          decoration: BoxDecoration(
+            color: Get.theme.primaryColor,
+            borderRadius: BorderRadius.circular(100),
           ),
-          Expanded(child: child),
-          if (widgetBottom != null) widgetBottom
-         
-        ]),
+        ),
       ),
-      isScrollControlled: true,
-      isDismissible: true,
-      elevation: 0,
-      backgroundColor: Colors.grey.withOpacity(0));
+      Expanded(child: child),
+      if (widgetBottom != null) widgetBottom
+    ]),
+  );
 }

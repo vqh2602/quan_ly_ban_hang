@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
+import 'package:quan_ly_ban_hang/data/models/product.dart';
+import 'package:quan_ly_ban_hang/data/models/unit.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_screen.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_title.dart';
 import 'package:quan_ly_ban_hang/widgets/image_custom.dart';
@@ -10,6 +12,8 @@ import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
 Widget itemProduct({
+  Product? product,
+  List<Unit>? listUnit,
   EdgeInsets? margin,
   double? quantity,
   Function?
@@ -17,7 +21,8 @@ Widget itemProduct({
 }) {
   return GestureDetector(
     onTap: () {
-      Get.toNamed(DetailProductSreen.routeName);
+      Get.toNamed(DetailProductSreen.routeName,
+          arguments: {'type': 'view', 'productID': product?.id});
     },
     onLongPress: () {
       if (onHoverDelete != null) onHoverDelete();
@@ -44,9 +49,8 @@ Widget itemProduct({
             height: 100,
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: imageNetwork(
-                    url: 'https://i.imgur.com/UYT3Gnu.jpeg',
-                    fit: BoxFit.cover)),
+                child:
+                    imageNetwork(url: product?.image ?? '', fit: BoxFit.cover)),
           ),
           cWidth(8),
           Expanded(
@@ -55,22 +59,26 @@ Widget itemProduct({
                 SizedBox(
                   width: Get.width - 40,
                   child: textTitleMedium(
-                      text: 'Điều hoà Pấnonic 12000PU 2023',
+                       product?.name ?? '',
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis),
                 ),
                 iconTitleTitle(
-                    title1: '1352775365',
+                    title1: product?.bardcode ?? 'Trống',
                     title2: 'Lượt bán: ',
                     subTitleBold: true,
-                    subTitle2: '18 N',
+                    subTitle2: ShareFuntion.formatNumber(
+                        number: product?.numberSales.toString() ?? '0'),
                     icon: FontAwesomeIcons.barcodeRead),
                 iconTitleTitle(
                     title1: 'Số lượng: ',
                     title2: 'Đơn vị:',
                     subTitleBold: true,
-                    subTitle1: '2000',
-                    subTitle2: 'cái',
+                    subTitle1: product?.quantity.toString() ?? '0',
+                    subTitle2: ShareFuntion.getUnitWithIDFunc(product?.unit,
+                                listUnit: listUnit)
+                            ?.name ??
+                        'Trống',
                     icon: null),
                 Align(
                   alignment: Alignment.centerRight,
@@ -78,10 +86,11 @@ Widget itemProduct({
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       if (quantity != null)
-                        textTitleMedium(text: 'x$quantity', color: b500),
+                        textTitleMedium( 'x$quantity', color: b500),
                       Expanded(
                         child: textTitleMedium(
-                            text: formatCurrency(550000),
+                             ShareFuntion.formatCurrency(
+                                product?.price ?? 0),
                             color: a500,
                             textAlign: TextAlign.right),
                       ),

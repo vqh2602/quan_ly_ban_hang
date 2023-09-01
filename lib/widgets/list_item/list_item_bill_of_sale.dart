@@ -34,7 +34,7 @@ Widget itemBillOfSale() {
           SizedBox(
             width: Get.width - 40,
             child: textTitleMedium(
-                text: 'HD.200823.238958l',
+                 'HD.200823.238958l',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis),
           ),
@@ -49,8 +49,10 @@ Widget itemBillOfSale() {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              textTitleMedium(text: formatCurrency(150000), color: b500),
-              textTitleMedium(text: formatCurrency(550000), color: a500)
+              textTitleMedium(
+                   ShareFuntion.formatCurrency(150000), color: b500),
+              textTitleMedium(
+                   ShareFuntion.formatCurrency(550000), color: a500)
             ],
           )
         ],

@@ -30,29 +30,31 @@ Widget titleEditTitle(
     Widget? valueWidget,
     Function()? onTap,
     bool showEdit = true}) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Row(
-        children: [
-          textBodyMedium(
-              text: title, fontWeight: boldTitle ?? FontWeight.normal),
-          if (showEdit)
-            IconButton(
-              onPressed: () {
-                if (onTap != null) onTap();
-              },
-              icon: const Icon(FontAwesomeIcons.lightPenToSquare),
-              color: Get.theme.primaryColor,
-            ),
-        ],
-      ),
-      valueWidget ??
-          Expanded(
-            child: textTitleMedium(
-                text: value, textAlign: TextAlign.right, color: colorValue),
-          )
-    ],
+  return Container(
+    margin: const EdgeInsets.only(top: 4),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          children: [
+            textBodyMedium(title, fontWeight: boldTitle ?? FontWeight.normal),
+            if (showEdit)
+              IconButton(
+                onPressed: () {
+                  if (onTap != null) onTap();
+                },
+                icon: const Icon(FontAwesomeIcons.lightPenToSquare),
+                color: Get.theme.primaryColor,
+              ),
+          ],
+        ),
+        valueWidget ??
+            Expanded(
+              child: textTitleMedium(value,
+                  textAlign: TextAlign.right, color: colorValue),
+            )
+      ],
+    ),
   );
 }

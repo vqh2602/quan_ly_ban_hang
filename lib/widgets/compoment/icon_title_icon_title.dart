@@ -18,7 +18,7 @@ Widget iconTitleIconTitle(
             color: Colors.grey,
           ),
           cWidth(8),
-          textBodyMedium(text: title1),
+          textBodyMedium( title1),
         ],
       )),
       Expanded(
@@ -31,7 +31,7 @@ Widget iconTitleIconTitle(
             color: Colors.grey,
           ),
           cWidth(8),
-          textBodyMedium(text: title2),
+          textBodyMedium( title2),
         ],
       ))
     ],

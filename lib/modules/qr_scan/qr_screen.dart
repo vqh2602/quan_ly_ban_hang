@@ -166,14 +166,14 @@ class _QrScanState extends State<QrScan> {
                                         children: [
                                           Expanded(
                                             child: textBodyMedium(
-                                              text: 'Quét mã vạch',
+                                               'Quét mã vạch',
                                               fontWeight: FontWeight.bold,
                                               // color: Get.theme.primaryColor,
                                             ),
                                           ),
                                           Expanded(
                                             child: textBodySmall(
-                                              text:
+                                              
                                                   'Đưa mã vào giữa khung hình',
                                             ),
                                           ),
@@ -193,7 +193,7 @@ class _QrScanState extends State<QrScan> {
                                                           .spaceAround,
                                                   children: [
                                                     textBodySmall(
-                                                      text: 'Nhập mã thủ công',
+                                                       'Nhập mã thủ công',
                                                       color: qrController
                                                               .nhapCode.value
                                                           ? Get.theme
@@ -277,7 +277,7 @@ class _QrScanState extends State<QrScan> {
                                                        color: Get.theme.primaryColor,
                                                       shape: GFButtonShape.pills,
                                                       child: textBodyMedium(
-                                                        text: 'Hoàn tất',
+                                                         'Hoàn tất',
                                                         color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -300,7 +300,7 @@ class _QrScanState extends State<QrScan> {
                           color: Colors.white,
                         ),
                         label: textBodySmall(
-                          text: 'Quay lại',
+                           'Quay lại',
                           color: Colors.white,
                         ),
                         style: ElevatedButton.styleFrom(

@@ -61,11 +61,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   textHeadlineLarge(
-                      text: 'LAVENZ',
+                       'LAVENZ',
                       color: Get.theme.colorScheme.background,
                       fontWeight: FontWeight.w900),
                   textBodySmall(
-                      text: 'Ngủ & Thiền, Thư giãn'.tr,
+                       'Ngủ & Thiền, Thư giãn'.tr,
                       color: Get.theme.colorScheme.background),
                   cHeight(100)
                   // Align

@@ -54,9 +54,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(
                     height: 4 * 10,
                   ),
-                  textTitleLarge(text: 'Đăng kí'.toUpperCase()),
+                  textTitleLarge( 'Đăng kí'.toUpperCase()),
                   textBodyMedium(
-                      text: 'Đăng kí tài khoản để có thể truy cập ứng dụng'),
+                       'Đăng kí tài khoản để có thể truy cập ứng dụng'),
                   const SizedBox(
                     height: 4 * 10,
                   ),
@@ -179,9 +179,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   TextFormField(
                     onTap: () {
-                      dateTimePicker(
+                      ShareFuntion.dateTimePicker(
                           onchange: (dt) {
-                            signupController.birthTE.text = formatDate(
+                            signupController.birthTE.text = ShareFuntion.formatDate(
                                 type: TypeDate.yyyyMMdd, dateTime: dt);
                             // signupController.birthTE?.text = formatDate(
                             //     type: TypeDate.ddMMyyyy, dateTime: dt);
@@ -216,7 +216,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       : Get.theme.colorScheme.onBackground)),
                           child: Center(
                             child: textBodyMedium(
-                                text: 'Nam',
+                                 'Nam',
                                 color: !sex
                                     ? Colors.grey
                                     : Get.theme.colorScheme.onBackground),
@@ -243,7 +243,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       : Get.theme.colorScheme.onBackground)),
                           child: Center(
                             child: textBodyMedium(
-                                text: 'Nữ',
+                                 'Nữ',
                                 color: sex
                                     ? Colors.grey
                                     : Get.theme.colorScheme.onBackground),
@@ -315,7 +315,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         textTitleSmall(
-                            text: 'Đăng kí'.toUpperCase(), color: Colors.black),
+                             'Đăng kí'.toUpperCase(), color: Colors.black),
                         const Icon(
                           LucideIcons.arrowRight,
                           size: 4 * 6,
@@ -332,7 +332,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                     child: Ink(
                       child: textBodyMedium(
-                          text: 'Đã có tài khoản? Đăng nhập',
+                           'Đã có tài khoản? Đăng nhập',
                           decoration: TextDecoration.underline),
                     ),
                   ),

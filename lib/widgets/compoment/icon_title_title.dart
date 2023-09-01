@@ -27,10 +27,10 @@ Widget iconTitleTitle(
               ),
             if (icon != null) cWidth(4),
             textBodySmall(
-              text: title1,
+               title1,
             ),
             textBodySmall(
-              text: subTitle1 ?? '',
+               subTitle1 ?? '',
               fontWeight: subTitleBold ? FontWeight.bold : FontWeight.normal,
             ),
           ],
@@ -38,10 +38,10 @@ Widget iconTitleTitle(
         Row(
           children: [
             textBodySmall(
-              text: title2,
+               title2,
             ),
             textBodySmall(
-              text: subTitle2 ?? '',
+               subTitle2 ?? '',
               fontWeight: subTitleBold ? FontWeight.bold : FontWeight.normal,
             ),
           ],

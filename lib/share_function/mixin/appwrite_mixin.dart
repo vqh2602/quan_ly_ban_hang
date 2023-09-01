@@ -2,7 +2,9 @@ import 'package:appwrite/appwrite.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:quan_ly_ban_hang/config/config.dart';
+import 'package:quan_ly_ban_hang/data/models/category.dart';
 import 'package:quan_ly_ban_hang/data/models/product.dart';
+import 'package:quan_ly_ban_hang/data/models/unit.dart';
 import 'package:quan_ly_ban_hang/data/models/user.dart';
 import 'package:quan_ly_ban_hang/data/repositories/appwrite_repo.dart';
 import 'package:quan_ly_ban_hang/data/storage.dart';
@@ -12,9 +14,13 @@ import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 mixin AppWriteMixin {
   AppWriteRepo appWriteRepo = AppWriteRepo();
   GetStorage box = GetStorage();
+  List<Unit>? listUnitMixin = []; // ds đơn vị tính
+  List<Category>? listCategoryMixin = []; // ds nhãn
 
   initMixin() async {
-    await appWriteRepo.initDataAccount();
+    // await appWriteRepo.initDataAccount();
+    await getListUnitMixin();
+    await getListCategoryMixin();
   }
 
   /// đăng nhập
@@ -67,5 +73,63 @@ mixin AppWriteMixin {
       return null;
     }
     return listProduct;
+  }
+
+  /// chi tiết sản phẩm
+  Future<Product?> getDetailProductMixin({String? id}) async {
+    Product? product;
+    var res = await appWriteRepo.databases.getDocument(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblProductID,
+        documentId: id ?? '');
+    if (res.data.isNotEmpty) {
+      product = Product.fromJson(res.data);
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return product;
+  }
+
+  /// ds đơn vị
+  Future<List<Unit>?> getListUnitMixin({bool isCache = true}) async {
+    if (listUnitMixin != null &&
+        (listUnitMixin?.isNotEmpty ?? false) &&
+        isCache) {
+      return listUnitMixin;
+    }
+    var res = await appWriteRepo.databases.listDocuments(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblUnitID);
+    if (res.documents.isNotEmpty) {
+      listUnitMixin = res.documents.map((e) => Unit.fromJson(e.data)).toList();
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return listUnitMixin;
+  }
+
+  /// ds nhãn- danh mục
+  Future<List<Category>?> getListCategoryMixin({bool isCache = true}) async {
+    if (listCategoryMixin != null &&
+        (listCategoryMixin?.isNotEmpty ?? false) &&
+        isCache) {
+      return listCategoryMixin;
+    }
+    var res = await appWriteRepo.databases.listDocuments(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblCategoryID);
+    if (res.documents.isNotEmpty) {
+      listCategoryMixin =
+          res.documents.map((e) => Category.fromJson(e.data)).toList();
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return listCategoryMixin;
   }
 }

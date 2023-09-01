@@ -37,12 +37,12 @@ Widget itemTool(
         cHeight(4),
         isTextSmall
             ? textBodySmall(
-                text: 'tạo hoá đơn bán',
+                 'tạo hoá đơn bán',
                 textAlign: TextAlign.center,
                 color: textColor ?? Colors.white,
               )
             : textBodyMedium(
-                text: 'tạo hoá đơn bán',
+                 'tạo hoá đơn bán',
                 textAlign: TextAlign.center,
                 color: textColor ?? Colors.white,
               )
