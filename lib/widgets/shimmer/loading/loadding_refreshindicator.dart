@@ -15,19 +15,16 @@ Widget loaddingRefreshIndicator(
           top: -20.0,
           child: SizedBox(
               // color: Colors.black,
-              height: 200,
+              height: 300,
               width: Get.width,
               // margin: EdgeInsets.only(bottom: 20),
-              child: FittedBox(
+              child: Lottie.asset(
+                'assets/animation/loadleaf.json',
                 fit: BoxFit.cover,
-                child: Lottie.asset(
-                  'assets/animations/loadleaf.json',
-                  fit: BoxFit.fill,
-                ),
               )),
         ),
       Transform.translate(
-        offset: Offset(0, 100.0 * controller.value * 1.5),
+        offset: Offset(0, 100.0 * controller.value * 2),
         child: child,
       ),
     ],

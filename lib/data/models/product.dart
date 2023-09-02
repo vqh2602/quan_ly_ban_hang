@@ -1,12 +1,13 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Product {
   String? uid;
   String? name;
-  int? quantity;
-  int? importPrice;
-  int? price;
+  num? quantity;
+  num? importPrice;
+  num? price;
   List<String>? category;
-  int? numberSales;
-  int? discount;
+  num? numberSales;
+  num? discount;
   String? code;
   String? bardcode;
   String? unit;
@@ -41,7 +42,7 @@ class Product {
       this.databaseId});
 
   Product.fromJson(Map<String, dynamic> json) {
-    uid = json['id'];
+    uid = json['uid'];
     name = json['name'];
     quantity = json['quantity'];
     importPrice = json['importPrice'];
@@ -69,7 +70,7 @@ class Product {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = uid;
+    data['uid'] = uid;
     data['name'] = name;
     data['quantity'] = quantity;
     data['importPrice'] = importPrice;
@@ -82,14 +83,58 @@ class Product {
     data['unit'] = unit;
     data['note'] = note;
     data['image'] = image;
-    data['\$id'] = id;
-    data['\$createdAt'] = createdAt;
-    data['\$updatedAt'] = updatedAt;
-    if (permissions != null) {
-      data['\$permissions'] = permissions;
-    }
-    data['\$collectionId'] = collectionId;
-    data['\$databaseId'] = databaseId;
+    // data['\$id'] = id;
+    // data['\$createdAt'] = createdAt;
+    // data['\$updatedAt'] = updatedAt;
+    // if (permissions != null) {
+    //   data['\$permissions'] = permissions;
+    // }
+    // data['\$collectionId'] = collectionId;
+    // data['\$databaseId'] = databaseId;
     return data;
+  }
+
+  Product copyWith({
+    String? uid,
+    String? name,
+    num? quantity,
+    num? importPrice,
+    num? price,
+    List<String>? category,
+    num? numberSales,
+    num? discount,
+    String? code,
+    String? bardcode,
+    String? unit,
+    String? note,
+    String? image,
+    String? id,
+    String? createdAt,
+    String? updatedAt,
+    List<dynamic>? permissions,
+    String? collectionId,
+    String? databaseId,
+  }) {
+    return Product(
+      uid: uid ?? this.uid,
+      name: name ?? this.name,
+      quantity: quantity ?? this.quantity,
+      importPrice: importPrice ?? this.importPrice,
+      price: price ?? this.price,
+      category: category ?? this.category,
+      numberSales: numberSales ?? this.numberSales,
+      discount: discount ?? this.discount,
+      code: code ?? this.code,
+      bardcode: bardcode ?? this.bardcode,
+      unit: unit ?? this.unit,
+      note: note ?? this.note,
+      image: image ?? this.image,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      permissions: permissions ?? this.permissions,
+      collectionId: collectionId ?? this.collectionId,
+      databaseId: databaseId ?? this.databaseId,
+    );
   }
 }

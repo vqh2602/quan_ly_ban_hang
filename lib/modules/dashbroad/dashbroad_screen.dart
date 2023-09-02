@@ -8,6 +8,7 @@ import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_controller.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_controller.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_tools/data_tools.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_screen.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/block_bottomsheet.dart';
@@ -56,137 +57,139 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
 
   Widget _buildBody() {
     return dashBroadController.obx(
-        (state) => DraggableHome(
-              // leading: const Icon(Icons.arrow_back_ios),
-              centerTitle: true,
-              title: Center(
-                  child: Container(
-                      width: Get.width,
-                      padding: const EdgeInsets.only(left: 12, right: 12),
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              FontAwesomeIcons.lightBars,
-                              color: Colors.white,
+        (state) => RefreshIndicator(
+          onRefresh: ()async{},
+          child: DraggableHome(
+                // leading: const Icon(Icons.arrow_back_ios),
+                centerTitle: true,
+                title: Center(
+                    child: Container(
+                        width: Get.width,
+                        padding: const EdgeInsets.only(left: 12, right: 12),
+                        height: 60,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                FontAwesomeIcons.lightBars,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          textTitleMedium(
-                               'Trang chủ', color: Colors.white),
-                          IconButton(
+                            textTitleMedium('Trang chủ', color: Colors.white),
+                            IconButton(
+                              onPressed: () {
+                                Get.bottomSheet(
+                                    showBottomSheetFilter(
+                                        child: const AccountDetailScreen(
+                                          isEdit: false,
+                                        ),
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20))),
+                                    isScrollControlled: true,
+                                    isDismissible: true,
+                                    elevation: 0,
+                                    backgroundColor: Colors.grey.withOpacity(0));
+                              },
+                              icon: const Icon(
+                                LucideIcons.user,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ))),
+        
+                expandedHeight: 460,
+                // actions: [
+                //   IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+                // ],
+                headerWidget: _headerWidget(context),
+                // headerBottomBar: headerBottomBarWidget(),
+                body: [
+                  cHeight(8),
+                  Container(
+                    margin: alignment_20_0(),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        textTitleLarge(
+                          'Đơn hàng bán',
+                          color: Colors.black,
+                        ),
+                        IconButton(
                             onPressed: () {
-                              Get.bottomSheet(
-                                  showBottomSheetFilter(
-                                      child: const AccountDetailScreen(
-                                        isEdit: false,
-                                      ),
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          topRight: Radius.circular(20))),
-                                  isScrollControlled: true,
-                                  isDismissible: true,
-                                  elevation: 0,
-                                  backgroundColor: Colors.grey.withOpacity(0));
+                              Get.toNamed(ListSalesOrderSreen.routeName);
                             },
                             icon: const Icon(
-                              LucideIcons.user,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ))),
-
-              expandedHeight: 460,
-              // actions: [
-              //   IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
-              // ],
-              headerWidget: _headerWidget(context),
-              // headerBottomBar: headerBottomBarWidget(),
-              body: [
-                cHeight(8),
-                Container(
-                  margin: alignment_20_0(),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      textTitleLarge(
-                         'Đơn hàng bán',
-                        color: Colors.black,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            Get.toNamed(ListSalesOrderSreen.routeName);
-                          },
-                          icon: const Icon(
-                            FontAwesomeIcons.ellipsis,
-                            color: Colors.black,
-                          ))
-                    ],
+                              FontAwesomeIcons.ellipsis,
+                              color: Colors.black,
+                            ))
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  // margin: alignment_20_0(),
-                  constraints: const BoxConstraints(maxHeight: 460),
-                  child: ListView.builder(
-                      itemCount: 3,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.only(top: 12),
-                      itemBuilder: (context, indext) {
-                        return itemBillOfSale();
-                      }),
-                ),
-                Container(
-                  margin: alignment_20_0(),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      textTitleLarge(
-                         'Sản phẩm bán chạy',
-                        color: Colors.black,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            Get.toNamed(ListProductSreen.routeName);
-                          },
-                          icon: const Icon(
-                            FontAwesomeIcons.ellipsis,
-                            color: Colors.black,
-                          ))
-                    ],
-                  ),
-                ),
-                listProductController.obx(
-                  (state) => Container(
+                  Container(
                     // margin: alignment_20_0(),
-                    constraints: const BoxConstraints(maxHeight: 760),
+                    constraints: const BoxConstraints(maxHeight: 460),
                     child: ListView.builder(
-                        itemCount:
-                            listProductController.listProduct?.length ?? 0,
+                        itemCount: 3,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         padding: const EdgeInsets.only(top: 12),
                         itemBuilder: (context, indext) {
-                          return itemProduct(
-                              product:
-                                  listProductController.listProduct?[indext],
-                              listUnit: listProductController.listUnit);
+                          return itemBillOfSale();
                         }),
                   ),
-                ),
-                cHeight(100)
-              ],
-              // headerExpandedHeight: 0.3,
-              fullyStretchable: false,
-              // expandedBody: Container(color: Colors.amber),
-              backgroundColor: bg500,
-              appBarColor: Get.theme.primaryColor,
-            ),
+                  Container(
+                    margin: alignment_20_0(),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        textTitleLarge(
+                          'Sản phẩm bán chạy',
+                          color: Colors.black,
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Get.toNamed(ListProductSreen.routeName);
+                            },
+                            icon: const Icon(
+                              FontAwesomeIcons.ellipsis,
+                              color: Colors.black,
+                            ))
+                      ],
+                    ),
+                  ),
+                  listProductController.obx(
+                    (state) => Container(
+                      // margin: alignment_20_0(),
+                      constraints: const BoxConstraints(maxHeight: 760),
+                      child: ListView.builder(
+                          itemCount:
+                              listProductController.listProduct?.length ?? 0,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.only(top: 12),
+                          itemBuilder: (context, indext) {
+                            return itemProduct(
+                                product:
+                                    listProductController.listProduct?[indext],
+                                listUnit: listProductController.listUnit);
+                          }),
+                    ),
+                  ),
+                  cHeight(100)
+                ],
+                // headerExpandedHeight: 0.3,
+                fullyStretchable: false,
+                // expandedBody: Container(color: Colors.amber),
+                backgroundColor: bg500,
+                appBarColor: Get.theme.primaryColor,
+              ),
+        ),
         onLoading: const LoadingCustom());
   }
 
@@ -220,7 +223,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     textTitleLarge(
-                       'Tiện ích',
+                      'Tiện ích',
                       color: Colors.white,
                     ),
                     IconButton(
@@ -241,7 +244,11 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 alignment: WrapAlignment.start,
                 children: [
-                  for (int i = 0; i < 4; i++) ...[itemTool()]
+                  for (int i = 0; i < 4; i++) ...[
+                    itemTool(
+                        dataTool: listDataTools[i],
+                        clearBackgroundColor: Colors.white)
+                  ]
                 ],
               )
             ],

@@ -4,6 +4,7 @@ import 'package:quan_ly_ban_hang/data/models/product.dart';
 import 'package:quan_ly_ban_hang/data/models/unit.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/appwrite_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/filterdata_mixin.dart';
+import 'package:quan_ly_ban_hang/share_function/mixin/product_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 
 class ListProductController extends GetxController
@@ -11,7 +12,8 @@ class ListProductController extends GetxController
         GetTickerProviderStateMixin,
         StateMixin,
         AppWriteMixin,
-        FilterDataMixin {
+        FilterDataMixin,
+        ProductMixin {
   List<Product>? listProduct = [];
   List<Unit>? listUnit = [];
   @override
@@ -24,9 +26,12 @@ class ListProductController extends GetxController
   }
 
   getListProducts() async {
+    listProduct?.clear();
+    loadingUI();
     listProduct = await getListProductMixin();
     listProduct
         ?.sort((a, b) => (b.numberSales ?? 0).compareTo(a.numberSales ?? 0));
+    changeUI();
   }
 
   getListUnit() async {

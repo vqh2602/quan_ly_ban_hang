@@ -1,5 +1,5 @@
-import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutx_ui/flutx.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -25,42 +25,28 @@ class _ListSalesOrderState extends State<ListSalesOrderSreen> {
     return buildBody(
       context: context,
       body: SafeArea(
-          // margin: alignment_20_0(),
-          // constraints: const BoxConstraints(maxHeight: 750),
-          child: LiveList(
-        // delay: Duration(milliseconds: 100),
-        // showItemInterval: Duration(milliseconds: 500),
-        showItemDuration: const Duration(milliseconds: 300),
-        shrinkWrap: true,
-        itemCount: 20,
-        itemBuilder: (context, index, animation) {
-          return FadeTransition(
-            opacity: Tween<double>(
-              begin: 0,
-              end: 1,
-            ).animate(animation),
-            child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, -0.1),
-                  end: Offset.zero,
-                ).animate(animation),
-                child: itemBillOfSale()),
-          );
-        },
-        // ... and all other arguments from `LiveOptions` (see above)
-      )
-
-          // child: ListView.builder(
-          //     itemCount: 20,
-          //     shrinkWrap: true,
-          //     // physics: const NeverScrollableScrollPhysics(),
-          //     padding: const EdgeInsets.only(top: 12),
-          //     itemBuilder: (context, indext) {
-          //       return itemBillOfSale();
-          //     }),
+        // margin: alignment_20_0(),
+        // constraints: const BoxConstraints(maxHeight: 750),
+        child: AnimationLimiter(
+          child: ListView.builder(
+            itemCount: 20,
+            itemBuilder: (BuildContext context, int index) {
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                duration: const Duration(milliseconds: 500),
+                child: SlideAnimation(
+                  verticalOffset: 50.0,
+                  child: FadeInAnimation(
+                    child: itemBillOfSale(),
+                  ),
+                ),
+              );
+            },
           ),
+        ),
+      ),
       appBar: AppBar(
-        title: textTitleLarge( 'Danh sách đơn hàng'),
+        title: textTitleLarge('Danh sách đơn hàng'),
         surfaceTintColor: bg500,
         backgroundColor: bg500,
         actions: [
@@ -87,7 +73,7 @@ class _ListSalesOrderState extends State<ListSalesOrderSreen> {
       child: FxButton.block(
         onPressed: () {},
         borderRadiusAll: 20,
-        child: textTitleMedium( 'Tìm kiếm', color: Colors.white),
+        child: textTitleMedium('Tìm kiếm', color: Colors.white),
       ),
     );
   }

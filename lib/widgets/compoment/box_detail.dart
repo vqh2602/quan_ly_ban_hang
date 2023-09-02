@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
+import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
 Widget boxDetail({required Widget child}) {
   return Container(
@@ -49,6 +50,7 @@ Widget titleEditTitle(
               ),
           ],
         ),
+        cWidth(12),
         valueWidget ??
             Expanded(
               child: textTitleMedium(value,
