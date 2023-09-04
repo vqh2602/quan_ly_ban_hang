@@ -7,20 +7,29 @@ Widget loaddingRefreshIndicator(
     {required BuildContext context,
     required Widget child,
     required IndicatorController controller}) {
+  // print(controller.value);
   return Stack(
     alignment: Alignment.topCenter,
     children: [
-      if (!controller.isIdle)
+      if ((!controller.side.isNone &&
+              !controller.isDragging &&
+              !controller.isIdle &&
+              controller.value > 0.5) ||
+          controller.value > 0.5)
         Positioned(
-          top: -20.0,
-          child: SizedBox(
-              // color: Colors.black,
-              height: 300,
+          top: 100.0,
+          child: Container(
+              color: Colors.transparent,
+              height: 200,
               width: Get.width,
               // margin: EdgeInsets.only(bottom: 20),
-              child: Lottie.asset(
-                'assets/animation/loadleaf.json',
-                fit: BoxFit.cover,
+              child: SizedBox.expand(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Lottie.asset(
+                    'assets/animation/loadleaf.json',
+                  ),
+                ),
               )),
         ),
       Transform.translate(

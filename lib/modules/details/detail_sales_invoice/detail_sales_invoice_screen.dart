@@ -282,6 +282,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
       ),
       appBar: AppBar(
         title: textTitleLarge( 'SP.12082023.YYSB'),
+        centerTitle: false,
         surfaceTintColor: bg500,
         backgroundColor: bg500,
         actions: [

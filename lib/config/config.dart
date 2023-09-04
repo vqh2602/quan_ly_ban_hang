@@ -26,6 +26,8 @@ class ModuleConfig {
   String tblCategoryID = 'tbl_category';
   /// KHÁCH HÀNG
   String tblCustomerID = 'tbl_customer';
+  /// Nhà Cung cấp
+  String tblSupplierID = 'tbl_supplier';
 
 
 }

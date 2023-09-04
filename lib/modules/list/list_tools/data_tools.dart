@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_customer/list_customer_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_supplier/list_supplier_screen.dart';
 
 class DataTool {
   String? name;
@@ -82,6 +84,17 @@ List<DataTool> listDataTools = [
       onTap: () {}),
   DataTool(
       icon: (color) => Icon(
+            FontAwesomeIcons.solidUsersLine,
+            color: color ?? Colors.white,
+          ),
+      backgroundColor: Colors.orange[800],
+      name: 'Quản lý khách hàng',
+      group: 'khachhang',
+      onTap: () {
+        Get.toNamed(ListCustomerSreen.routeName);
+      }),
+  DataTool(
+      icon: (color) => Icon(
             FontAwesomeIcons.solidPeopleGroup,
             color: color ?? Colors.white,
           ),
@@ -90,5 +103,16 @@ List<DataTool> listDataTools = [
       group: 'nhanvien',
       onTap: () {
         Get.toNamed(ListPersonnelSreen.routeName);
+      }),
+  DataTool(
+      icon: (color) => Icon(
+            FontAwesomeIcons.solidBoxesPacking,
+            color: color ?? b500,
+          ),
+      backgroundColor: Colors.white,
+      name: 'Quản lý nhà cung cấp',
+      group: 'ncc',
+      onTap: () {
+        Get.toNamed(ListSupplierSreen.routeName);
       }),
 ];

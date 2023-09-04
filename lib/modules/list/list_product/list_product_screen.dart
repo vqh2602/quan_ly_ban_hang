@@ -76,6 +76,7 @@ class _ListProductState extends State<ListProductSreen> {
             onLoading: const LoadingList()),
         appBar: AppBar(
           title: textTitleLarge('Danh sách sản phẩm'),
+          centerTitle: false,
           surfaceTintColor: bg500,
           backgroundColor: bg500,
           actions: [

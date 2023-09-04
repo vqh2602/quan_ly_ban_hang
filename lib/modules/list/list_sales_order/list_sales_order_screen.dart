@@ -47,6 +47,7 @@ class _ListSalesOrderState extends State<ListSalesOrderSreen> {
       ),
       appBar: AppBar(
         title: textTitleLarge('Danh sách đơn hàng'),
+        centerTitle: false,
         surfaceTintColor: bg500,
         backgroundColor: bg500,
         actions: [

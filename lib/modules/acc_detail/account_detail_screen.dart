@@ -8,11 +8,11 @@ import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_controller.dart';
 import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/image_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/s_show_chose.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/theme_textinput.dart';
-import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
 /// tham số truyền vào
 /// [type]: **view** - xem, và sửa; **create** - tạo ,**user** là người dùng đang đăng nhập
@@ -36,7 +36,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
   final ImagePicker picker = ImagePicker();
   bool isView = false; // XEM HAY LÀ TẠO MỚI
   bool isCreate = false; // hiển thị icon edit
-  bool isUser = false; // ng dùng hiện tại
+  bool isUser = true; // ng dùng hiện tại
 
   @override
   void initState() {
@@ -44,15 +44,18 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
       if (arguments['type'] == 'view') {
         setState(() {
           isView = true;
+          isUser = false;
         });
         accountDetailController.getDataUser(id: arguments['personnelID']);
       }
       if (arguments['type'] == 'create') {
         setState(() {
           isCreate = true;
+          isUser = false;
         });
       }
-      if (arguments['type'] == 'user' || (arguments['type'] == null)) {
+      if (arguments['type'] == 'user' ||
+          (arguments['type'] == null || arguments == null)) {
         setState(() {
           isUser = true;
         });
@@ -116,15 +119,22 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                       Row(
                         children: [
                           InkWell(
+                            borderRadius: BorderRadius.circular(20),
                             onTap: () async {
                               if (isCreate || isView || isUser) {
                                 accountDetailController.setAvatar();
                               }
                             },
                             child: Ink(
-                              child: avatarImage(
-                                  url: accountDetailController.avatar ?? '',
-                                  radius: 60),
+                              child: CircleAvatar(
+                                radius: 60,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: imageNetwork(
+                                    url: accountDetailController.avatar ?? '',
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -322,31 +332,38 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                         height: 4 * 10,
                       ),
                       if (isUser)
-                        FxButton.large(
+                        FxButton.block(
+                            padding: const EdgeInsets.only(top: 20, bottom: 20),
                             onPressed: () {
                               accountDetailController.logout();
                             },
-                            child: textTitleMedium('Đăng xuất',
+                            child: textTitleMedium('Đăng xuất'.toUpperCase(),
                                 color: Colors.white)),
                       if (ShareFuntion.checkPermissionUser(
                               user: accountDetailController.userLogin,
                               permission: ['E_NV', 'C_NV', 'AD']) &&
                           !isCreate &&
                           arguments != null)
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Checkbox(
-                              value: accountDetailController.isResetPassword,
-                              onChanged: (bool? value) {
-                                accountDetailController.isResetPassword =
-                                    value ?? false;
-                                accountDetailController.update();
-                              },
-                            ),
-                            textBodyMedium('Đặt lại mật khẩu \n(12345678)')
-                          ],
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Checkbox(
+                                value: accountDetailController.isResetPassword,
+                                onChanged: (bool? value) {
+                                  accountDetailController.isResetPassword =
+                                      value ?? false;
+                                  accountDetailController.update();
+                                },
+                              ),
+                              textBodyMedium('Đặt lại mật khẩu (12345678)')
+                            ],
+                          ),
                         ),
+                      const SizedBox(
+                        height: 4 * 10,
+                      ),
                     ],
                   ),
                 ),

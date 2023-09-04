@@ -77,6 +77,7 @@ class _ListPersonnelState extends State<ListPersonnelSreen> {
             onLoading: const LoadingList()),
         appBar: AppBar(
           title: textTitleLarge('Danh sách nhân viên'),
+          centerTitle: false,
           surfaceTintColor: bg500,
           backgroundColor: bg500,
           actions: [

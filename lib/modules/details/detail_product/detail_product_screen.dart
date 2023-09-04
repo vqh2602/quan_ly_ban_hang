@@ -475,6 +475,7 @@ class _DetailProductState extends State<DetailProductSreen> {
                 title: textTitleLarge(isView
                     ? detailProductController.product?.code ?? 'Trống'
                     : detailProductController.codeTE?.text ?? 'Trống'),
+                    centerTitle: false,
                 surfaceTintColor: bg500,
                 backgroundColor: bg500,
                 actions: [

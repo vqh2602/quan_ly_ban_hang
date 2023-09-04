@@ -25,28 +25,33 @@ Widget iconTitleTitle(
                 size: 12,
                 color: Colors.grey,
               ),
-            if (icon != null) cWidth(4),
+            if (icon != null) cWidth(6),
+            subTitle1 == null && subTitle2 == null
+                ? SizedBox(
+                    width: Get.width * 0.50,
+                    child: textBodySmall(title1, textAlign: TextAlign.left),
+                  )
+                : textBodySmall(
+                    title1,
+                  ),
             textBodySmall(
-               title1,
-            ),
-            textBodySmall(
-               subTitle1 ?? '',
+              subTitle1 ?? '',
               fontWeight: subTitleBold ? FontWeight.bold : FontWeight.normal,
             ),
           ],
         ),
-        if(title2 != null)
-        Row(
-          children: [
-            textBodySmall(
-               title2,
-            ),
-            textBodySmall(
-               subTitle2 ?? '',
-              fontWeight: subTitleBold ? FontWeight.bold : FontWeight.normal,
-            ),
-          ],
-        ),
+        if (title2 != null)
+          Row(
+            children: [
+              textBodySmall(
+                title2,
+              ),
+              textBodySmall(
+                subTitle2 ?? '',
+                fontWeight: subTitleBold ? FontWeight.bold : FontWeight.normal,
+              ),
+            ],
+          ),
       ],
     ),
   );
