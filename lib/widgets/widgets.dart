@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+
 import 'package:quan_ly_ban_hang/widgets/color_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:flutter/material.dart';
@@ -60,53 +60,26 @@ Widget searchBar(
 }
 
 //avater tròn
-Widget avatarImage(
-    {required String url,
-    double? radius,
-    bool isFileImage = false,
-    Uint8List? imageF}) {
+Widget avatarImage({
+  required String url,
+  double? radius,
+}) {
   bool loadImageError = false;
   return StatefulBuilder(builder: (context, setState) {
-    return !isFileImage
-        ? CircleAvatar(
-            radius: radius,
-            backgroundColor: Colors.transparent,
-            backgroundImage: NetworkImage(url),
-            onBackgroundImageError:
-                (dynamic exception, StackTrace? stackTrace) {
-              setState(() {
-                loadImageError = true;
-              });
-            },
-            child: loadImageError
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.asset('assets/images/image_notfound.jpg'))
-                : null)
-        : CircleAvatar(
-            radius: radius,
-            backgroundColor: Colors.transparent,
-            backgroundImage:
-                const AssetImage('assets/images/image_notfound.jpg'),
-            child: ClipOval(
-              child: SizedBox.fromSize(
-                size: Size.fromRadius(radius ?? 20), // Image radius
-                child: (imageF == null)
-                    ? Image.asset(
-                        'assets/images/image_notfound.jpg',
-                        fit: BoxFit.cover,
-                      )
-                    : Image.memory(
-                        imageF,
-                        errorBuilder: (buildContext, object, stackTrace) =>
-                            Image.asset(
-                          'assets/images/image_notfound.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-              ),
-            ));
+    return CircleAvatar(
+        radius: radius,
+        backgroundColor: Colors.transparent,
+        backgroundImage: NetworkImage(url),
+        onBackgroundImageError: (dynamic exception, StackTrace? stackTrace) {
+          setState(() {
+            loadImageError = true;
+          });
+        },
+        child: loadImageError
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.asset('assets/images/image_notfound.jpg'))
+            : null);
   });
 }
 

@@ -74,8 +74,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: Ink(
                           child: avatarImage(
                             url: '',
-                            isFileImage: true,
-                            imageF: signupController.base64Image,
+                            // isFileImage: true,
+                            // imageF: signupController.base64Image,
                             radius: 60,
                           ),
                         ),

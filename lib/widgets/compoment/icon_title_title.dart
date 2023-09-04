@@ -8,7 +8,7 @@ Widget iconTitleTitle(
     String? subTitle1,
     String? subTitle2,
     bool subTitleBold = false,
-    required String title2,
+    String? title2,
     required IconData? icon}) {
   return SizedBox(
     width: Get.width - 40,
@@ -35,6 +35,7 @@ Widget iconTitleTitle(
             ),
           ],
         ),
+        if(title2 != null)
         Row(
           children: [
             textBodySmall(

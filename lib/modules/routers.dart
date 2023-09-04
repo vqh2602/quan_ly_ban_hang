@@ -13,6 +13,8 @@ import 'package:quan_ly_ban_hang/modules/details/detail_sales_invoice/detail_sal
 
 import 'package:quan_ly_ban_hang/modules/home/home_binding.dart';
 import 'package:quan_ly_ban_hang/modules/home/home_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_binding.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_binding.dart';
@@ -76,5 +78,10 @@ List<GetPage> routes = [
       name: ListToolsSreen.routeName,
       page: () => const ListToolsSreen(),
       binding: ListToolsBinding(),
+      transition: Transition.rightToLeft),
+  GetPage(
+      name: ListPersonnelSreen.routeName,
+      page: () => const ListPersonnelSreen(),
+      binding: ListPersonnelBinding(),
       transition: Transition.rightToLeft),
 ];

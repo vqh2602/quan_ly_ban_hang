@@ -1,5 +1,6 @@
 import 'dart:io';
 
+// import 'package:appwrite/models.dart';
 import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:quan_ly_ban_hang/data/models/category.dart';
 import 'package:quan_ly_ban_hang/data/models/unit.dart';
+import 'package:quan_ly_ban_hang/data/models/user.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -88,18 +90,16 @@ class ShareFuntion {
     await showDialog(
       context: context,
       builder: (context) => CupertinoAlertDialog(
-        title:
-            textBodyMedium( 'Thông báo'.tr, fontWeight: FontWeight.bold),
+        title: textBodyMedium('Thông báo'.tr, fontWeight: FontWeight.bold),
         content: Container(
           margin: const EdgeInsets.only(top: 12),
           child: textBodySmall(
-             title,
+            title,
           ),
         ),
         actions: <Widget>[
           CupertinoDialogAction(
-            child: textBodySmall(
-                 "Hủy".tr,
+            child: textBodySmall("Hủy".tr,
                 color: Get.theme.colorScheme.error,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.3),
@@ -109,8 +109,7 @@ class ShareFuntion {
             },
           ),
           CupertinoDialogAction(
-            child: textBodySmall(
-                 'Xác nhận'.tr,
+            child: textBodySmall('Xác nhận'.tr,
                 color: Colors.blue,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 0.3),
@@ -172,5 +171,16 @@ class ShareFuntion {
   static Category? getCategoryWithIDFunc(String? id,
       {List<Category>? listCategory}) {
     return listCategory?.where((element) => element.uid == id).firstOrNull;
+  }
+
+// kiểm tra quyền
+  static bool checkPermissionUser({
+    User? user,
+    List<String>? permission,
+  }) {
+    return user?.permission
+            ?.where((element) => permission!.contains(element))
+            .isNotEmpty ??
+        false;
   }
 }

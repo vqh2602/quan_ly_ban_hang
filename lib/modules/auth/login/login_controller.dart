@@ -22,7 +22,7 @@ class LoginController extends GetxController
   Future<void> login() async {
     User? user;
     await loginMixin(phone: phoneTE.text, password: passWTE.text);
-    user != null ? Get.offAllNamed(SplashScreen.routeName) : null;
+    user != null ? Get.offAndToNamed(SplashScreen.routeName) : null;
     changeUI();
   }
 

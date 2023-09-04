@@ -36,26 +36,35 @@ class _ListToolsState extends State<ListToolsSreen> {
                   onTapSearch: () {}, textController: TextEditingController()),
             ),
             Expanded(
-              child: AnimationLimiter(
-                child: ListView.builder(
-                  itemCount: listDataTools.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return AnimationConfiguration.staggeredList(
-                      position: index,
-                      duration: const Duration(milliseconds: 500),
-                      child: SlideAnimation(
-                        verticalOffset: 50.0,
-                        child: FadeInAnimation(
-                          child: itemTool(
-                            dataTool: listDataTools[index],
-                            textColor: Colors.black,
-                            isTextSmall: false,
-                            // iconColor: Colors.white,
+              child: Container(
+                padding: alignment_20_0(),
+                child: AnimationLimiter(
+                  child: GridView.builder(
+                    itemCount: listDataTools.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 500),
+                        child: SlideAnimation(
+                          verticalOffset: 50.0,
+                          child: FadeInAnimation(
+                            child: itemTool(
+                              dataTool: listDataTools[index],
+                              textColor: Colors.black,
+                              isTextSmall: false,
+                              // iconColor: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                    padding: const EdgeInsets.only(top: 12),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                    ),
+                  ),
                 ),
               ),
             ),

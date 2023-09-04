@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class User {
   String? name;
   String? cccd;
@@ -74,12 +75,48 @@ class User {
     json['department'] = department;
     json['resetPassword'] = resetPassword;
     json['uId'] = uId;
-    json['\$id'] = $id;
-    json['\$createdAt'] = $createdAt;
-    json['\$updatedAt'] = $updatedAt;
-    json['\$permissions'] = $permissions;
-    json['\$collectionId'] = $collectionId;
-    json['\$databaseId'] = $databaseId;
     return json;
+  }
+
+  User copyWith({
+    String? name,
+    String? cccd,
+    String? gender,
+    String? birthday,
+    String? phone,
+    String? address,
+    dynamic avatar,
+    List<dynamic>? permission,
+    String? password,
+    String? department,
+    dynamic resetPassword,
+    String? uId,
+  String? $id,
+  String? $createdAt,
+  String? $updatedAt,
+  List<dynamic>? $permissions,
+  String? $collectionId,
+  String? $databaseId,
+  }) {
+    return User(
+      name: name ?? this.name,
+      cccd: cccd ?? this.cccd,
+      gender: gender ?? this.gender,
+      birthday: birthday ?? this.birthday,
+      phone: phone ?? this.phone,
+      address: address ?? this.address,
+      avatar: avatar ?? this.avatar,
+      permission: permission ?? this.permission,
+      password: password ?? this.password,
+      department: department ?? this.department,
+      resetPassword: resetPassword ?? this.resetPassword,
+      uId: uId ?? this.uId,
+      $id: $id ?? this.$id,
+      $createdAt: $createdAt ?? this.$createdAt,
+     $updatedAt: $updatedAt ?? this.$updatedAt,
+     $permissions: $permissions ?? this.$permissions,
+     $collectionId: $collectionId ?? this.$collectionId,
+      $databaseId: $databaseId ?? this.$databaseId,
+    );
   }
 }

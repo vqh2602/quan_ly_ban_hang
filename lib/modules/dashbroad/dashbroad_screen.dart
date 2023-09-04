@@ -58,8 +58,8 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
   Widget _buildBody() {
     return dashBroadController.obx(
         (state) => RefreshIndicator(
-          onRefresh: ()async{},
-          child: DraggableHome(
+              onRefresh: () async {},
+              child: DraggableHome(
                 // leading: const Icon(Icons.arrow_back_ios),
                 centerTitle: true,
                 title: Center(
@@ -80,6 +80,8 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                             textTitleMedium('Trang chủ', color: Colors.white),
                             IconButton(
                               onPressed: () {
+                                // Get.toNamed(AccountDetailScreen.routeName,
+                                //     arguments: {'type': 'user'});
                                 Get.bottomSheet(
                                     showBottomSheetFilter(
                                         child: const AccountDetailScreen(
@@ -100,7 +102,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                             ),
                           ],
                         ))),
-        
+
                 expandedHeight: 460,
                 // actions: [
                 //   IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
@@ -189,7 +191,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                 backgroundColor: bg500,
                 appBarColor: Get.theme.primaryColor,
               ),
-        ),
+            ),
         onLoading: const LoadingCustom());
   }
 

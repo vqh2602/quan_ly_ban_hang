@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_screen.dart';
 
 class DataTool {
   String? name;
@@ -79,4 +80,15 @@ List<DataTool> listDataTools = [
       name: 'Tạo mới nhân viên',
       group: 'nhanvien',
       onTap: () {}),
+  DataTool(
+      icon: (color) => Icon(
+            FontAwesomeIcons.solidPeopleGroup,
+            color: color ?? Colors.white,
+          ),
+      backgroundColor: b500,
+      name: 'Quản lý nhân viên',
+      group: 'nhanvien',
+      onTap: () {
+        Get.toNamed(ListPersonnelSreen.routeName);
+      }),
 ];
