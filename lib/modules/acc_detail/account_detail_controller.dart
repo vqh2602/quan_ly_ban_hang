@@ -49,31 +49,35 @@ class AccountDetailController extends GetxController
   List<SelectOptionItem>? listPermission = [];
   List<SelectOptionItem>? listPermissionSelect = [];
 
+  var arguments = Get.arguments;
   @override
   Future<void> onInit() async {
     super.onInit();
     userLogin = getUserInBox();
-    loadingUI();
-    if (Get.arguments != null) {
-      if (Get.arguments?['type'] == 'user') {
         await initDataList();
-      }
-      if (Get.arguments?['type'] == 'create') {
-        await initDataList();
-        initData();
-      }
-    } else {
-      initData(user: userLogin);
-    }
+    // loadingUI();
+    // if (arguments != null) {
+    //   if (arguments?['type'] == 'view') {
+    //     await initDataList();
+    //     getDataUser(id: arguments['personnelID']);
+    //   }
+    //   if (Get.arguments?['type'] == 'create') {
+    //     await initDataList();
+    //     initData();
+    //   }
+    // } else {
+    //   // initData(user: userLogin);
+    //   await getDataUser();
+    // }
 
     // await initData();
     // await getDataUser();
-    changeUI();
+    // changeUI();
   }
 
 // lấy ds list data
   initDataList() async {
-    loadingUI();
+    // loadingUI();
     var listDepartmentRequest = await getListDepartmentMixin();
     var listPermissionRequest = await getListPermissionMixin();
     listDepartment = listDepartmentRequest
@@ -82,7 +86,7 @@ class AccountDetailController extends GetxController
     listPermission = listPermissionRequest
         ?.map((e) => SelectOptionItem(key: e.name, value: e.code, data: e))
         .toList();
-    changeUI();
+    // changeUI();
   }
 
   getDataUser({String? id}) async {
@@ -110,13 +114,15 @@ class AccountDetailController extends GetxController
       await initData(user: user);
       await initDataList();
       setValueSelect(user);
+      changeUI();
     } else {
       user = getUserInBox();
       await initData(user: user);
+      changeUI();
     }
 
     // updateUI();
-    changeUI();
+    // changeUI();
   }
 
   initData({User? user}) {
@@ -256,7 +262,9 @@ class AccountDetailController extends GetxController
     await ShareFuntion.onPopDialog(
         context: Get.context!,
         title: 'Bạn muốn đăng xuất?',
-        onCancel: () {},
+        onCancel: () {
+          Get.back();
+        },
         onSubmit: () async {
           await clearDataUser();
           await clearAndResetApp();

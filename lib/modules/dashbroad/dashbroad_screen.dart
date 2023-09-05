@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
+import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_controller.dart';
 import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_controller.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_controller.dart';
@@ -32,6 +33,7 @@ class DashBroadScreen extends StatefulWidget {
 class _DashBroadScreenState extends State<DashBroadScreen> {
   DashBroadController dashBroadController = Get.find();
   ListProductController listProductController = Get.find();
+  AccountDetailController accountController = Get.find();
   bool showHeader = true;
   ScrollController scrollController = ScrollController();
 
@@ -82,6 +84,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                               onPressed: () {
                                 // Get.toNamed(AccountDetailScreen.routeName,
                                 //     arguments: {'type': 'user'});
+                                 accountController.getDataUser();
                                 Get.bottomSheet(
                                     showBottomSheetFilter(
                                         child: const AccountDetailScreen(

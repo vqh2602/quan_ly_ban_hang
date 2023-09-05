@@ -1,11 +1,11 @@
-import 'package:quan_ly_ban_hang/data/models/user.dart';
-import 'package:quan_ly_ban_hang/modules/splash/splash_screen.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/appwrite_mixin.dart';
+import 'package:quan_ly_ban_hang/share_function/mixin/user_mixin.dart';
 
 class LoginController extends GetxController
-    with GetTickerProviderStateMixin, StateMixin, AppWriteMixin {
+    with GetTickerProviderStateMixin, StateMixin, AppWriteMixin, UserMixin {
   late TextEditingController phoneTE, passWTE;
   @override
   Future<void> onInit() async {
@@ -20,9 +20,12 @@ class LoginController extends GetxController
   }
 
   Future<void> login() async {
-    User? user;
+    loadingUI();
+    // User? user;
     await loginMixin(phone: phoneTE.text, password: passWTE.text);
-    user != null ? Get.offAndToNamed(SplashScreen.routeName) : null;
+    // Future.delayed(const Duration(seconds: 2),(){
+    //     user != null ? Get.offAndToNamed(SplashScreen.routeName) : null;
+    // });
     changeUI();
   }
 

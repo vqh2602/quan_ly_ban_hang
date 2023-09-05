@@ -26,7 +26,7 @@ class Supplier {
       this.databaseId});
 
   Supplier.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    uid = json['id'];
     name = json['name'];
     phone = json['phone'];
     address = json['address'];

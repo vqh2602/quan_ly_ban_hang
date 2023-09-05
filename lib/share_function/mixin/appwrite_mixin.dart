@@ -44,11 +44,13 @@ mixin AppWriteMixin {
         user = User.fromJson(res.documents.first.data);
         await box.write(Storages.dataUser, user.toJson());
         await box.write(Storages.dataLoginTime, DateTime.now().toString());
-        Get.toNamed(SplashScreen.routeName);
+        Get.offAndToNamed(SplashScreen.routeName);
+
         buildToast(
             title: 'Đăng nhập thành công',
             message: 'Chào mừng ${user.name}',
             status: TypeToast.getSuccess);
+        return user;
       } else {
         buildToast(
             title: 'Có lỗi xảy ra',
@@ -56,7 +58,6 @@ mixin AppWriteMixin {
             status: TypeToast.getError);
         return null;
       }
-      return user;
     } on Exception catch (_) {
       buildToast(
           title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);

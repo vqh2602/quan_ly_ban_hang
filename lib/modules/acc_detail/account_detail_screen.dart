@@ -19,8 +19,10 @@ import 'package:quan_ly_ban_hang/widgets/theme_textinput.dart';
 /// [personnelID]: id của nhân viên, nếu type là chế độ view thì gọi api lấy tt nhân viên
 class AccountDetailScreen extends StatefulWidget {
   final bool? isEdit;
+  final bool? isRefesh;
   const AccountDetailScreen({
     Key? key,
+    this.isRefesh,
     this.isEdit,
   }) : super(key: key);
   static const String routeName = '/account_detail';
@@ -46,6 +48,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
           isView = true;
           isUser = false;
         });
+        // accountDetailController.loadingUI();
         accountDetailController.getDataUser(id: arguments['personnelID']);
       }
       if (arguments['type'] == 'create') {
@@ -53,18 +56,25 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
           isCreate = true;
           isUser = false;
         });
+        accountDetailController.initData();
       }
       if (arguments['type'] == 'user' ||
           (arguments['type'] == null || arguments == null)) {
         setState(() {
           isUser = true;
         });
+        // accountDetailController.loadingUI();
         accountDetailController.getDataUser();
       } else {
         // accountDetailController.getDataUser();
       }
     }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -128,10 +138,15 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                             child: Ink(
                               child: CircleAvatar(
                                 radius: 60,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: imageNetwork(
-                                    url: accountDetailController.avatar ?? '',
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: imageNetwork(
+                                        url: accountDetailController.avatar ??
+                                            '',
+                                        fit: BoxFit.cover),
                                   ),
                                 ),
                               ),

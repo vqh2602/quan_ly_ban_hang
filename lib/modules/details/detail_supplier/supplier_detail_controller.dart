@@ -27,7 +27,6 @@ class SupplierDetailController extends GetxController
   bool isResetPassword = false;
   var uuid = const Uuid();
 
-
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -78,6 +77,7 @@ class SupplierDetailController extends GetxController
     loadingUI();
     supplier = await updateDetailSupplierMixin(
         supplier: supplier?.copyWith(
+            // id: supplier?.uid,
             name: nameTE?.text,
             phone: phoneTE?.text,
             address: addressTE?.text,

@@ -28,6 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return buildBody(
+      backgroundColor: Colors.white,
       context: context,
       body: _buildBody(),
       appBar: null,
@@ -40,6 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Align(
                 alignment: Alignment.center,
                 child: Container(
+                  width: Get.width * 0.5,
                   margin: const EdgeInsets.only(bottom: 20),
                   child: Image.asset(
                     'assets/logo/logo.png',
