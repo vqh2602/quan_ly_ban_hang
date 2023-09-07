@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
+import 'package:quan_ly_ban_hang/data/models/sales_order.dart';
+import 'package:quan_ly_ban_hang/data/models/status.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_sales_invoice/detail_sales_invoice_screen.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_title.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/status_status.dart';
@@ -10,10 +12,11 @@ import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
 // item hoa đơn bán hàng
-Widget itemBillOfSale() {
+Widget itemBillOfSale({SalesOrder? salesOrder, List<Status>? listStatus}) {
   return GestureDetector(
     onTap: () {
-      Get.toNamed(DetailSalesInvoiceSreen.routeName);
+      Get.toNamed(DetailSalesInvoiceSreen.routeName,
+          arguments: {'salesOrderID': salesOrder?.id, 'type': 'view'});
     },
     child: Container(
       margin: const EdgeInsets.only(top: 0, bottom: 20, left: 20, right: 20),
@@ -34,25 +37,36 @@ Widget itemBillOfSale() {
           SizedBox(
             width: Get.width - 40,
             child: textTitleMedium(
-                 'HD.200823.238958l',
+                'MDH-${ShareFuntion.formatDate(type: TypeDate.ddMMyyyy, dateTime: salesOrder?.timeOrder)}-${salesOrder?.uid?.replaceAll('-', ' ')}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis),
           ),
           cHeight(4),
           iconTitleTitle(
-              title1: '20/08/2023',
-              title2: 'Nguyễn Anh Trang',
+              title1: ShareFuntion.formatDate(
+                  type: TypeDate.ddMMyyyy, dateTime: salesOrder?.timeOrder),
+              title2: salesOrder?.customerName ?? '',
               icon: FontAwesomeIcons.calendar),
           cHeight(8),
-          statusStatus(),
+          statusStatus(
+            status1: ShareFuntion.getStatusWithIDFunc(salesOrder?.paymentStatus,
+                listStatus: listStatus),
+            status2: ShareFuntion.getStatusWithIDFunc(
+                salesOrder?.deliveryStatus,
+                listStatus: listStatus),
+          ),
           cHeight(8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               textTitleMedium(
-                   ShareFuntion.formatCurrency(150000), color: b500),
+                  ShareFuntion.formatCurrency(
+                    salesOrder?.profit ?? 0,
+                  ),
+                  color: b500),
               textTitleMedium(
-                   ShareFuntion.formatCurrency(550000), color: a500)
+                  ShareFuntion.formatCurrency(salesOrder?.totalMoney ?? 0),
+                  color: a500)
             ],
           )
         ],

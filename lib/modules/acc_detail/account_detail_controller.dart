@@ -22,6 +22,8 @@ class AccountDetailController extends GetxController
         UserMixin,
         AppWriteMixin,
         PersonnelMixin {
+  final formKey = GlobalKey<FormState>();
+
   ImgurRepo imgurRepo = ImgurRepo();
   late TextEditingController? phoneTE,
       birtTE,
@@ -54,7 +56,7 @@ class AccountDetailController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     userLogin = getUserInBox();
-        await initDataList();
+    await initDataList();
     // loadingUI();
     // if (arguments != null) {
     //   if (arguments?['type'] == 'view') {
@@ -136,7 +138,12 @@ class AccountDetailController extends GetxController
     addressTE = TextEditingController(text: user?.address);
     nameTE = TextEditingController(text: user?.name);
     CCCDTE = TextEditingController(text: user?.cccd);
-    departmentTE = TextEditingController(text: user?.department);
+    String? y = listDepartment
+        ?.where((element) => user?.department == element.value)
+        .firstOrNull
+        ?.key;
+    departmentTE =
+        TextEditingController(text: y?.toUpperCase() ?? user?.department);
     genderTE = TextEditingController(text: user?.gender);
     String x = '';
     user?.permission?.forEach((element) {
@@ -145,6 +152,10 @@ class AccountDetailController extends GetxController
     permissionTE = TextEditingController(text: x);
     avatar = user?.avatar;
     birthday = DateTime.parse(user?.birthday ?? DateTime.now().toString());
+    departmentItemSelect = null;
+    genderItemSelect = null;
+    listPermissionSelect = null;
+    update();
   }
 
   setValueSelect(User? user) {
@@ -162,7 +173,8 @@ class AccountDetailController extends GetxController
   }
 
   updateDataTextEditing() {
-    departmentTE = TextEditingController(text: departmentItemSelect?.value);
+    departmentTE =
+        TextEditingController(text: departmentItemSelect?.key?.toUpperCase());
     genderTE = TextEditingController(text: genderItemSelect?.value);
     String x = '';
     listPermissionSelect?.forEach((element) {
@@ -193,8 +205,8 @@ class AccountDetailController extends GetxController
     changeUI();
   }
 
-// cập nhật
-  Future<void> updateUser() async {
+// cập nhật - có cập nhật ng dùng trong box k
+  Future<void> updateUser({bool isUpdateUserLogin = false}) async {
     loadingUI();
     user = await updateDetailUserMixin(
         user: user?.copyWith(
@@ -210,6 +222,7 @@ class AccountDetailController extends GetxController
                 listPermissionSelect?.map((e) => e.value ?? '').toList(),
             department: departmentItemSelect?.value,
             gender: genderItemSelect?.value),
+        isUpdateUserLogin: isUpdateUserLogin,
         id: user?.$id);
     changeUI();
   }

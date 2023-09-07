@@ -67,6 +67,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                 Container(
                   margin: const EdgeInsets.only(right: 20),
                   child: FxButton.medium(
+                    borderRadiusAll: 100,
                       onPressed: () {
                         if (keyForm1.currentState?.validate() ?? false) {
                           if (isView) {
@@ -116,9 +117,6 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                                   decoration:
                                       textFieldInputStyle(label: 'Họ & tên(*)'),
                                 ),
-                                const SizedBox(
-                                  height: 4 * 5,
-                                ),
                               ],
                             ),
                           )
@@ -134,9 +132,6 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                         controller: customerDetailController.phoneTE,
                         decoration: textFieldInputStyle(label: 'Số điện thoại'),
                         maxLines: 1,
-                      ),
-                      const SizedBox(
-                        height: 4 * 5,
                       ),
                       const SizedBox(
                         height: 4 * 5,

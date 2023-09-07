@@ -28,7 +28,7 @@ Widget iconTitleTitle(
             if (icon != null) cWidth(6),
             subTitle1 == null && subTitle2 == null
                 ? SizedBox(
-                    width: Get.width * 0.50,
+                    width: Get.width * 0.40,
                     child: textBodySmall(title1, textAlign: TextAlign.left),
                   )
                 : textBodySmall(

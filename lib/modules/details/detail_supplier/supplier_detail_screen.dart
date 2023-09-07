@@ -66,6 +66,7 @@ class _SupplierDetailScreenState extends State<SupplierDetailScreen> {
                 Container(
                   margin: const EdgeInsets.only(right: 20),
                   child: FxButton.medium(
+                    borderRadiusAll: 100,
                       onPressed: () {
                         if (keyForm1.currentState?.validate() ?? false) {
                           if (isView) {
@@ -115,9 +116,7 @@ class _SupplierDetailScreenState extends State<SupplierDetailScreen> {
                                   decoration:
                                       textFieldInputStyle(label: 'Tên ncc (*)'),
                                 ),
-                                const SizedBox(
-                                  height: 4 * 5,
-                                ),
+                                
                               ],
                             ),
                           )
@@ -134,9 +133,7 @@ class _SupplierDetailScreenState extends State<SupplierDetailScreen> {
                         decoration: textFieldInputStyle(label: 'Số điện thoại'),
                         maxLines: 1,
                       ),
-                      const SizedBox(
-                        height: 4 * 5,
-                      ),
+        
                       const SizedBox(
                         height: 4 * 5,
                       ),
@@ -157,7 +154,7 @@ class _SupplierDetailScreenState extends State<SupplierDetailScreen> {
                         controller: supplierDetailController.noteTE,
                         readOnly: (isView || isCreate) ? false : true,
                         decoration: textFieldInputStyle(label: 'Ghi chú'),
-                        maxLines: 10,
+                        maxLines: 15,
                       ),
                       const SizedBox(
                         height: 4 * 5,

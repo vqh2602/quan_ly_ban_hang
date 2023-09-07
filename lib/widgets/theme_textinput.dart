@@ -9,19 +9,19 @@ InputDecoration textFieldInputStyle(
     label: textBodyMedium( label, color: Colors.grey),
     floatingLabelBehavior: FloatingLabelBehavior.always,
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(4),
+      borderRadius: BorderRadius.circular(20),
       borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(4),
+      borderRadius: BorderRadius.circular(20),
       borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
     ),
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(4),
+      borderRadius: BorderRadius.circular(20),
       borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
     ),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(4),
+      borderRadius: BorderRadius.circular(20),
       borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
     ),
     prefixIcon: prefixIcon,

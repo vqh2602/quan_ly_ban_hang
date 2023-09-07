@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeIn,
                         );
-                        if (index == 3) {
+                        if (index == 2) {
                           accountController.getDataUser();
                         }
                         homeController.updateUI();

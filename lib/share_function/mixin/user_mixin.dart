@@ -18,16 +18,19 @@ mixin UserMixin {
   }
 
   /// cập nhật user
-  Future<User?> updateDetailUserMixin({User? user, String? id}) async {
+  Future<User?> updateDetailUserMixin(
+      {User? user, String? id, bool isUpdateUserLogin = false}) async {
     User? result;
     var res = await appWriteRepo.databases.updateDocument(
         databaseId: Env.config.appWriteDatabaseID,
         collectionId: Env.config.tblPersonnelID,
-        documentId: user?.$id ?? id ??'',
+        documentId: user?.$id ?? id ?? '',
         data: user?.toJson());
     if (res.data.isNotEmpty) {
       result = User.fromJson(res.data);
-      await saveUserInBox(dataUser: res.data);
+      if (isUpdateUserLogin) {
+        await saveUserInBox(dataUser: res.data);
+      }
       buildToast(
           title: 'Cập nhật thành công',
           message: '',

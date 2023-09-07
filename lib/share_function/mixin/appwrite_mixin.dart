@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:quan_ly_ban_hang/config/config.dart';
 import 'package:quan_ly_ban_hang/data/models/category.dart';
 import 'package:quan_ly_ban_hang/data/models/department.dart';
+import 'package:quan_ly_ban_hang/data/models/status.dart';
 import 'package:quan_ly_ban_hang/data/models/unit.dart';
 import 'package:quan_ly_ban_hang/data/models/user.dart';
 import 'package:quan_ly_ban_hang/data/repositories/appwrite_repo.dart';
@@ -19,6 +20,7 @@ mixin AppWriteMixin {
   List<Category>? listCategoryMixin = []; // ds nhãn
   List<Department>? listDepartmentMixin = []; // ds phòng ban
   List<permission.Permission>? listPermissionMixin = []; // ds quyền
+  List<Status>? listStatusMixin = []; // ds trạng thái
 
   initMixin() async {
     // await appWriteRepo.initDataAccount();
@@ -149,5 +151,26 @@ mixin AppWriteMixin {
       return null;
     }
     return listPermissionMixin;
+  }
+
+  /// ds trạng thái
+  Future<List<Status>?> getListStatusMixin({bool isCache = true}) async {
+    if (listStatusMixin != null &&
+        (listCategoryMixin?.isNotEmpty ?? false) &&
+        isCache) {
+      return listStatusMixin;
+    }
+    var res = await appWriteRepo.databases.listDocuments(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblStatusID);
+    if (res.documents.isNotEmpty) {
+      listStatusMixin =
+          res.documents.map((e) => Status.fromJson(e.data)).toList();
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return listStatusMixin;
   }
 }

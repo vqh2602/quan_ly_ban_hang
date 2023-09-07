@@ -33,7 +33,6 @@ class AccountDetailScreen extends StatefulWidget {
 class _AccountDetailScreenState extends State<AccountDetailScreen> {
   AccountDetailController accountDetailController =
       Get.put(AccountDetailController());
-  GlobalKey<FormState> keyForm1 = GlobalKey<FormState>(debugLabel: '_FormA1');
   var arguments = Get.arguments;
   final ImagePicker picker = ImagePicker();
   bool isView = false; // XEM HAY LÀ TẠO MỚI
@@ -93,9 +92,12 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                   margin: const EdgeInsets.only(right: 20),
                   child: FxButton.medium(
                       onPressed: () {
-                        if (keyForm1.currentState?.validate() ?? false) {
+                        if (accountDetailController.formKey.currentState
+                                ?.validate() ??
+                            false) {
                           if (isView || isUser) {
-                            accountDetailController.updateUser();
+                            accountDetailController.updateUser(
+                                isUpdateUserLogin: isUser);
                           } else {
                             accountDetailController.createPersonnel();
                           }
@@ -116,7 +118,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
         (state) => SafeArea(
                 child: SingleChildScrollView(
               child: Form(
-                key: keyForm1,
+                key: accountDetailController.formKey,
                 child: Container(
                   margin: EdgeInsets.zero,
                   padding: alignment_20_0(),
@@ -189,11 +191,12 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                       const SizedBox(
                         height: 4 * 5,
                       ),
-                      TextField(
+                      TextFormField(
                         onTap: () {},
                         style: textStyleCustom(fontSize: 16),
                         readOnly: (isView || isCreate) ? false : true,
                         controller: accountDetailController.phoneTE,
+                        validator: accountDetailController.validateString,
                         decoration: textFieldInputStyle(label: 'Số điện thoại'),
                         maxLines: 1,
                       ),
@@ -218,6 +221,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                         readOnly: (isView || isCreate) ? false : true,
                         controller: accountDetailController.birtTE,
                         decoration: textFieldInputStyle(label: 'Năm sinh (*)'),
+                        validator: accountDetailController.validateString,
                       ),
                       const SizedBox(
                         height: 4 * 5,

@@ -57,12 +57,6 @@ List<FlashyTabBarItem> items = [
     activeColor: a500,
   ),
   FlashyTabBarItem(
-    icon: const Icon(LucideIcons.scanLine),
-    title: const Text('Kiểm kê'),
-    inactiveColor: Colors.grey,
-    activeColor: a500,
-  ),
-  FlashyTabBarItem(
     icon: const Icon(LucideIcons.barChart2),
     title: const Text('Thống kê'),
     inactiveColor: Colors.grey,
@@ -74,13 +68,19 @@ List<FlashyTabBarItem> items = [
     inactiveColor: Colors.grey,
     activeColor: a500,
   ),
+  FlashyTabBarItem(
+    icon: const Icon(LucideIcons.scanLine),
+    title: const Text('Kiểm kê'),
+    inactiveColor: Colors.grey,
+    activeColor: a500,
+  )
 ];
 
 List<Widget> widgetOptions = <Widget>[
   const DashBroadScreen(),
-  const QrScan(),
   Container(
     color: Colors.red,
   ),
-  const AccountDetailScreen()
+  const AccountDetailScreen(),
+  const QrScan(),
 ];

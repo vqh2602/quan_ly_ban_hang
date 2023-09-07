@@ -43,6 +43,25 @@ mixin CustomerMixin {
     return customer;
   }
 
+  /// lọc kh qua uid
+  Future<Customer?> getDetailCustomerWithUIDMixin({String? id}) async {
+    Customer? customer;
+    var res = await appWriteRepo.databases.listDocuments(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblCustomerID,
+        queries: [
+          Query.equal('id', id),
+        ]);
+    if (res.documents.isNotEmpty) {
+      customer = Customer.fromJson(res.documents.first.data);
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return customer;
+  }
+
   /// cập nhật khach hang
   Future<Customer?> updateDetailCustomerMixin(
       {Customer? customer, String? id}) async {

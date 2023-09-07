@@ -8,6 +8,7 @@ import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_controller.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_controller.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_controller.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_tools/data_tools.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_screen.dart';
@@ -33,6 +34,7 @@ class DashBroadScreen extends StatefulWidget {
 class _DashBroadScreenState extends State<DashBroadScreen> {
   DashBroadController dashBroadController = Get.find();
   ListProductController listProductController = Get.find();
+  ListSalesOrderController listSalesOrderController = Get.find();
   AccountDetailController accountController = Get.find();
   bool showHeader = true;
   ScrollController scrollController = ScrollController();
@@ -81,10 +83,10 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                             ),
                             textTitleMedium('Trang chủ', color: Colors.white),
                             IconButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 // Get.toNamed(AccountDetailScreen.routeName,
                                 //     arguments: {'type': 'user'});
-                                 accountController.getDataUser();
+                                await accountController.getDataUser();
                                 Get.bottomSheet(
                                     showBottomSheetFilter(
                                         child: const AccountDetailScreen(
@@ -96,7 +98,8 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                                     isScrollControlled: true,
                                     isDismissible: true,
                                     elevation: 0,
-                                    backgroundColor: Colors.grey.withOpacity(0));
+                                    backgroundColor:
+                                        Colors.grey.withOpacity(0));
                               },
                               icon: const Icon(
                                 LucideIcons.user,
@@ -135,17 +138,27 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    // margin: alignment_20_0(),
-                    constraints: const BoxConstraints(maxHeight: 460),
-                    child: ListView.builder(
-                        itemCount: 3,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.only(top: 12),
-                        itemBuilder: (context, indext) {
-                          return itemBillOfSale();
-                        }),
+                  listSalesOrderController.obx(
+                    (state) => Container(
+                      // margin: alignment_20_0(),
+                      constraints: const BoxConstraints(maxHeight: 460),
+                      child: ListView.builder(
+                          itemCount: (listSalesOrderController
+                                          .listSalesOrder?.length ??
+                                      0) >
+                                  5
+                              ? 5
+                              : listSalesOrderController.listSalesOrder?.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.only(top: 12),
+                          itemBuilder: (context, indext) {
+                            return itemBillOfSale(
+                                listStatus: listSalesOrderController.listStatus,
+                                salesOrder: listSalesOrderController
+                                    .listSalesOrder![indext]);
+                          }),
+                    ),
                   ),
                   Container(
                     margin: alignment_20_0(),

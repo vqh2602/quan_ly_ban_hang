@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:quan_ly_ban_hang/data/models/category.dart';
+import 'package:quan_ly_ban_hang/data/models/status.dart';
 import 'package:quan_ly_ban_hang/data/models/unit.dart';
 import 'package:quan_ly_ban_hang/data/models/user.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
@@ -32,9 +33,10 @@ class ShareFuntion {
         )).whenComplete(() => onComplete());
   }
 
-  static String formatDate(
-      {required TypeDate type, required DateTime? dateTime}) {
+  static String formatDate({required TypeDate type, dynamic dateTime}) {
     if (dateTime == null) return 'Trống'.tr;
+    if (dateTime is String) dateTime = DateTime.parse(dateTime);
+    if (dateTime is DateTime) dateTime = dateTime;
     switch (type) {
       case TypeDate.ddMMyyyy:
         return DateFormat('dd-MM-yyyy').format(dateTime);
@@ -165,6 +167,11 @@ class ShareFuntion {
   /// lấy unit qua id
   static Unit? getUnitWithIDFunc(String? id, {List<Unit>? listUnit}) {
     return listUnit?.where((element) => element.uid == id).firstOrNull;
+  }
+
+  /// lấy status qua id
+  static Status? getStatusWithIDFunc(String? id, {List<Status>? listStatus}) {
+    return listStatus?.where((element) => element.uid == id).firstOrNull;
   }
 
   /// lấy Category qua id

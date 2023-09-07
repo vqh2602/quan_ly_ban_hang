@@ -13,6 +13,7 @@ import 'package:uuid/uuid.dart';
 
 class DetailProductController extends GetxController
     with GetTickerProviderStateMixin, StateMixin, AppWriteMixin, ProductMixin {
+        final formKey = GlobalKey<FormState>();
   var arguments = Get.arguments;
   Product? product;
   List<SelectOptionItem>? listUnit = []; // ds đơn vị tính

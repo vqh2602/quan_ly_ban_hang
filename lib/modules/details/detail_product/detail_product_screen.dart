@@ -56,432 +56,446 @@ class _DetailProductState extends State<DetailProductSreen> {
         (state) => buildBody(
               context: context,
               backgroundColor: bg500,
-              body: SafeArea(
-                  // margin: alignment_20_0(),
-                  // constraints: const BoxConstraints(maxHeight: 750),
-                  child: RefreshIndicator(
-                onRefresh: () async {},
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      boxDetail(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              textTitleMedium('Ảnh sản phẩm'),
-                              isIconEdit
-                                  ? IconButton(
-                                      onPressed: () async {
-                                        // Pick an image.
-                                        final XFile? image =
-                                            await picker.pickImage(
-                                          source: ImageSource.gallery,
-                                        );
-                                        if (image != null) {
-                                          File file = File(image.path);
-                                          detailProductController
-                                              .uploadImageWithImgur(file);
-                                        }
-                                      },
-                                      icon: const Icon(
-                                          FontAwesomeIcons.lightPenToSquare),
-                                      color: Get.theme.primaryColor,
-                                    )
-                                  : const SizedBox()
-                            ],
-                          ),
-                          cHeight(4),
-                          Hero(
-                            tag: 'hero_show_image-1',
-                            child: GestureDetector(
-                              onTap: () async {
-                                if (isView) {
-                                  Get.to(ViewImageWithZoom(
-                                      url: detailProductController
-                                              .product?.image ??
-                                          'Trống',
-                                      index: -1));
-                                } else {
-                                  // Pick an image.
-                                  final XFile? image = await picker.pickImage(
-                                    source: ImageSource.gallery,
-                                  );
-                                  if (image != null) {
-                                    File file = File(image.path);
-                                    detailProductController
-                                        .uploadImageWithImgur(file);
-                                  }
-                                }
-                              },
-                              child: SizedBox(
-                                  width: Get.width,
-                                  height: Get.width * 0.5,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: imageNetwork(
-                                        url: isView
-                                            ? detailProductController
-                                                    .product?.image ??
-                                                'Trống'
-                                            : detailProductController
-                                                    .imageUrl ??
-                                                'Trống',
-                                        fit: BoxFit.cover),
-                                  )),
+              body: Form(
+                key: detailProductController.formKey,
+                child: SafeArea(
+                    // margin: alignment_20_0(),
+                    // constraints: const BoxConstraints(maxHeight: 750),
+                    child: RefreshIndicator(
+                  onRefresh: () async {},
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        boxDetail(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                textTitleMedium('Ảnh sản phẩm'),
+                                isIconEdit
+                                    ? IconButton(
+                                        onPressed: () async {
+                                          // Pick an image.
+                                          final XFile? image =
+                                              await picker.pickImage(
+                                            source: ImageSource.gallery,
+                                          );
+                                          if (image != null) {
+                                            File file = File(image.path);
+                                            detailProductController
+                                                .uploadImageWithImgur(file);
+                                          }
+                                        },
+                                        icon: const Icon(
+                                            FontAwesomeIcons.lightPenToSquare),
+                                        color: Get.theme.primaryColor,
+                                      )
+                                    : const SizedBox()
+                              ],
                             ),
-                          )
-                        ],
-                      )),
-                      cHeight(16),
-                      boxDetail(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          textTitleMedium('Thông tin'),
-                          cHeight(4),
-                          titleEditTitle(
-                            title: 'Mã sản phẩm',
-                            showEdit: isIconEdit,
-                            value: isView
-                                ? detailProductController.product?.code ??
-                                    'Trống'
-                                : detailProductController.codeTE?.text ??
-                                    'Trống',
-                            onTap: () {
-                              Get.bottomSheet(
-                                showBottomTextInput(
-                                    detailProductController.codeTE,
-                                    onCancel: () {
-                                  detailProductController.codeTE?.text =
-                                      detailProductController.product?.code ??
-                                          '';
-                                }, onSubmitted: () {
-                                  detailProductController.updateUI();
-                                }),
-                              );
-                            },
-                          ),
-                          //  cHeight(2),
-                          titleEditTitle(
-                            title: 'Tên sản phẩm',
-                            showEdit: isIconEdit,
-                            value: isView
-                                ? detailProductController.product?.name ??
-                                    'Trống'
-                                : detailProductController.nameTE?.text ??
-                                    'Trống',
-                            onTap: () {
-                              Get.bottomSheet(
-                                showBottomTextInput(
-                                    detailProductController.nameTE,
-                                    onCancel: () {
-                                  detailProductController.nameTE?.text =
-                                      detailProductController.product?.name ??
-                                          '';
-                                }, onSubmitted: () {
-                                  detailProductController.updateUI();
-                                }),
-                              );
-                            },
-                          ),
-                          titleEditTitle(
-                            title: 'Mã vạch',
-                            showEdit: isIconEdit,
-                            value: isView
-                                ? detailProductController.product?.bardcode ??
-                                    'Trống'
-                                : detailProductController.barcodeTE?.text ??
-                                    'Trống',
-                            onTap: () {
-                              Get.bottomSheet(
-                                showBottomTextInput(
-                                    detailProductController.barcodeTE,
-                                    onCancel: () {
-                                  detailProductController.barcodeTE?.text =
+                            cHeight(4),
+                            Hero(
+                              tag: 'hero_show_image-1',
+                              child: GestureDetector(
+                                onTap: () async {
+                                  if (isView) {
+                                    Get.to(ViewImageWithZoom(
+                                        url: detailProductController
+                                                .product?.image ??
+                                            'Trống',
+                                        index: -1));
+                                  } else {
+                                    // Pick an image.
+                                    final XFile? image = await picker.pickImage(
+                                      source: ImageSource.gallery,
+                                    );
+                                    if (image != null) {
+                                      File file = File(image.path);
                                       detailProductController
-                                              .product?.bardcode ??
-                                          '';
-                                }, onSubmitted: () {
-                                  detailProductController.updateUI();
-                                }),
-                              );
-                            },
-                          ),
-                          titleEditTitle(
-                            title: 'Giá bán',
-                            showEdit: isIconEdit,
-                            value: ShareFuntion.formatCurrency(isView
-                                ? detailProductController.product?.price ?? 0
-                                : double.parse(
-                                    detailProductController.priceTE?.text ??
-                                        '0')),
-                            onTap: () {
-                              Get.bottomSheet(
-                                showBottomTextInput(
-                                    detailProductController.priceTE,
-                                    keyboardType: TextInputType.number,
-                                    onCancel: () {
-                                  detailProductController.priceTE?.text =
-                                      detailProductController.product?.price
-                                              .toString() ??
-                                          '0';
-                                }, onSubmitted: () {
-                                  detailProductController.updateUI();
-                                }),
-                              );
-                            },
-                          ),
-                          titleEditTitle(
-                              title: 'Giá nhập',
-                              value: ShareFuntion.formatCurrency(isView
-                                  ? detailProductController
-                                          .product?.importPrice ??
-                                      0
-                                  : double.parse(detailProductController
-                                          .importPriceTE?.text ??
-                                      '0')),
+                                          .uploadImageWithImgur(file);
+                                    }
+                                  }
+                                },
+                                child: SizedBox(
+                                    width: Get.width,
+                                    height: Get.width * 0.5,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: imageNetwork(
+                                          url: isView
+                                              ? detailProductController
+                                                      .product?.image ??
+                                                  'Trống'
+                                              : detailProductController
+                                                      .imageUrl ??
+                                                  'Trống',
+                                          fit: BoxFit.cover),
+                                    )),
+                              ),
+                            )
+                          ],
+                        )),
+                        cHeight(16),
+                        boxDetail(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            textTitleMedium('Thông tin'),
+                            cHeight(4),
+                            titleEditTitle(
+                              title: 'Mã sản phẩm',
+                              showEdit: isIconEdit,
+                              value: isView
+                                  ? detailProductController.product?.code ??
+                                      'Trống'
+                                  : detailProductController.codeTE?.text ??
+                                      'Trống',
                               onTap: () {
                                 Get.bottomSheet(
                                   showBottomTextInput(
-                                      detailProductController.importPriceTE,
-                                      keyboardType: TextInputType.number,
+                                      detailProductController.codeTE,
                                       onCancel: () {
-                                    detailProductController.importPriceTE
-                                        ?.text = detailProductController
-                                            .product?.importPrice
-                                            .toString() ??
-                                        '0';
+                                    detailProductController.codeTE?.text =
+                                        detailProductController.product?.code ??
+                                            '';
                                   }, onSubmitted: () {
                                     detailProductController.updateUI();
                                   }),
                                 );
                               },
-                              showEdit: isIconEdit),
-                          titleEditTitle(
-                              title: 'Đơn vị',
+                            ),
+                            //  cHeight(2),
+                            titleEditTitle(
+                              title: 'Tên sản phẩm',
                               showEdit: isIconEdit,
                               value: isView
-                                  ? ShareFuntion.getUnitWithIDFunc(
-                                              detailProductController
-                                                  .product?.unit,
-                                              listUnit: detailProductController
-                                                  .listUnit
-                                                  ?.map((e) => e.data as Unit)
-                                                  .toList())
-                                          ?.name ??
+                                  ? detailProductController.product?.name ??
                                       'Trống'
-                                  : detailProductController.selectedUnit?.key ??
+                                  : detailProductController.nameTE?.text ??
                                       'Trống',
                               onTap: () {
-                                Get.bottomSheet(detailProductController
-                                    .obx((state) => showBottomListChose(
-                                          options:
-                                              detailProductController.listUnit,
-                                          value: detailProductController
-                                              .selectedUnit,
-                                          onSelect: (p0) {
-                                            detailProductController
-                                                .selectedUnit = p0;
-                                            detailProductController.updateUI();
-                                          },
-                                          buildOption: (p0) =>
-                                              textBodyMedium(p0.key ?? ''),
-                                        )));
-                              }),
-                          titleEditTitle(
-                            title: 'Số lượng',
-                            showEdit: isIconEdit,
-                            value: isView
-                                ? detailProductController.product?.quantity
-                                        .toString() ??
-                                    '0'
-                                : detailProductController.quantityTE?.text ??
-                                    '0',
-                            onTap: () {
-                              Get.bottomSheet(
-                                showBottomTextInput(
-                                    detailProductController.quantityTE,
-                                    keyboardType: TextInputType.number,
-                                    onCancel: () {
-                                  detailProductController.quantityTE?.text =
-                                      detailProductController.product?.quantity
-                                              .toString() ??
-                                          '0';
-                                }, onSubmitted: () {
-                                  detailProductController.updateUI();
-                                }),
-                              );
-                            },
-                          ),
-                          // titleEditTitle(title: 'Hãng sản suất', value: 'Vietcom'),
-                          titleEditTitle(
-                            title: 'Giảm giá',
-                            showEdit: isIconEdit,
-                            value: isView
-                                ? '${detailProductController.product?.discount.toString() ?? '0'} %'
-                                : '${detailProductController.discountTE?.text ?? '0'} %',
-                            onTap: () {
-                              Get.bottomSheet(
-                                showBottomTextInput(
-                                    detailProductController.discountTE,
-                                    keyboardType: TextInputType.number,
-                                    onCancel: () {
-                                  detailProductController.discountTE?.text =
-                                      detailProductController.product?.discount
-                                              .toString() ??
-                                          '0';
-                                }, onSubmitted: () {
-                                  detailProductController.updateUI();
-                                }),
-                              );
-                            },
-                          ),
-                        ],
-                      )),
-                      cHeight(16),
-                      boxDetail(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              textTitleMedium('Danh mục (nhãn)'),
-                              isIconEdit
-                                  ? IconButton(
-                                      onPressed: () {
-                                        Get.bottomSheet(detailProductController
-                                            .obx((state) =>
-                                                showBottomListMutilChose(
-                                                  options:
-                                                      detailProductController
-                                                          .listCategory,
-                                                  value: detailProductController
-                                                      .listCategorySelect,
-                                                  onSelect: (p0) {
-                                                    if (detailProductController
-                                                            .listCategorySelect
-                                                            ?.contains(p0) ??
-                                                        false) {
-                                                      detailProductController
-                                                          .listCategorySelect
-                                                          ?.remove(p0);
-                                                    } else {
-                                                      detailProductController
-                                                          .listCategorySelect
-                                                          ?.add(p0);
-                                                    }
-                                                    detailProductController
-                                                        .updateUI();
-                                                  },
-                                                  buildOption: (p0) =>
-                                                      textBodyMedium(
-                                                          p0.key ?? ''),
-                                                )));
-                                      },
-                                      icon: const Icon(
-                                          FontAwesomeIcons.lightPenToSquare),
-                                      color: Get.theme.primaryColor,
-                                    )
-                                  : const SizedBox()
-                            ],
-                          ),
-                          cHeight(4),
-                          Wrap(
-                            // spacing: 8,
-                            children: [
-                              for (var category in detailProductController
-                                      .listCategorySelect ??
-                                  []) ...[
-                                Chip(
-                                  label: textBodyMedium(category.key),
-                                  avatar: Icon(
-                                    FontAwesomeIcons.solidTag,
-                                    color: Color(int.parse(
-                                        '0xff${category.data.color}')),
-                                  ),
-                                  backgroundColor: Colors.transparent,
-                                  elevation: 0,
-                                  side: const BorderSide(
-                                      color: Colors.transparent, width: 1),
-                                  shape: const StadiumBorder(),
-
-                                  // shadowColor: Colors.amber,
-                                  // backgroundColor: Colors.red,
-                                )
-                              ]
-                            ],
-                          )
-                        ],
-                      )),
-                      cHeight(16),
-                      boxDetail(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              textTitleMedium('Ghi chú'),
-                              isIconEdit
-                                  ? IconButton(
-                                      onPressed: () {
-                                        Get.bottomSheet(
-                                          showBottomTextInput(
-                                              detailProductController.noteTE,
-                                              onCancel: () {
-                                            detailProductController.noteTE
-                                                ?.text = detailProductController
-                                                    .product?.note ??
-                                                '';
-                                          }, onSubmitted: () {
-                                            detailProductController.updateUI();
-                                          }),
-                                        );
-                                      },
-                                      icon: const Icon(
-                                          FontAwesomeIcons.lightPenToSquare),
-                                      color: Get.theme.primaryColor,
-                                    )
-                                  : const SizedBox()
-                            ],
-                          ),
-                          cHeight(4),
-                          ExpandableText(
-                            isView
-                                ? detailProductController.product?.note ??
-                                    'Trống'
-                                : detailProductController.noteTE?.text ??
-                                    'Trống',
-                            expandText: 'xem thêm',
-                            collapseText: 'thu gọn',
-                            maxLines: 4,
-                            linkColor: Get.theme.primaryColor,
-                            style: textStyleCustom(
-                              fontSize: 15.5,
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailProductController.nameTE,
+                                      onCancel: () {
+                                    detailProductController.nameTE?.text =
+                                        detailProductController.product?.name ??
+                                            '';
+                                  }, onSubmitted: () {
+                                    detailProductController.updateUI();
+                                  }),
+                                );
+                              },
                             ),
-                          )
-                        ],
-                      )),
-                      cHeight(50),
-                    ],
+                            titleEditTitle(
+                              title: 'Mã vạch',
+                              showEdit: isIconEdit,
+                              value: isView
+                                  ? detailProductController.product?.bardcode ??
+                                      'Trống'
+                                  : detailProductController.barcodeTE?.text ??
+                                      'Trống',
+                              onTap: () {
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailProductController.barcodeTE,
+                                      onCancel: () {
+                                    detailProductController.barcodeTE?.text =
+                                        detailProductController
+                                                .product?.bardcode ??
+                                            '';
+                                  }, onSubmitted: () {
+                                    detailProductController.updateUI();
+                                  }),
+                                );
+                              },
+                            ),
+                            titleEditTitle(
+                              title: 'Giá bán',
+                              showEdit: isIconEdit,
+                              value: ShareFuntion.formatCurrency(isView
+                                  ? detailProductController.product?.price ?? 0
+                                  : double.parse(
+                                      detailProductController.priceTE?.text ??
+                                          '0')),
+                              onTap: () {
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailProductController.priceTE,
+                                      keyboardType: TextInputType.number,
+                                      onCancel: () {
+                                    detailProductController.priceTE?.text =
+                                        detailProductController.product?.price
+                                                .toString() ??
+                                            '0';
+                                  }, onSubmitted: () {
+                                    detailProductController.updateUI();
+                                  }),
+                                );
+                              },
+                            ),
+                            titleEditTitle(
+                                title: 'Giá nhập',
+                                value: ShareFuntion.formatCurrency(isView
+                                    ? detailProductController
+                                            .product?.importPrice ??
+                                        0
+                                    : double.parse(detailProductController
+                                            .importPriceTE?.text ??
+                                        '0')),
+                                onTap: () {
+                                  Get.bottomSheet(
+                                    showBottomTextInput(
+                                        detailProductController.importPriceTE,
+                                        keyboardType: TextInputType.number,
+                                        onCancel: () {
+                                      detailProductController.importPriceTE
+                                          ?.text = detailProductController
+                                              .product?.importPrice
+                                              .toString() ??
+                                          '0';
+                                    }, onSubmitted: () {
+                                      detailProductController.updateUI();
+                                    }),
+                                  );
+                                },
+                                showEdit: isIconEdit),
+                            titleEditTitle(
+                                title: 'Đơn vị',
+                                showEdit: isIconEdit,
+                                value: isView
+                                    ? ShareFuntion.getUnitWithIDFunc(
+                                                detailProductController
+                                                    .product?.unit,
+                                                listUnit:
+                                                    detailProductController
+                                                        .listUnit
+                                                        ?.map((e) =>
+                                                            e.data as Unit)
+                                                        .toList())
+                                            ?.name ??
+                                        'Trống'
+                                    : detailProductController
+                                            .selectedUnit?.key ??
+                                        'Trống',
+                                onTap: () {
+                                  Get.bottomSheet(detailProductController
+                                      .obx((state) => showBottomListChose(
+                                            options: detailProductController
+                                                .listUnit,
+                                            value: detailProductController
+                                                .selectedUnit,
+                                            onSelect: (p0) {
+                                              detailProductController
+                                                  .selectedUnit = p0;
+                                              detailProductController
+                                                  .updateUI();
+                                            },
+                                            buildOption: (p0) =>
+                                                textBodyMedium(p0.key ?? ''),
+                                          )));
+                                }),
+                            titleEditTitle(
+                              title: 'Số lượng',
+                              showEdit: isIconEdit,
+                              value: isView
+                                  ? detailProductController.product?.quantity
+                                          .toString() ??
+                                      '0'
+                                  : detailProductController.quantityTE?.text ??
+                                      '0',
+                              onTap: () {
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailProductController.quantityTE,
+                                      keyboardType: TextInputType.number,
+                                      onCancel: () {
+                                    detailProductController.quantityTE?.text =
+                                        detailProductController
+                                                .product?.quantity
+                                                .toString() ??
+                                            '0';
+                                  }, onSubmitted: () {
+                                    detailProductController.updateUI();
+                                  }),
+                                );
+                              },
+                            ),
+                            // titleEditTitle(title: 'Hãng sản suất', value: 'Vietcom'),
+                            titleEditTitle(
+                              title: 'Giảm giá',
+                              showEdit: isIconEdit,
+                              value: isView
+                                  ? '${detailProductController.product?.discount.toString() ?? '0'} %'
+                                  : '${detailProductController.discountTE?.text ?? '0'} %',
+                              onTap: () {
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailProductController.discountTE,
+                                      keyboardType: TextInputType.number,
+                                      onCancel: () {
+                                    detailProductController.discountTE?.text =
+                                        detailProductController
+                                                .product?.discount
+                                                .toString() ??
+                                            '0';
+                                  }, onSubmitted: () {
+                                    detailProductController.updateUI();
+                                  }),
+                                );
+                              },
+                            ),
+                          ],
+                        )),
+                        cHeight(16),
+                        boxDetail(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                textTitleMedium('Danh mục (nhãn)'),
+                                isIconEdit
+                                    ? IconButton(
+                                        onPressed: () {
+                                          Get.bottomSheet(
+                                              detailProductController.obx(
+                                                  (state) =>
+                                                      showBottomListMutilChose(
+                                                        options:
+                                                            detailProductController
+                                                                .listCategory,
+                                                        value: detailProductController
+                                                            .listCategorySelect,
+                                                        onSelect: (p0) {
+                                                          if (detailProductController
+                                                                  .listCategorySelect
+                                                                  ?.contains(
+                                                                      p0) ??
+                                                              false) {
+                                                            detailProductController
+                                                                .listCategorySelect
+                                                                ?.remove(p0);
+                                                          } else {
+                                                            detailProductController
+                                                                .listCategorySelect
+                                                                ?.add(p0);
+                                                          }
+                                                          detailProductController
+                                                              .updateUI();
+                                                        },
+                                                        buildOption: (p0) =>
+                                                            textBodyMedium(
+                                                                p0.key ?? ''),
+                                                      )));
+                                        },
+                                        icon: const Icon(
+                                            FontAwesomeIcons.lightPenToSquare),
+                                        color: Get.theme.primaryColor,
+                                      )
+                                    : const SizedBox()
+                              ],
+                            ),
+                            cHeight(4),
+                            Wrap(
+                              // spacing: 8,
+                              children: [
+                                for (var category in detailProductController
+                                        .listCategorySelect ??
+                                    []) ...[
+                                  Chip(
+                                    label: textBodyMedium(category.key),
+                                    avatar: Icon(
+                                      FontAwesomeIcons.solidTag,
+                                      color: Color(int.parse(
+                                          '0xff${category.data.color}')),
+                                    ),
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                    side: const BorderSide(
+                                        color: Colors.transparent, width: 1),
+                                    shape: const StadiumBorder(),
+
+                                    // shadowColor: Colors.amber,
+                                    // backgroundColor: Colors.red,
+                                  )
+                                ]
+                              ],
+                            )
+                          ],
+                        )),
+                        cHeight(16),
+                        boxDetail(
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                textTitleMedium('Ghi chú'),
+                                isIconEdit
+                                    ? IconButton(
+                                        onPressed: () {
+                                          Get.bottomSheet(
+                                            showBottomTextInput(
+                                                detailProductController.noteTE,
+                                                onCancel: () {
+                                              detailProductController
+                                                      .noteTE?.text =
+                                                  detailProductController
+                                                          .product?.note ??
+                                                      '';
+                                            }, onSubmitted: () {
+                                              detailProductController
+                                                  .updateUI();
+                                            }),
+                                          );
+                                        },
+                                        icon: const Icon(
+                                            FontAwesomeIcons.lightPenToSquare),
+                                        color: Get.theme.primaryColor,
+                                      )
+                                    : const SizedBox()
+                              ],
+                            ),
+                            cHeight(4),
+                            ExpandableText(
+                              isView
+                                  ? detailProductController.product?.note ??
+                                      'Trống'
+                                  : detailProductController.noteTE?.text ??
+                                      'Trống',
+                              expandText: 'xem thêm',
+                              collapseText: 'thu gọn',
+                              maxLines: 4,
+                              linkColor: Get.theme.primaryColor,
+                              style: textStyleCustom(
+                                fontSize: 15.5,
+                              ),
+                            )
+                          ],
+                        )),
+                        cHeight(50),
+                      ],
+                    ),
                   ),
-                ),
-              )),
+                )),
+              ),
               appBar: AppBar(
                 title: textTitleLarge(isView
                     ? detailProductController.product?.code ?? 'Trống'
                     : detailProductController.codeTE?.text ?? 'Trống'),
-                    centerTitle: false,
+                centerTitle: false,
                 surfaceTintColor: bg500,
                 backgroundColor: bg500,
                 actions: [
                   Container(
                     margin: const EdgeInsets.only(right: 20),
                     child: FxButton.medium(
+                      borderRadiusAll: 100,
                       onPressed: () {
                         setState(() {
                           isIconEdit = !isIconEdit;
