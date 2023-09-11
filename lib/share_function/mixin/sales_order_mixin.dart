@@ -38,7 +38,9 @@ mixin SalesOrderMixin {
       salesOrder = SalesOrder.fromJson(res.data);
     } else {
       buildToast(
-          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+          title: 'Có lỗi xảy ra khi lấy thông tin dánh sách sản phẩm hoá đơn',
+          message: '',
+          status: TypeToast.getError);
       return null;
     }
     return salesOrder;
@@ -81,7 +83,7 @@ mixin SalesOrderMixin {
       if (res.data.isNotEmpty) {
         result = SalesOrder.fromJson(res.data);
         buildToast(
-            title: 'Tạo mới thành công',
+            title: 'Tạo mới hoá đơn thành công',
             message: '',
             status: TypeToast.getSuccess);
       } else {
@@ -115,5 +117,75 @@ mixin SalesOrderMixin {
       return null;
     }
     return listDetailSalseOrder;
+  }
+
+  /// cập nhật danh sách chi tiết sản phẩm trong hoá đơn
+  Future<DetailSalesOrder?> updateDetailProductInSalesOrderMixin(
+      {DetailSalesOrder? detailSalesOrder}) async {
+    DetailSalesOrder? detailSalseOrderResult;
+    var res = await appWriteRepo.databases.updateDocument(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblDetailSalesOrderID,
+        documentId: detailSalesOrder?.id ?? '',
+        data: detailSalesOrder?.toJson());
+    if (res.data.isNotEmpty) {
+      detailSalseOrderResult = DetailSalesOrder.fromJson(res.data);
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return detailSalseOrderResult;
+  }
+
+  /// xoá danh sách chi tiết sản phẩm trong hoá đơn
+  Future<DetailSalesOrder?> deleteDetailProductInSalesOrderMixin(
+      {DetailSalesOrder? detailSalesOrder}) async {
+    DetailSalesOrder? detailSalseOrderResult;
+    var res = await appWriteRepo.databases.deleteDocument(
+      databaseId: Env.config.appWriteDatabaseID,
+      collectionId: Env.config.tblDetailSalesOrderID,
+      documentId: detailSalesOrder?.id ?? '',
+    );
+
+    if (res != null) {
+      // detailSalseOrderResult = DetailSalesOrder.fromJson(res.data);
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return detailSalseOrderResult;
+  }
+
+  /// tạo sản phẩm trong hoá đơn
+  Future<DetailSalesOrder?> createDetailProductInSalesOrderMixin(
+      {DetailSalesOrder? detailSalesOrder}) async {
+    DetailSalesOrder? result;
+
+    try {
+      var res = await appWriteRepo.databases.createDocument(
+          databaseId: Env.config.appWriteDatabaseID,
+          collectionId: Env.config.tblDetailSalesOrderID,
+          documentId: ID.unique(),
+          data: detailSalesOrder?.toJson() ?? {});
+      if (res.data.isNotEmpty) {
+        result = DetailSalesOrder.fromJson(res.data);
+        buildToast(
+            title: 'Đã thêm sản phẩm',
+            message: '',
+            status: TypeToast.getSuccess);
+      } else {
+        buildToast(
+            title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+        return null;
+      }
+    } on Exception catch (_) {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+
+    return result;
   }
 }

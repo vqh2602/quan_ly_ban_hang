@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
 Widget boxDetail({required Widget child}) {
   return Container(
-    padding: alignment_20_8(),
+    padding:const EdgeInsets.only(left: 20,right: 20,top: 12,bottom: 12),
     decoration: BoxDecoration(
       color: Colors.white,
       boxShadow: [
@@ -32,7 +31,7 @@ Widget titleEditTitle(
     Function()? onTap,
     bool showEdit = true}) {
   return Container(
-    margin: const EdgeInsets.only(top: 4),
+    margin: const EdgeInsets.only(top: 4,bottom: 4),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,

@@ -15,7 +15,9 @@ import 'package:quan_ly_ban_hang/widgets/compoment/status_status.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_product.dart';
 import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
+import 'package:quan_ly_ban_hang/widgets/s_show_chose.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
+import 'package:quan_ly_ban_hang/widgets/theme_textinput.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
 // tham số truyền vào
@@ -48,6 +50,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
     } else {
       setState(() {
         isCreate = true;
+        isEdit = true;
         isView = false;
       });
     }
@@ -62,7 +65,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
               backgroundColor: bg500,
               createFloatingActionButton: AnimatedSlide(
                 duration: const Duration(milliseconds: 300),
-                offset: showFab ? Offset.zero : const Offset(0, 2),
+                offset: (showFab && !isEdit) ? Offset.zero : const Offset(0, 2),
                 child: AnimatedOpacity(
                   duration: const Duration(milliseconds: 300),
                   opacity: showFab ? 1 : 0,
@@ -78,7 +81,13 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                           textLableMedium('In hoá đơn', color: Colors.white)
                         ]),
                     onPressed: () async {
-                      await NetworkPrinter().printTicket(await mainESCPOS());
+                      // await NetworkPrinter().printTicket(await mainESCPOS());
+                      await NativePrinter().nativePrint(
+                        customer: detailSalesInvoiceController.customer,
+                        detailSalesOrderCustom: detailSalesInvoiceController
+                            .listDetailSalesOrderCustom,
+                        salesOrder: detailSalesInvoiceController.salesOrder,
+                      );
                     },
                   ),
                 ),
@@ -174,7 +183,36 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                               textTitleMedium('Thông tin khách hàng'),
                               if (isEdit)
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.bottomSheet(detailSalesInvoiceController
+                                        .obx((state) => showBottomListChose(
+                                              options:
+                                                  detailSalesInvoiceController
+                                                      .listCustomer,
+                                              value:
+                                                  detailSalesInvoiceController
+                                                      .customerItemSelect,
+                                              onSelect: (p0) {
+                                                detailSalesInvoiceController
+                                                    .customerItemSelect = p0;
+                                                detailSalesInvoiceController
+                                                    .updateUI();
+                                              },
+                                              onSearch: (val) {
+                                                ShareFuntion.searchList(
+                                                    list:
+                                                        detailSalesInvoiceController
+                                                            .listCustomer,
+                                                    value: val,
+                                                    update: () {
+                                                      detailSalesInvoiceController
+                                                          .updateUI();
+                                                    });
+                                              },
+                                              buildOption: (p0) =>
+                                                  textBodyMedium(p0.key ?? ''),
+                                            )));
+                                  },
                                   icon: const Icon(
                                       FontAwesomeIcons.lightPenToSquare),
                                   color: Get.theme.primaryColor,
@@ -183,20 +221,32 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                           ),
                           cHeight(12),
                           iconTitleIconTitle(
-                            title1: detailSalesInvoiceController
-                                    .salesOrder?.customerName ??
-                                '',
-                            title2:
-                                detailSalesInvoiceController.customer?.phone ??
+                            title1: isEdit
+                                ? detailSalesInvoiceController
+                                        .customerItemSelect?.key ??
+                                    ''
+                                : detailSalesInvoiceController
+                                        .salesOrder?.customerName ??
+                                    '',
+                            title2: isEdit
+                                ? detailSalesInvoiceController
+                                        .customerItemSelect?.data.phone ??
+                                    ''
+                                : detailSalesInvoiceController
+                                        .customer?.phone ??
                                     'Trống',
                             icon1: FontAwesomeIcons.user,
                             icon2: FontAwesomeIcons.phone,
                           ),
                           cHeight(12),
                           iconTitle2Line(
-                            title: detailSalesInvoiceController
-                                    .customer?.address ??
-                                'Trống',
+                            title: isEdit
+                                ? detailSalesInvoiceController
+                                        .customerItemSelect?.data.address ??
+                                    ''
+                                : detailSalesInvoiceController
+                                        .customer?.address ??
+                                    'Trống',
                             icon: FontAwesomeIcons.lightMapLocationDot,
                           ),
                           cHeight(8),
@@ -213,7 +263,61 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                               textTitleMedium('Danh sách sản phẩm'),
                               if (isEdit)
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Get.bottomSheet(
+                                        detailSalesInvoiceController.obx(
+                                            (state) => showBottomListMutilChose(
+                                                  options:
+                                                      detailSalesInvoiceController
+                                                          .listProduct,
+                                                  value:
+                                                      detailSalesInvoiceController
+                                                          .listProductSelect,
+                                                  onSelect: (p0) {
+                                                    if (detailSalesInvoiceController
+                                                            .listProductSelect
+                                                            ?.contains(p0) ??
+                                                        false) {
+                                                      detailSalesInvoiceController
+                                                          .listProductSelect
+                                                          ?.remove(p0);
+                                                    } else {
+                                                      detailSalesInvoiceController
+                                                          .listProductSelect
+                                                          ?.add(p0);
+                                                    }
+                                                    detailSalesInvoiceController
+                                                        .fillDataProduct();
+                                                    detailSalesInvoiceController
+                                                        .updateUI();
+                                                  },
+                                                  onSearch: (val) {
+                                                    ShareFuntion.searchList(
+                                                        list:
+                                                            detailSalesInvoiceController
+                                                                .listProduct,
+                                                        value: val,
+                                                        update: () {
+                                                          detailSalesInvoiceController
+                                                              .updateUI();
+                                                        });
+                                                  },
+                                                  buildOption: (p0) => Row(
+                                                    children: [
+                                                      CircleAvatar(
+                                                        radius: 20,
+                                                        backgroundImage:
+                                                            NetworkImage(
+                                                                p0.data.image),
+                                                      ),
+                                                      cWidth(8),
+                                                      Expanded(
+                                                          child: textBodyMedium(
+                                                              p0.key ?? ''))
+                                                    ],
+                                                  ),
+                                                )));
+                                  },
                                   icon: const Icon(
                                       FontAwesomeIcons.lightPenToSquare),
                                   color: Get.theme.primaryColor,
@@ -225,32 +329,62 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                             // margin: alignment_20_0(),
                             constraints: const BoxConstraints(maxHeight: 360),
                             child: ListView.builder(
-                                itemCount: detailSalesInvoiceController
-                                    .listDetailSalesOrderCustom?.length,
+                                itemCount: isEdit
+                                    ? (detailSalesInvoiceController
+                                        .listDetailSalesOrderCustomEdit?.length)
+                                    : detailSalesInvoiceController
+                                        .listDetailSalesOrderCustom?.length,
                                 shrinkWrap: true,
                                 // physics: const NeverScrollableScrollPhysics(),
                                 padding: const EdgeInsets.only(top: 12),
                                 itemBuilder: (context, indext) {
                                   return itemProduct(
-                                      product: detailSalesInvoiceController
-                                          .listDetailSalesOrderCustom?[indext]
-                                          ?.product
-                                          ?.copyWith(
-                                        importPrice:
-                                            detailSalesInvoiceController
-                                                .listDetailSalesOrderCustom?[
-                                                    indext]
-                                                ?.detailSalesOrder
-                                                ?.importPrice,
-                                        price: detailSalesInvoiceController
-                                            .listDetailSalesOrderCustom?[indext]
-                                            ?.detailSalesOrder
-                                            ?.price,
-                                        discount: detailSalesInvoiceController
-                                            .listDetailSalesOrderCustom?[indext]
-                                            ?.detailSalesOrder
-                                            ?.discount,
-                                      ),
+                                      product: isEdit
+                                          ? (detailSalesInvoiceController
+                                              .listDetailSalesOrderCustomEdit?[
+                                                  indext]
+                                              .product
+                                              ?.copyWith(
+                                              importPrice:
+                                                  detailSalesInvoiceController
+                                                      .listDetailSalesOrderCustomEdit?[
+                                                          indext]
+                                                      .detailSalesOrder
+                                                      ?.importPrice,
+                                              price: detailSalesInvoiceController
+                                                  .listDetailSalesOrderCustomEdit?[
+                                                      indext]
+                                                  .detailSalesOrder
+                                                  ?.price,
+                                              discount: detailSalesInvoiceController
+                                                  .listDetailSalesOrderCustomEdit?[
+                                                      indext]
+                                                  .detailSalesOrder
+                                                  ?.discount,
+                                            ))
+                                          : detailSalesInvoiceController
+                                              .listDetailSalesOrderCustom?[
+                                                  indext]
+                                              .product
+                                              ?.copyWith(
+                                              importPrice:
+                                                  detailSalesInvoiceController
+                                                      .listDetailSalesOrderCustom?[
+                                                          indext]
+                                                      .detailSalesOrder
+                                                      ?.importPrice,
+                                              price: detailSalesInvoiceController
+                                                  .listDetailSalesOrderCustom?[
+                                                      indext]
+                                                  .detailSalesOrder
+                                                  ?.price,
+                                              discount:
+                                                  detailSalesInvoiceController
+                                                      .listDetailSalesOrderCustom?[
+                                                          indext]
+                                                      .detailSalesOrder
+                                                      ?.discount,
+                                            ),
                                       listUnit:
                                           detailSalesInvoiceController.listUnit,
                                       margin: const EdgeInsets.only(
@@ -258,14 +392,31 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                           top: 8,
                                           left: 8,
                                           right: 8),
-                                      quantity: double.tryParse(
-                                          detailSalesInvoiceController
+                                      quantity: double.tryParse(isEdit
+                                          ? (detailSalesInvoiceController
+                                                  .listDetailSalesOrderCustomEdit?[
+                                                      indext]
+                                                  .detailSalesOrder
+                                                  ?.quantity
+                                                  .toString() ??
+                                              '0')
+                                          : detailSalesInvoiceController
                                                   .listDetailSalesOrderCustom?[
                                                       indext]
-                                                  ?.detailSalesOrder
+                                                  .detailSalesOrder
                                                   ?.quantity
                                                   .toString() ??
                                               '0'),
+                                      onTap: () {
+                                        showBottomSheetAddProduct(
+                                            detailSalesOrderCustom: isEdit
+                                                ? (detailSalesInvoiceController
+                                                        .listDetailSalesOrderCustomEdit?[
+                                                    indext])
+                                                : (detailSalesInvoiceController
+                                                        .listDetailSalesOrderCustom?[
+                                                    indext]));
+                                      },
                                       onHoverDelete: () {
                                         ShareFuntion.onPopDialog(
                                             context: context,
@@ -292,47 +443,152 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                           cHeight(4),
                           titleEditTitle(
                               title: 'Tổng tiền',
-                              value: ShareFuntion.formatCurrency(
-                                  detailSalesInvoiceController
+                              value: ShareFuntion.formatCurrency(isEdit
+                                  ? detailSalesInvoiceController
+                                      .calculateTotalMoneyProduct()
+                                  : detailSalesInvoiceController
                                           .salesOrder?.totalMoney ??
                                       0),
                               showEdit: false),
                           titleEditTitle(
                               title: 'Chiết khấu (%)',
-                              value: detailSalesInvoiceController
-                                      .salesOrder?.discount
-                                      ?.toString() ??
-                                  '',
+                              value: isEdit
+                                  ? detailSalesInvoiceController
+                                          .discountTE?.text ??
+                                      ''
+                                  : detailSalesInvoiceController
+                                          .salesOrder?.discount
+                                          ?.toString() ??
+                                      '',
+                              onTap: (() {
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailSalesInvoiceController.discountTE,
+                                      keyboardType: TextInputType.number,
+                                      onCancel: () {
+                                    detailSalesInvoiceController.discountTE
+                                        ?.text = detailSalesInvoiceController
+                                            .salesOrder?.discount
+                                            .toString() ??
+                                        '0';
+                                  }, onSubmitted: () {
+                                    detailSalesInvoiceController.updateUI();
+                                  }),
+                                );
+                              }),
                               showEdit: isEdit),
                           titleEditTitle(
                               title: 'Phụ phí',
-                              value: ShareFuntion.formatCurrency(
-                                  detailSalesInvoiceController
+                              value: ShareFuntion.formatCurrency(isEdit
+                                  ? num.parse(detailSalesInvoiceController
+                                          .surchargeTE?.text ??
+                                      '0')
+                                  : detailSalesInvoiceController
                                           .salesOrder?.surcharge ??
                                       0),
+                              onTap: () {
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailSalesInvoiceController.surchargeTE,
+                                      keyboardType: TextInputType.number,
+                                      onCancel: () {
+                                    detailSalesInvoiceController.surchargeTE
+                                        ?.text = detailSalesInvoiceController
+                                            .salesOrder?.surcharge
+                                            .toString() ??
+                                        '0';
+                                  }, onSubmitted: () {
+                                    detailSalesInvoiceController.updateUI();
+                                  }),
+                                );
+                              },
                               showEdit: isEdit),
                           titleEditTitle(
                               title: 'Thuế (%)',
-                              value: detailSalesInvoiceController
-                                      .salesOrder?.vat
-                                      ?.toString() ??
-                                  '',
+                              value: isEdit
+                                  ? detailSalesInvoiceController.vatTE?.text ??
+                                      ''
+                                  : detailSalesInvoiceController.salesOrder?.vat
+                                          ?.toString() ??
+                                      '',
+                              onTap: () {
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailSalesInvoiceController.vatTE,
+                                      keyboardType: TextInputType.number,
+                                      onCancel: () {
+                                    detailSalesInvoiceController.vatTE?.text =
+                                        detailSalesInvoiceController
+                                                .salesOrder?.vat
+                                                .toString() ??
+                                            '0';
+                                  }, onSubmitted: () {
+                                    detailSalesInvoiceController.updateUI();
+                                  }),
+                                );
+                              },
+                              showEdit: isEdit),
+                          titleEditTitle(
+                              title: 'Thanh toán 1 phần',
+                              value: ShareFuntion.formatCurrency(isEdit
+                                  ? num.parse(detailSalesInvoiceController
+                                          .partlyPaidTE?.text ??
+                                      '0')
+                                  : detailSalesInvoiceController
+                                          .salesOrder?.partlyPaid ??
+                                      0),
+                              onTap: () {
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailSalesInvoiceController.partlyPaidTE,
+                                      keyboardType: TextInputType.number,
+                                      onCancel: () {
+                                    detailSalesInvoiceController.partlyPaidTE
+                                        ?.text = detailSalesInvoiceController
+                                            .salesOrder?.partlyPaid
+                                            .toString() ??
+                                        '0';
+                                  }, onSubmitted: () {
+                                    detailSalesInvoiceController.updateUI();
+                                  }),
+                                );
+                              },
                               showEdit: isEdit),
                           titleEditTitle(
                               title: 'Thành tiền',
                               value: ShareFuntion.formatCurrency(
-                                detailSalesInvoiceController
-                                        .salesOrder?.totalMoney ??
-                                    0,
+                                isEdit
+                                    ? detailSalesInvoiceController
+                                        .calculateTotalMoney()
+                                    : detailSalesInvoiceController
+                                            .salesOrder?.totalMoney ??
+                                        0,
                               ),
                               showEdit: false,
                               colorValue: a500),
-                          // titleEditTitle(
-                          //     title: 'Tiền khách đưa',
-                          //     value: ShareFuntion.formatCurrency(20000)),
-                          // titleEditTitle(
-                          //     title: 'Trả lại',
-                          //     value: ShareFuntion.formatCurrency(20000)),
+                          titleEditTitle(
+                              title: 'Tiền khách đưa',
+                              value: ShareFuntion.formatCurrency(
+                                isEdit
+                                    ? num.parse(detailSalesInvoiceController
+                                            .moneyGuestsTE?.text ??
+                                        '0')
+                                    : detailSalesInvoiceController
+                                            .salesOrder?.moneyGuests ??
+                                        0,
+                              ),
+                              showEdit: isEdit),
+                          titleEditTitle(
+                              title: 'Trả lại',
+                              value: ShareFuntion.formatCurrency(
+                                isEdit
+                                    ? detailSalesInvoiceController
+                                        .calculateChangeMoney()
+                                    : detailSalesInvoiceController
+                                            .salesOrder?.changeMoney ??
+                                        0,
+                              ),
+                              showEdit: false),
                         ],
                       )),
                       cHeight(16),
@@ -344,9 +600,11 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                           cHeight(4),
                           titleEditTitle(
                               title: 'Mã hoá đơn',
-                              value: detailSalesInvoiceController
-                                      .salesOrder?.uid ??
-                                  '',
+                              value: isCreate
+                                  ? detailSalesInvoiceController.uidCreate ?? ''
+                                  : detailSalesInvoiceController
+                                          .salesOrder?.uid ??
+                                      '',
                               showEdit: false),
                           titleEditTitle(
                               title: 'Tg đặt hàng',
@@ -354,50 +612,148 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                   dateTime: detailSalesInvoiceController
                                       .salesOrder?.timeOrder,
                                   type: TypeDate.ddMMyyyyhhmm),
-                              showEdit: isEdit),
+                              showEdit: false),
                           titleEditTitle(
                               title: 'Tg thanh toán',
                               value: ShareFuntion.formatDate(
                                   dateTime: detailSalesInvoiceController
                                       .salesOrder?.paymentTime,
                                   type: TypeDate.ddMMyyyyhhmm),
-                              showEdit: isEdit),
+                              showEdit: false),
                           titleEditTitle(
                               title: 'Tg giao hàng',
                               value: ShareFuntion.formatDate(
                                   dateTime: detailSalesInvoiceController
                                       .salesOrder?.deliveryTime,
                                   type: TypeDate.ddMMyyyyhhmm),
-                              showEdit: isEdit),
+                              showEdit: false),
                           titleEditTitle(
                               title: 'T.Thái thanh toán',
                               valueWidget: statusWidget(
                                   ShareFuntion.getStatusWithIDFunc(
-                                              detailSalesInvoiceController
-                                                  .salesOrder?.paymentStatus,
+                                              isEdit
+                                                  ? detailSalesInvoiceController
+                                                      .statusPayItemSelect
+                                                      ?.value
+                                                  : detailSalesInvoiceController
+                                                      .salesOrder
+                                                      ?.paymentStatus,
                                               listStatus:
                                                   detailSalesInvoiceController
                                                       .listStatus)
                                           ?.name ??
                                       '',
                                   Color(int.parse(
-                                      '0xff${ShareFuntion.getStatusWithIDFunc(detailSalesInvoiceController.salesOrder?.paymentStatus, listStatus: detailSalesInvoiceController.listStatus)?.color}'))),
+                                      '0xff${ShareFuntion.getStatusWithIDFunc(isEdit ? detailSalesInvoiceController.statusPayItemSelect?.value : detailSalesInvoiceController.salesOrder?.paymentStatus, listStatus: detailSalesInvoiceController.listStatus)?.color}'))),
                               value: '',
+                              onTap: () {
+                                Get.bottomSheet(detailSalesInvoiceController
+                                    .obx((state) => showBottomListChose(
+                                          options: detailSalesInvoiceController
+                                              .listStatusOption
+                                              ?.where((element) =>
+                                                  element.data.group ==
+                                                  'Trạng thái thanh toán')
+                                              .toList(),
+                                          value: detailSalesInvoiceController
+                                              .statusPayItemSelect,
+                                          onSelect: (p0) {
+                                            detailSalesInvoiceController
+                                                .statusPayItemSelect = p0;
+
+                                            detailSalesInvoiceController
+                                                .updateUI();
+                                          },
+                                          onSearch: (val) {
+                                            ShareFuntion.searchList(
+                                                list:
+                                                    detailSalesInvoiceController
+                                                        .listStatusOption,
+                                                value: val,
+                                                update: () {
+                                                  detailSalesInvoiceController
+                                                      .updateUI();
+                                                });
+                                          },
+                                          buildOption: (p0) => Row(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 8,
+                                                backgroundColor: Color(int.parse(
+                                                    '0xff${p0.data.color}')),
+                                              ),
+                                              cWidth(8),
+                                              Expanded(
+                                                  child: textBodyMedium(
+                                                      p0.key ?? ''))
+                                            ],
+                                          ),
+                                        )));
+                              },
                               showEdit: isEdit),
                           titleEditTitle(
                               title: 'T.Thái giao hàng',
                               valueWidget: statusWidget(
                                   ShareFuntion.getStatusWithIDFunc(
-                                              detailSalesInvoiceController
-                                                  .salesOrder?.deliveryStatus,
+                                              isEdit
+                                                  ? detailSalesInvoiceController
+                                                      .statusDeliverItemSelect
+                                                      ?.value
+                                                  : detailSalesInvoiceController
+                                                      .salesOrder
+                                                      ?.deliveryStatus,
                                               listStatus:
                                                   detailSalesInvoiceController
                                                       .listStatus)
                                           ?.name ??
                                       '',
                                   Color(int.parse(
-                                      '0xff${ShareFuntion.getStatusWithIDFunc(detailSalesInvoiceController.salesOrder?.deliveryStatus, listStatus: detailSalesInvoiceController.listStatus)?.color}'))),
+                                      '0xff${ShareFuntion.getStatusWithIDFunc(isEdit ? detailSalesInvoiceController.statusDeliverItemSelect?.value : detailSalesInvoiceController.salesOrder?.deliveryStatus, listStatus: detailSalesInvoiceController.listStatus)?.color}'))),
                               value: '',
+                              onTap: () {
+                                Get.bottomSheet(detailSalesInvoiceController
+                                    .obx((state) => showBottomListChose(
+                                          options: detailSalesInvoiceController
+                                              .listStatusOption
+                                              ?.where((element) =>
+                                                  element.data.group ==
+                                                  'trạng thái giao hàng')
+                                              .toList(),
+                                          value: detailSalesInvoiceController
+                                              .statusDeliverItemSelect,
+                                          onSelect: (p0) {
+                                            detailSalesInvoiceController
+                                                .statusDeliverItemSelect = p0;
+
+                                            detailSalesInvoiceController
+                                                .updateUI();
+                                          },
+                                          onSearch: (val) {
+                                            ShareFuntion.searchList(
+                                                list:
+                                                    detailSalesInvoiceController
+                                                        .listStatusOption,
+                                                value: val,
+                                                update: () {
+                                                  detailSalesInvoiceController
+                                                      .updateUI();
+                                                });
+                                          },
+                                          buildOption: (p0) => Row(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 8,
+                                                backgroundColor: Color(int.parse(
+                                                    '0xff${p0.data.color}')),
+                                              ),
+                                              cWidth(8),
+                                              Expanded(
+                                                  child: textBodyMedium(
+                                                      p0.key ?? ''))
+                                            ],
+                                          ),
+                                        )));
+                              },
                               showEdit: isEdit),
                         ],
                       )),
@@ -419,32 +775,136 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                             ],
                           ),
                           titleEditTitle(
-                              title: 'Thanh toán 1 phần',
-                              value: ShareFuntion.formatCurrency(
-                                  detailSalesInvoiceController
-                                          .salesOrder?.partlyPaid ??
-                                      0),
-                              showEdit: isEdit),
-                          titleEditTitle(
                               title: 'Nhân viên bán',
-                              value: detailSalesInvoiceController
-                                      .salesOrder?.personnelSalespersonName ??
-                                  '',
-                              showEdit: isEdit),
+                              value: isEdit
+                                  ? detailSalesInvoiceController
+                                          .personnelSaleItemSelect?.key ??
+                                      ''
+                                  : detailSalesInvoiceController.salesOrder
+                                          ?.personnelSalespersonName ??
+                                      '',
+                              showEdit: isEdit,
+                              onTap: () {
+                                Get.bottomSheet(detailSalesInvoiceController
+                                    .obx((state) => showBottomListChose(
+                                          options: detailSalesInvoiceController
+                                              .listPersonnel,
+                                          value: detailSalesInvoiceController
+                                              .personnelSaleItemSelect,
+                                          onSelect: (p0) {
+                                            detailSalesInvoiceController
+                                                .personnelSaleItemSelect = p0;
+
+                                            detailSalesInvoiceController
+                                                .updateUI();
+                                          },
+                                          onSearch: (val) {
+                                            ShareFuntion.searchList(
+                                                list:
+                                                    detailSalesInvoiceController
+                                                        .listPersonnel,
+                                                value: val,
+                                                update: () {
+                                                  detailSalesInvoiceController
+                                                      .updateUI();
+                                                });
+                                          },
+                                          buildOption: (p0) => Row(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 20,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                backgroundImage: NetworkImage(p0
+                                                        .data.avatar ??
+                                                    'https://i.imgur.com/BdzfHg0.png'),
+                                              ),
+                                              cWidth(8),
+                                              Expanded(
+                                                  child: textBodyMedium(
+                                                      p0.key ?? ''))
+                                            ],
+                                          ),
+                                        )));
+                              }),
                           titleEditTitle(
                               title: 'Nhân viên giao',
-                              value: detailSalesInvoiceController
-                                      .salesOrder?.personnelShipperName ??
-                                  '',
-                              showEdit: isEdit),
+                              value: isEdit
+                                  ? detailSalesInvoiceController
+                                          .personnelShipperItemSelect?.key ??
+                                      ''
+                                  : detailSalesInvoiceController
+                                          .salesOrder?.personnelShipperName ??
+                                      '',
+                              showEdit: isEdit,
+                              onTap: () {
+                                Get.bottomSheet(detailSalesInvoiceController
+                                    .obx((state) => showBottomListChose(
+                                          options: detailSalesInvoiceController
+                                              .listPersonnel,
+                                          value: detailSalesInvoiceController
+                                              .personnelShipperItemSelect,
+                                          onSelect: (p0) {
+                                            detailSalesInvoiceController
+                                                .personnelShipperItemSelect = p0;
+
+                                            detailSalesInvoiceController
+                                                .updateUI();
+                                          },
+                                          onSearch: (val) {
+                                            ShareFuntion.searchList(
+                                                list:
+                                                    detailSalesInvoiceController
+                                                        .listPersonnel,
+                                                value: val,
+                                                update: () {
+                                                  detailSalesInvoiceController
+                                                      .updateUI();
+                                                });
+                                          },
+                                          buildOption: (p0) => Row(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 20,
+                                                backgroundImage: NetworkImage(p0
+                                                        .data.avatar ??
+                                                    'https://i.imgur.com/BdzfHg0.png'),
+                                              ),
+                                              cWidth(8),
+                                              Expanded(
+                                                  child: textBodyMedium(
+                                                      p0.key ?? ''))
+                                            ],
+                                          ),
+                                        )));
+                              }),
                           titleEditTitle(
                               title: 'Ghi chú',
                               value: '',
                               boldTitle: FontWeight.bold,
+                              onTap: () {
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailSalesInvoiceController.noteTE,
+                                      onCancel: () {
+                                    detailSalesInvoiceController.noteTE?.text =
+                                        detailSalesInvoiceController
+                                                .salesOrder?.note
+                                                .toString() ??
+                                            '';
+                                  }, onSubmitted: () {
+                                    detailSalesInvoiceController.updateUI();
+                                  }),
+                                );
+                              },
                               showEdit: isEdit),
                           ExpandableText(
-                            detailSalesInvoiceController.salesOrder?.note ??
-                                'Trống',
+                            isEdit
+                                ? detailSalesInvoiceController.noteTE?.text ??
+                                    'Trống'
+                                : detailSalesInvoiceController
+                                        .salesOrder?.note ??
+                                    'Trống',
                             expandText: 'xem thêm',
                             collapseText: 'thu gọn',
                             maxLines: 4,
@@ -457,11 +917,31 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                               title: 'Ghi chú huỷ',
                               value: '',
                               boldTitle: FontWeight.bold,
+                              onTap: () {
+                                Get.bottomSheet(
+                                  showBottomTextInput(
+                                      detailSalesInvoiceController
+                                          .cancellationNotesTE, onCancel: () {
+                                    detailSalesInvoiceController
+                                        .cancellationNotesTE
+                                        ?.text = detailSalesInvoiceController
+                                            .salesOrder?.cancellationNotes
+                                            .toString() ??
+                                        '';
+                                  }, onSubmitted: () {
+                                    detailSalesInvoiceController.updateUI();
+                                  }),
+                                );
+                              },
                               showEdit: isEdit),
                           ExpandableText(
-                            detailSalesInvoiceController
-                                    .salesOrder?.cancellationNotes ??
-                                'Trống',
+                            isEdit
+                                ? detailSalesInvoiceController
+                                        .cancellationNotesTE?.text ??
+                                    'Trống'
+                                : detailSalesInvoiceController
+                                        .salesOrder?.cancellationNotes ??
+                                    'Trống',
                             expandText: 'xem thêm',
                             collapseText: 'thu gọn',
                             maxLines: 4,
@@ -487,7 +967,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                     margin: const EdgeInsets.only(right: 20),
                     child: FxButton.medium(
                       borderRadiusAll: 100,
-                      onPressed: () {
+                      onPressed: () async {
                         if (isView && !isEdit) {
                           setState(() {
                             isView = true;
@@ -500,17 +980,165 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                             isView = true;
                             isEdit = false;
                           });
+                          await detailSalesInvoiceController.updateSaleOder();
+
                           return;
                         }
-                        if (isCreate) {}
+                        if (isCreate) {
+                          await detailSalesInvoiceController.createSaleOder();
+                        }
                       },
                       shadowColor: Colors.transparent,
-                      child: textTitleMedium('Sửa', color: Colors.white),
+                      child: isCreate
+                          ? textTitleMedium('Tạo', color: Colors.white)
+                          : textTitleMedium('Sửa', color: Colors.white),
                     ),
                   ),
                 ],
               ),
             ),
         onLoading: const LoadingCustom());
+  }
+
+// thêm số lượng sản phẩm
+  showBottomSheetAddProduct({DetailSalesOrderCustom? detailSalesOrderCustom}) {
+    TextEditingController quantityTE = TextEditingController(
+        text: detailSalesOrderCustom?.detailSalesOrder?.quantity.toString() ??
+            '1');
+    TextEditingController discountTE = TextEditingController(
+        text: detailSalesOrderCustom?.detailSalesOrder?.discount.toString() ??
+            '0');
+    TextEditingController noteTE = TextEditingController(
+        text: detailSalesOrderCustom?.detailSalesOrder?.note ?? '');
+    final formKey = GlobalKey<FormState>();
+    Get.bottomSheet(
+        Container(
+          height: Get.height * 0.75,
+          decoration: BoxDecoration(
+              color: bg500,
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(100), topRight: Radius.circular(0))),
+          child: Form(
+            key: formKey,
+            child: Column(children: [
+              Container(
+                margin: const EdgeInsets.only(top: 12, bottom: 12),
+                child: Container(
+                  width: 100,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Get.theme.primaryColor,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                ),
+              ),
+              Expanded(
+                  child: Container(
+                margin: alignment_20_0(),
+                child: Column(
+                  children: [
+                    cHeight(20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // FxButton.medium(
+                        //   onPressed: () {},
+                        //   borderRadiusAll: 100,
+                        //   shadowColor: Colors.transparent,
+                        //   backgroundColor: const Color.fromARGB(255, 255, 17, 0)
+                        //       .withOpacity(0.1),
+                        //   child: textTitleMedium('Xoá',
+                        //       color: const Color.fromARGB(255, 255, 17, 0)),
+                        // ),
+                        // cWidth(20),
+                        FxButton.medium(
+                          onPressed: () {
+                            if (formKey.currentState?.validate() ?? false) {
+                              detailSalesInvoiceController
+                                  .updateProductInSalesOrderEdit(
+                                      discount: discountTE.text,
+                                      note: noteTE.text,
+                                      product: detailSalesOrderCustom?.product,
+                                      quantity: quantityTE.text);
+                              Get.back();
+                            }
+                          },
+                          borderRadiusAll: 100,
+                          shadowColor: Colors.transparent,
+                          backgroundColor:
+                              const Color.fromARGB(255, 20, 255, 27)
+                                  .withOpacity(0.1),
+                          child: textTitleMedium('Thêm',
+                              color: const Color.fromARGB(255, 12, 173, 17)),
+                        ),
+                      ],
+                    ),
+                    cHeight(20),
+                    itemProduct(
+                      margin: EdgeInsets.zero,
+                      product: detailSalesOrderCustom?.product,
+                      listUnit: detailSalesInvoiceController.listUnit,
+                    ),
+                    cHeight(32),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            onTap: () {},
+                            style: textStyleCustom(fontSize: 16),
+                            controller: quantityTE,
+                            validator: (val) {
+                              if (val == null) {
+                                return 'Không để trống';
+                              }
+                              if (num.parse(val) >
+                                  (detailSalesOrderCustom?.product?.quantity ??
+                                      0)) {
+                                return 'Vượt quá giới hạn kho';
+                              }
+                              return null;
+                            },
+                            readOnly: (isView || isCreate) ? false : true,
+                            decoration: textFieldInputStyle(label: 'Số lượng'),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        cWidth(12),
+                        Expanded(
+                          child: TextFormField(
+                            onTap: () {},
+                            style: textStyleCustom(fontSize: 16),
+                            controller: discountTE,
+                            textAlign: TextAlign.center,
+                            // validator:
+                            //     accountDetailController.validateString,
+                            readOnly: (isView || isCreate) ? false : true,
+                            decoration:
+                                textFieldInputStyle(label: 'Giảm giá (%)'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    cHeight(28),
+                    TextFormField(
+                      onTap: () {},
+                      style: textStyleCustom(fontSize: 16),
+                      controller: noteTE,
+                      // validator:
+                      //     accountDetailController.validateString,
+                      readOnly: (isView || isCreate) ? false : true,
+                      maxLines: 7,
+                      decoration: textFieldInputStyle(label: 'Ghi chú'),
+                    ),
+                  ],
+                ),
+              )),
+            ]),
+          ),
+        ),
+        isScrollControlled: true,
+        isDismissible: true,
+        elevation: 0,
+        backgroundColor: Colors.grey.withOpacity(0));
   }
 }

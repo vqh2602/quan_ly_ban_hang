@@ -16,11 +16,16 @@ Widget itemProduct({
   List<Unit>? listUnit,
   EdgeInsets? margin,
   double? quantity,
+  Function? onTap,
   Function?
       onHoverDelete, // ấn giữ xoá sp ra khỏi list - dùng cho các màn hoá đơn
 }) {
   return GestureDetector(
     onTap: () {
+      if (onTap != null) {
+        onTap();
+        return;
+      }
       Get.toNamed(DetailProductSreen.routeName,
           arguments: {'type': 'view', 'productID': product?.id});
     },
@@ -58,10 +63,8 @@ Widget itemProduct({
               children: [
                 SizedBox(
                   width: Get.width - 40,
-                  child: textTitleMedium(
-                       product?.name ?? '',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis),
+                  child: textTitleMedium(product?.name ?? '',
+                      maxLines: 2, overflow: TextOverflow.ellipsis),
                 ),
                 iconTitleTitle(
                     title1: product?.bardcode ?? 'Trống',
@@ -86,11 +89,10 @@ Widget itemProduct({
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       if (quantity != null)
-                        textTitleMedium( 'x$quantity', color: b500),
+                        textTitleMedium('x$quantity', color: b500),
                       Expanded(
                         child: textTitleMedium(
-                             ShareFuntion.formatCurrency(
-                                product?.price ?? 0),
+                            ShareFuntion.formatCurrency(product?.price ?? 0),
                             color: a500,
                             textAlign: TextAlign.right),
                       ),

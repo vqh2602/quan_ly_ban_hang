@@ -44,7 +44,7 @@ mixin AppWriteMixin {
           ]);
       if (res.documents.isNotEmpty) {
         user = User.fromJson(res.documents.first.data);
-        await box.write(Storages.dataUser, user.toJson());
+        await box.write(Storages.dataUser, res.documents.first.data);
         await box.write(Storages.dataLoginTime, DateTime.now().toString());
         Get.offAndToNamed(SplashScreen.routeName);
 

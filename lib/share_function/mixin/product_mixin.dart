@@ -9,21 +9,28 @@ import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 mixin ProductMixin {
   AppWriteRepo appWriteRepo = AppWriteRepo();
   GetStorage box = GetStorage();
+  List<Product>? listProductMixin = [];
 
   /// ds sản phẩm
-  Future<List<Product>?> getListProductMixin() async {
-    List<Product>? listProduct;
+  Future<List<Product>?> getListProductMixin({bool isCache = false}) async {
+    if (isCache &&
+        listProductMixin != null &&
+        (listProductMixin?.isNotEmpty ?? false)) {
+      return listProductMixin;
+    }
+
     var res = await appWriteRepo.databases.listDocuments(
         databaseId: Env.config.appWriteDatabaseID,
         collectionId: Env.config.tblProductID);
     if (res.documents.isNotEmpty) {
-      listProduct = res.documents.map((e) => Product.fromJson(e.data)).toList();
+      listProductMixin =
+          res.documents.map((e) => Product.fromJson(e.data)).toList();
     } else {
       buildToast(
           title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
       return null;
     }
-    return listProduct;
+    return listProductMixin;
   }
 
   /// chi tiết sản phẩm
@@ -101,9 +108,7 @@ mixin ProductMixin {
     var res = await appWriteRepo.databases.listDocuments(
         databaseId: Env.config.appWriteDatabaseID,
         collectionId: Env.config.tblProductID,
-        queries: [
-          Query.equal('uid', idProduct)
-        ]);
+        queries: [Query.equal('uid', idProduct)]);
     if (res.documents.isNotEmpty) {
       product = res.documents
           .map((e) => Product.fromJson(e.data))

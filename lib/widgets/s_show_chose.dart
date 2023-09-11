@@ -14,6 +14,7 @@ Widget showBottomListChose(
     Function(SelectOptionItem)? onSelect,
     Function? onCancel,
     Function? onSubmitted,
+    Function? onSearch,
     String? title,
     Widget Function(SelectOptionItem)? buildOption}) {
   return StatefulBuilder(
@@ -85,7 +86,9 @@ Widget showBottomListChose(
                       suffixIcon: InkWell(
                           onTap: () {}, child: const Icon(Icons.close))),
                   onSubmitted: (value) {},
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    if (onSearch != null) onSearch(value);
+                  },
                 ),
                 cHeight(8),
                 Expanded(
@@ -200,6 +203,7 @@ Widget showBottomListMutilChose(
     {List<SelectOptionItem>? options,
     List<SelectOptionItem>? value,
     Function(SelectOptionItem)? onSelect,
+    Function? onSearch,
     Function? onCancel,
     Function? onSubmitted,
     String? title,
@@ -273,7 +277,9 @@ Widget showBottomListMutilChose(
                       suffixIcon: InkWell(
                           onTap: () {}, child: const Icon(Icons.close))),
                   onSubmitted: (value) {},
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    if (onSearch != null) onSearch(value);
+                  },
                 ),
                 cHeight(8),
                 Expanded(

@@ -15,9 +15,9 @@ class LoadingListPHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
-        children: const [PlayStoreShimmer()],
+        children: [PlayStoreShimmer()],
       ),
     );
   }
@@ -28,9 +28,9 @@ class LoadingList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
-        children: const [
+        children: [
           ProfileShimmer(),
           ProfileShimmer(),
           ProfileShimmer(),

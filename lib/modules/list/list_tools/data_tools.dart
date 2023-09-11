@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_screen.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_sales_invoice/detail_sales_invoice_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_customer/list_customer_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_supplier/list_supplier_screen.dart';
@@ -33,7 +34,9 @@ List<DataTool> listDataTools = [
       backgroundColor: a500,
       name: 'Tạo đơn bán hàng',
       group: 'hoadon',
-      onTap: () {}),
+      onTap: () {
+        Get.toNamed(DetailSalesInvoiceSreen.routeName,arguments: {'type': 'create'});
+      }),
   DataTool(
       icon: (color) => Icon(
             FontAwesomeIcons.solidCartFlatbedBoxes,
@@ -115,4 +118,5 @@ List<DataTool> listDataTools = [
       onTap: () {
         Get.toNamed(ListSupplierSreen.routeName);
       }),
+      
 ];

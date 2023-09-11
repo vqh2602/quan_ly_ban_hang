@@ -1,24 +1,27 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class SalesOrder {
   String? uid;
   String? customerId;
   String? customerName;
-  int? surcharge;
-  int? discount;
-  int? vat;
+  num? surcharge;
+  num? discount;
+  num? vat;
   String? timeOrder;
   String? deliveryTime;
   String? paymentTime;
   String? paymentStatus;
   String? deliveryStatus;
-  int? partlyPaid;
+  num? partlyPaid;
   String? personnelSalespersonId;
   String? personnelSalespersonName;
   String? personnelShipperId;
   String? personnelShipperName;
   String? note;
   String? cancellationNotes;
-  int? totalMoney;
-  int? profit;
+  num? totalMoney;
+  num? profit;
+  num? changeMoney;
+  num? moneyGuests;
   String? id;
   String? createdAt;
   String? updatedAt;
@@ -47,6 +50,8 @@ class SalesOrder {
       this.cancellationNotes,
       this.totalMoney,
       this.profit,
+      this.changeMoney,
+      this.moneyGuests,
       this.id,
       this.createdAt,
       this.updatedAt,
@@ -75,6 +80,8 @@ class SalesOrder {
     cancellationNotes = json['cancellationNotes'];
     totalMoney = json['totalMoney'];
     profit = json['profit'];
+    changeMoney = json['changeMoney'];
+    moneyGuests = json['moneyGuests'];
     id = json['\$id'];
     createdAt = json['\$createdAt'];
     updatedAt = json['\$updatedAt'];
@@ -110,14 +117,80 @@ class SalesOrder {
     data['profit'] = profit;
     data['paymentTime'] = paymentTime;
     data['deliveryTime'] = deliveryTime;
-    data['\$id'] = id;
-    data['\$createdAt'] = createdAt;
-    data['\$updatedAt'] = updatedAt;
-    if (permissions != null) {
-      data['\$permissions'] = permissions;
-    }
-    data['\$collectionId'] = collectionId;
-    data['\$databaseId'] = databaseId;
+    data['changeMoney'] = changeMoney;
+    data['moneyGuests'] = moneyGuests;
+    // data['\$id'] = id;
+    // data['\$createdAt'] = createdAt;
+    // data['\$updatedAt'] = updatedAt;
+    // if (permissions != null) {
+    //   data['\$permissions'] = permissions;
+    // }
+    // data['\$collectionId'] = collectionId;
+    // data['\$databaseId'] = databaseId;
     return data;
+  }
+
+  SalesOrder copyWith({
+    String? uid,
+    String? customerId,
+    String? customerName,
+    num? surcharge,
+    num? discount,
+    num? vat,
+    String? timeOrder,
+    String? deliveryTime,
+    String? paymentTime,
+    String? paymentStatus,
+    String? deliveryStatus,
+    num? partlyPaid,
+    String? personnelSalespersonId,
+    String? personnelSalespersonName,
+    String? personnelShipperId,
+    String? personnelShipperName,
+    String? note,
+    String? cancellationNotes,
+    num? totalMoney,
+    num? profit,
+    num? changeMoney,
+    num? moneyGuests,
+    String? id,
+    String? createdAt,
+    String? updatedAt,
+    List<dynamic>? permissions,
+    String? collectionId,
+    String? databaseId,
+  }) {
+    return SalesOrder(
+      uid: uid ?? this.uid,
+      customerId: customerId ?? this.customerId,
+      customerName: customerName ?? this.customerName,
+      surcharge: surcharge ?? this.surcharge,
+      discount: discount ?? this.discount,
+      vat: vat ?? this.vat,
+      timeOrder: timeOrder ?? this.timeOrder,
+      deliveryTime: deliveryTime ?? this.deliveryTime,
+      paymentTime: paymentTime ?? this.paymentTime,
+      paymentStatus: paymentStatus ?? this.paymentStatus,
+      deliveryStatus: deliveryStatus ?? this.deliveryStatus,
+      partlyPaid: partlyPaid ?? this.partlyPaid,
+      personnelSalespersonId:
+          personnelSalespersonId ?? this.personnelSalespersonId,
+      personnelSalespersonName:
+          personnelSalespersonName ?? this.personnelSalespersonName,
+      personnelShipperId: personnelShipperId ?? this.personnelShipperId,
+      personnelShipperName: personnelShipperName ?? this.personnelShipperName,
+      note: note ?? this.note,
+      cancellationNotes: cancellationNotes ?? this.cancellationNotes,
+      totalMoney: totalMoney ?? this.totalMoney,
+      profit: profit ?? this.profit,
+      changeMoney: changeMoney ?? this.changeMoney,
+      moneyGuests: moneyGuests ?? this.moneyGuests,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      permissions: permissions ?? this.permissions,
+      collectionId: collectionId ?? this.collectionId,
+      databaseId: databaseId ?? this.databaseId,
+    );
   }
 }

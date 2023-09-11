@@ -8,22 +8,27 @@ import 'package:quan_ly_ban_hang/data/models/customer.dart';
 mixin CustomerMixin {
   AppWriteRepo appWriteRepo = AppWriteRepo();
   GetStorage box = GetStorage();
+  List<Customer>? listCustomerMixin = [];
 
   /// ds khach hàng
-  Future<List<Customer>?> getListCustomerMixin() async {
-    List<Customer>? listCustomer;
+  Future<List<Customer>?> getListCustomerMixin({bool isCache = false}) async {
+    if (isCache &&
+        listCustomerMixin!= null &&
+        (listCustomerMixin?.isNotEmpty ?? false)) {
+      return listCustomerMixin;
+    }
     var res = await appWriteRepo.databases.listDocuments(
         databaseId: Env.config.appWriteDatabaseID,
         collectionId: Env.config.tblCustomerID);
     if (res.documents.isNotEmpty) {
-      listCustomer =
+      listCustomerMixin=
           res.documents.map((e) => Customer.fromJson(e.data)).toList();
     } else {
       buildToast(
           title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
       return null;
     }
-    return listCustomer;
+    return listCustomerMixin;
   }
 
   /// chi tiết khach hang

@@ -9,21 +9,27 @@ mixin PersonnelMixin {
   AppWriteRepo appWriteRepo = AppWriteRepo();
   GetStorage box = GetStorage();
 
+  List<Personnel>? listPersonnelMixin;
+
   /// ds ng dùng
-  Future<List<Personnel>?> getListPersonnelMixin() async {
-    List<Personnel>? listPersonnel;
+  Future<List<Personnel>?> getListPersonnelMixin({bool isCache = false}) async {
+    if (isCache &&
+        listPersonnelMixin != null &&
+        (listPersonnelMixin?.isNotEmpty ?? false)) {
+      return listPersonnelMixin;
+    }
     var res = await appWriteRepo.databases.listDocuments(
         databaseId: Env.config.appWriteDatabaseID,
         collectionId: Env.config.tblPersonnelID);
     if (res.documents.isNotEmpty) {
-      listPersonnel =
+      listPersonnelMixin =
           res.documents.map((e) => Personnel.fromJson(e.data)).toList();
     } else {
       buildToast(
           title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
       return null;
     }
-    return listPersonnel;
+    return listPersonnelMixin;
   }
 
   /// chi tiết ng dùng

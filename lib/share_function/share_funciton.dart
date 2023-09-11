@@ -144,8 +144,9 @@ class ShareFuntion {
     }
   }
 
-  static String formatCurrency(num number) {
-    return NumberFormat.currency(locale: 'vi_VN', symbol: 'đ').format(number);
+  static String formatCurrency(num number, {String? symbol}) {
+    return NumberFormat.currency(locale: 'vi_VN', symbol: symbol ?? 'đ')
+        .format(number);
   }
 
   static String formatNumber({required String number}) {
@@ -189,5 +190,27 @@ class ShareFuntion {
             ?.where((element) => permission!.contains(element))
             .isNotEmpty ??
         false;
+  }
+
+  // tìm và sắp sếp phân ftuwr đuọc tìm kiếm lên đầu list
+  static searchList(
+      {required List? list, required String value, required Function update}) {
+    for (var role in list ?? []) {
+      if (role?.key?.toLowerCase().contains(value.toLowerCase()) ??
+          false || role?.value?.toLowerCase().contains(value.toLowerCase()) ??
+          false) {
+        list?.remove(role);
+        list?.insert(0, role);
+      }
+    }
+    update();
+  }
+
+  /// tìm đối tượng có trong list 1 nhưng k có trong list 2
+  static List<T> findUniqueObjects<T>(List<T> list1, List<T> list2) {
+    Set<T> set2 = Set.from(list2); // Chuyển list2 thành một Set
+    List<T> uniqueObjects =
+        list1.where((item) => !set2.contains(item)).toList();
+    return uniqueObjects;
   }
 }

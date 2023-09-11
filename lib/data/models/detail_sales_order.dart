@@ -1,11 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class DetailSalesOrder {
   String? uid;
   String? salesOrderId;
   String? productId;
   num? quantity;
-  int? importPrice;
-  int? price;
-  int? discount;
+  num? importPrice;
+  num? price;
+  num? discount;
   String? note;
   String? id;
   String? createdAt;
@@ -62,14 +63,48 @@ class DetailSalesOrder {
     data['price'] = price;
     data['discount'] = discount;
     data['note'] = note;
-    data['\$id'] = id;
-    data['\$createdAt'] = createdAt;
-    data['\$updatedAt'] = updatedAt;
-    if (permissions != null) {
-      data['\$permissions'] = permissions;
-    }
-    data['\$collectionId'] = collectionId;
-    data['\$databaseId'] = databaseId;
+    // data['\$id'] = id;
+    // data['\$createdAt'] = createdAt;
+    // data['\$updatedAt'] = updatedAt;
+    // if (permissions != null) {
+    //   data['\$permissions'] = permissions;
+    // }
+    // data['\$collectionId'] = collectionId;
+    // data['\$databaseId'] = databaseId;
     return data;
+  }
+
+  DetailSalesOrder copyWith({
+    String? uid,
+    String? salesOrderId,
+    String? productId,
+    num? quantity,
+    num? importPrice,
+    num? price,
+    num? discount,
+    String? note,
+    String? id,
+    String? createdAt,
+    String? updatedAt,
+    List<dynamic>? permissions,
+    String? collectionId,
+    String? databaseId,
+  }) {
+    return DetailSalesOrder(
+      uid: uid ?? this.uid,
+      salesOrderId: salesOrderId ?? this.salesOrderId,
+      productId: productId ?? this.productId,
+      quantity: quantity ?? this.quantity,
+      importPrice: importPrice ?? this.importPrice,
+      price: price ?? this.price,
+      discount: discount ?? this.discount,
+      note: note ?? this.note,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      permissions: permissions ?? this.permissions,
+      collectionId: collectionId ?? this.collectionId,
+      databaseId: databaseId ?? this.databaseId,
+    );
   }
 }
