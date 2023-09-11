@@ -349,6 +349,7 @@ class DetailSalesInvoiceController extends GetxController
       for (var element1 in create) {
         await updateQuantityProduct(
             product: element1?.product,
+            isNumberSalse: true,
             quantityNew: element1?.detailSalesOrder?.quantity ?? 0,
             quantityHistory: listDetailSalesOrderCustom
                     ?.where((element) =>
@@ -383,6 +384,7 @@ class DetailSalesInvoiceController extends GetxController
             detailSalesOrder: element1.detailSalesOrder);
         await updateQuantityProduct(
             product: element1.product,
+            isNumberSalse: true,
             quantityNew: element1.detailSalesOrder?.quantity ?? 0,
             quantityHistory: 0);
       });
@@ -395,13 +397,17 @@ class DetailSalesInvoiceController extends GetxController
 
   //hàm cập nhật và tính lại số lượng sản phẩm
   updateQuantityProduct(
-      {Product? product, num? quantityNew, num? quantityHistory}) async {
+      {Product? product,
+      num? quantityNew,
+      num? quantityHistory,
+      isNumberSalse = false}) async {
     if (quantityNew != null &&
         quantityHistory != null &&
         quantityNew < quantityHistory &&
         quantityNew > 0) {
       await updateDetailProductMixin(
           product: product?.copyWith(
+              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
               quantity:
                   (product.quantity ?? 0) + (quantityHistory - quantityNew)));
       return;
@@ -412,6 +418,7 @@ class DetailSalesInvoiceController extends GetxController
         quantityNew > quantityHistory) {
       await updateDetailProductMixin(
           product: product?.copyWith(
+              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
               quantity:
                   (product.quantity ?? 0) - (quantityNew - quantityHistory)));
       return;
@@ -422,6 +429,7 @@ class DetailSalesInvoiceController extends GetxController
         quantityNew == 0) {
       await updateDetailProductMixin(
           product: product?.copyWith(
+              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
               quantity: (product.quantity ?? 0) + (quantityHistory)));
       return;
     }
