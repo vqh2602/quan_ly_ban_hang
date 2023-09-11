@@ -1,4 +1,4 @@
-import 'dart:ui';
+
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -166,15 +166,14 @@ class _QrScanState extends State<QrScan> {
                                         children: [
                                           Expanded(
                                             child: textBodyMedium(
-                                              text: 'Quét mã vạch',
+                                              'Quét mã vạch',
                                               fontWeight: FontWeight.bold,
                                               // color: Get.theme.primaryColor,
                                             ),
                                           ),
                                           Expanded(
                                             child: textBodySmall(
-                                              text:
-                                                  'Đưa mã vào giữa khung hình',
+                                              'Đưa mã vào giữa khung hình',
                                             ),
                                           ),
                                           GFButton(
@@ -193,7 +192,7 @@ class _QrScanState extends State<QrScan> {
                                                           .spaceAround,
                                                   children: [
                                                     textBodySmall(
-                                                      text: 'Nhập mã thủ công',
+                                                      'Nhập mã thủ công',
                                                       color: qrController
                                                               .nhapCode.value
                                                           ? Get.theme
@@ -274,10 +273,12 @@ class _QrScanState extends State<QrScan> {
                                                                 .textEditingControllerCode
                                                                 .text);
                                                       },
-                                                       color: Get.theme.primaryColor,
-                                                      shape: GFButtonShape.pills,
+                                                      color: Get
+                                                          .theme.primaryColor,
+                                                      shape:
+                                                          GFButtonShape.pills,
                                                       child: textBodyMedium(
-                                                        text: 'Hoàn tất',
+                                                        'Hoàn tất',
                                                         color: Colors.white,
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -300,7 +301,7 @@ class _QrScanState extends State<QrScan> {
                           color: Colors.white,
                         ),
                         label: textBodySmall(
-                          text: 'Quay lại',
+                          'Quay lại',
                           color: Colors.white,
                         ),
                         style: ElevatedButton.styleFrom(
@@ -329,7 +330,9 @@ class _QrScanState extends State<QrScan> {
 }
 
 class InvertedCircleClipper extends CustomClipper<Path> {
-  final Size windowSize = MediaQueryData.fromWindow(window).size;
+  final Size windowSize = MediaQueryData.fromView(
+          WidgetsBinding.instance.platformDispatcher.views.single)
+      .size;
   @override
   Path getClip(Size size) {
     return Path()

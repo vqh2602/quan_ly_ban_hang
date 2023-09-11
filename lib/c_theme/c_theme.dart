@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+Color a900 = const Color(0xff460210);
+Color a800 = const Color(0xff860320);
+Color a700 = const Color(0xffCC0530);
+Color a600 = const Color(0xffF91F4E);
 Color a500 = const Color(0xffFB6183);
+Color a400 = const Color(0xffFC839D);
+Color a300 = const Color(0xffFDA0B4);
+Color a200 = const Color(0xffFDBECC);
+Color a100 = const Color(0xffFEE1E7);
+Color a50 = const Color(0xffFFF0F3);
+
 Color b500 = const Color(0xff72B6F7);
 Color bg500 = const Color(0xffFAFCFF);
 

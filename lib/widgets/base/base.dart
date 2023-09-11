@@ -35,16 +35,16 @@ Future<bool> onWillPop(BuildContext context, bool isCheckBeforePop) async {
   bool exitResult = await showDialog(
     context: context,
     builder: (context) => CupertinoAlertDialog(
-      title: textBodyLarge(text: "Thông báo", fontWeight: FontWeight.w700),
+      title: textBodyLarge( "Thông báo", fontWeight: FontWeight.w700),
       content: Container(
         margin: const EdgeInsets.only(top: 16),
         child:
-            textBodyMedium(text: "Bạn có chắc chắn muốn thoát khỏi ứng dụng?"),
+            textBodyMedium( "Bạn có chắc chắn muốn thoát khỏi ứng dụng?"),
       ),
       actions: <Widget>[
         CupertinoDialogAction(
           child: textBodyMedium(
-            text: "Hủy",
+             "Hủy",
             color: Get.theme.colorScheme.error,
           ),
           onPressed: () {
@@ -53,7 +53,7 @@ Future<bool> onWillPop(BuildContext context, bool isCheckBeforePop) async {
         ),
         CupertinoDialogAction(
           child: textBodyMedium(
-            text: 'Xác nhận',
+             'Xác nhận',
           ),
           onPressed: () {
             Navigator.of(context).pop(true);

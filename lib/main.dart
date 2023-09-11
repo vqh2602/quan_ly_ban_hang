@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       getPages: routes,
-      locale: Get.deviceLocale,
+      locale: Get.deviceLocale ?? const Locale('vi', 'VN'),
       translations: Messages(),
       navigatorObservers: const [
         // firebaseAnalyticsService.appAnalyticsObserver(),
@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget {
       //supportedLocales: const [Locale('vn'),Locale('u')],
       transitionDuration: const Duration(milliseconds: 300),
       defaultTransition: Transition.fadeIn,
+      //  initialRoute: LoginScreen.routeName,
       initialRoute: SplashScreen.routeName,
     );
   }

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quan_ly_ban_hang/widgets/mixin/user_mixin.dart';
+import 'package:quan_ly_ban_hang/share_function/mixin/user_mixin.dart';
 
 
 class HomeController extends GetxController

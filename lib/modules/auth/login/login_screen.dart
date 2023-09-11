@@ -1,12 +1,12 @@
-import 'dart:io';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/modules/auth/login/login_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:quan_ly_ban_hang/widgets/widgets.dart';
+import 'package:quan_ly_ban_hang/widgets/theme_textinput.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,6 +18,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   LoginController loginController = Get.put(LoginController());
+  GlobalKey<FormState> keyForm1 = GlobalKey<FormState>(debugLabel: '_FormL1');
+  int selectedIndex = 0;
+  bool passwordVisible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -29,102 +32,136 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildBody() {
-    return loginController.obx((state) => Stack(
-          children: <Widget>[
-            Container(
-              width: Get.width,
-              height: Get.height,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/background/bg6.jpeg'),
-                      fit: BoxFit.fill)),
-            ),
-            Container(
-              width: Get.width,
-              height: Get.height,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/background/bg.png'),
-                      fit: BoxFit.fill)),
-            ),
-            Container(
-              height: Get.height,
-              width: Get.width,
-              margin: alignment_20_0(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  textHeadlineLarge(
-                      text: 'LAVENZ',
-                      color: Get.theme.colorScheme.background,
-                      fontWeight: FontWeight.w900),
-
-                  //cHeight(10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    //  verticalDirection: VerticalDirection.up,
+    return loginController.obx(
+        (state) => SafeArea(
+              child: Form(
+                key: keyForm1,
+                child: Container(
+                  height: Get.height,
+                  margin: alignment_20_0(),
+                  child: Stack(
                     children: [
-                      textBodyMedium(
-                          text: 'Đăng nhập để tiếp tục\n sử dụng ứng dụng'.tr,
-                          textAlign: TextAlign.center,
-                          color: Get.theme.colorScheme.background),
-                      cHeight(12),
-                      GFButton(
-                        onPressed: () {
-                          loginController.login();
-                        },
-                        color: Colors.white,
-                        text: "Tiếp tục với Google".tr,
-                        textStyle: textStyleCustom(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                        textColor: Colors.black,
-                        shape: GFButtonShape.pills,
-                        blockButton: true,
-                        size: GFSize.LARGE,
-                        padding: EdgeInsets.zero,
-                        icon: const FaIcon(FontAwesomeIcons.googlePlusG),
-                      ),
-                      if (Platform.isIOS) GFButton(
-                        onPressed: () {
-                          loginController.loginApple();
-                        },
-                        color: Colors.white,
-                        text: "Tiếp tục với Apple".tr,
-                        textStyle: textStyleCustom(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                        textColor: Colors.black,
-                        shape: GFButtonShape.pills,
-                        blockButton: true,
-                        size: GFSize.LARGE,
-                        padding: EdgeInsets.zero,
-                        icon: const Icon(
-                          FontAwesomeIcons.apple,
-                          size: 30,
+                      SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 4 * 20,
+                            ),
+                            textHeadlineLarge('Đăng nhập',
+                                fontWeight: FontWeight.w700),
+                            const SizedBox(
+                              height: 4 * 1,
+                            ),
+                            textBodySmall(
+                              'Đăng nhập để truy cập quản lý',
+                            ),
+                            const SizedBox(
+                              height: 4 * 16,
+                            ),
+                            TextFormField(
+                              onTap: () {},
+                              controller: loginController.phoneTE,
+                              style: textStyleCustom(fontSize: 16),
+                              keyboardType: TextInputType.phone,
+                              decoration:
+                                  textFieldInputStyle(label: 'Số điện thoại'),
+                              maxLines: 1,
+                              validator: loginController.validateString,
+                            ),
+                            const SizedBox(
+                              height: 4 * 6,
+                            ),
+                            TextFormField(
+                              onTap: () {},
+                              controller: loginController.passWTE,
+                              obscureText: passwordVisible,
+                              decoration: textFieldInputStyle(
+                                  label: 'Mật khẩu',
+                                  suffixIcon: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        passwordVisible = !passwordVisible;
+                                      });
+                                    },
+                                    child: Ink(
+                                      child: Icon(passwordVisible
+                                          ? LucideIcons.eye
+                                          : LucideIcons.eyeOff),
+                                    ),
+                                  )),
+                              validator: loginController.validateString,
+                            ),
+                            const SizedBox(
+                              height: 4 * 2,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                // Get.offAndToNamed(SignupScreen.routeName);
+                              },
+                              child: Ink(
+                                child: textBodyMedium(
+                                    'Quyên mật khẩu? liên hệ với quản lí để cấp lại mật khẩu.',
+                                    decoration: TextDecoration.underline),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 4 * 20,
+                            ),
+                          ],
                         ),
                       ),
-                      cHeight(12),
-
-                      // Align
-                      //   alignment: Alignment.bottomCenter,
-                      //     child: Image.asset('assets/background/logo.png',width: 100, fit: BoxFit.cover,))
+                      Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: GFButton(
+                                    onPressed: () {
+                                      if (keyForm1.currentState?.validate() ??
+                                          false) {
+                                        loginController.loadingUI();
+                                        loginController.login();
+                                      }
+                                    },
+                                    padding: const EdgeInsets.only(
+                                      left: 4 * 5,
+                                      right: 4 * 5,
+                                    ),
+                                    size: 4 * 13,
+                                    color: Get.theme.primaryColor,
+                                    fullWidthButton: true,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        textTitleSmall(
+                                            'Đăng nhập'.toUpperCase(),
+                                            color: Colors.white),
+                                        const Icon(
+                                          LucideIcons.arrowRight,
+                                          size: 4 * 6,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                // IconButton(
+                                //     onPressed: () {
+                                //       // loginController.login(isLoginBiometric: true);
+                                //     },
+                                //     icon: const Icon(LucideIcons.scanFace))
+                              ],
+                            ),
+                          )),
                     ],
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  child: textBodySmall(
-                      text:
-                          'Khi bạn đăng nhập ứng dụng cũng có nghĩa sẽ đồng ý với các điều khoản của chúng tôi.'
-                              .tr,
-                      textAlign: TextAlign.center,
-                      color: Get.theme.colorScheme.background),
-                )),
-          ],
-        ));
+        onLoading: const LoadingCustom());
   }
 }

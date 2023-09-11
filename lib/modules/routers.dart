@@ -1,18 +1,34 @@
+import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_binding.dart';
+import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/auth/login/login_binding.dart';
 import 'package:quan_ly_ban_hang/modules/auth/login/login_screen.dart';
 import 'package:quan_ly_ban_hang/modules/auth/signup/signup_binding.dart';
 import 'package:quan_ly_ban_hang/modules/auth/signup/signup_screen.dart';
 import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_binding.dart';
 import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_screen.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_customer/customer_detail_binding.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_customer/customer_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_binding.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_screen.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_sales_invoice/detail_sales_invoice_binding.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_sales_invoice/detail_sales_invoice_screen.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_supplier/supplier_detail_binding.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_supplier/supplier_detail_screen.dart';
 
 import 'package:quan_ly_ban_hang/modules/home/home_binding.dart';
 import 'package:quan_ly_ban_hang/modules/home/home_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_customer/list_customer_binding.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_customer/list_customer_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_binding.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_supplier/list_supplier_binding.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_supplier/list_supplier_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_binding.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_screen.dart';
 import 'package:quan_ly_ban_hang/modules/splash/splash_binding.dart';
 import 'package:quan_ly_ban_hang/modules/splash/splash_screen.dart';
 
@@ -56,4 +72,44 @@ List<GetPage> routes = [
       page: () => const DetailProductSreen(),
       binding: DetailProductBinding(),
       transition: Transition.rightToLeft),
+  GetPage(
+      name: DetailSalesInvoiceSreen.routeName,
+      page: () => const DetailSalesInvoiceSreen(),
+      binding: DetailSalesInvoiceBinding(),
+      transition: Transition.rightToLeft),
+  GetPage(
+    name: AccountDetailScreen.routeName,
+    page: () => const AccountDetailScreen(),
+    binding: AccountDetailBinding(),
+  ),
+  GetPage(
+      name: ListToolsSreen.routeName,
+      page: () => const ListToolsSreen(),
+      binding: ListToolsBinding(),
+      transition: Transition.rightToLeft),
+  GetPage(
+      name: ListPersonnelSreen.routeName,
+      page: () => const ListPersonnelSreen(),
+      binding: ListPersonnelBinding(),
+      transition: Transition.rightToLeft),
+  GetPage(
+      name: ListCustomerSreen.routeName,
+      page: () => const ListCustomerSreen(),
+      binding: ListCustomerBinding(),
+      transition: Transition.rightToLeft),
+  GetPage(
+    name: CustomerDetailScreen.routeName,
+    page: () => const CustomerDetailScreen(),
+    binding: CustomerDetailBinding(),
+  ),
+  GetPage(
+    name: ListSupplierSreen.routeName,
+    page: () => const ListSupplierSreen(),
+    binding: ListSupplierBinding(),
+  ),
+  GetPage(
+    name: SupplierDetailScreen.routeName,
+    page: () => const SupplierDetailScreen(),
+    binding: SupplierDetailBinding(),
+  ),
 ];

@@ -8,7 +8,7 @@ Widget iconTitleTitle(
     String? subTitle1,
     String? subTitle2,
     bool subTitleBold = false,
-    required String title2,
+    String? title2,
     required IconData? icon}) {
   return SizedBox(
     width: Get.width - 40,
@@ -25,27 +25,33 @@ Widget iconTitleTitle(
                 size: 12,
                 color: Colors.grey,
               ),
-            if (icon != null) cWidth(4),
+            if (icon != null) cWidth(6),
+            subTitle1 == null && subTitle2 == null
+                ? SizedBox(
+                    width: Get.width * 0.40,
+                    child: textBodySmall(title1, textAlign: TextAlign.left),
+                  )
+                : textBodySmall(
+                    title1,
+                  ),
             textBodySmall(
-              text: title1,
-            ),
-            textBodySmall(
-              text: subTitle1 ?? '',
+              subTitle1 ?? '',
               fontWeight: subTitleBold ? FontWeight.bold : FontWeight.normal,
             ),
           ],
         ),
-        Row(
-          children: [
-            textBodySmall(
-              text: title2,
-            ),
-            textBodySmall(
-              text: subTitle2 ?? '',
-              fontWeight: subTitleBold ? FontWeight.bold : FontWeight.normal,
-            ),
-          ],
-        ),
+        if (title2 != null)
+          Row(
+            children: [
+              textBodySmall(
+                title2,
+              ),
+              textBodySmall(
+                subTitle2 ?? '',
+                fontWeight: subTitleBold ? FontWeight.bold : FontWeight.normal,
+              ),
+            ],
+          ),
       ],
     ),
   );

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:quan_ly_ban_hang/modules/auth/login/login_screen.dart';
 import 'package:quan_ly_ban_hang/modules/auth/signup/signup_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
-import 'package:quan_ly_ban_hang/widgets/share_function/share_funciton.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/theme_textinput.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
@@ -54,9 +54,9 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(
                     height: 4 * 10,
                   ),
-                  textTitleLarge(text: 'Đăng kí'.toUpperCase()),
+                  textTitleLarge( 'Đăng kí'.toUpperCase()),
                   textBodyMedium(
-                      text: 'Đăng kí tài khoản để có thể truy cập ứng dụng'),
+                       'Đăng kí tài khoản để có thể truy cập ứng dụng'),
                   const SizedBox(
                     height: 4 * 10,
                   ),
@@ -74,8 +74,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: Ink(
                           child: avatarImage(
                             url: '',
-                            isFileImage: true,
-                            imageF: signupController.base64Image,
+                            // isFileImage: true,
+                            // imageF: signupController.base64Image,
                             radius: 60,
                           ),
                         ),
@@ -179,10 +179,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   TextFormField(
                     onTap: () {
-                      dateTimePicker(
+                      ShareFuntion.dateTimePicker(
                           onchange: (dt) {
-                            signupController.birthTE.text = formatDate(
-                                type: TypeDate.yyyyMMdd, dateTime: dt) ?? '';
+                            signupController.birthTE.text = ShareFuntion.formatDate(
+                                type: TypeDate.yyyyMMdd, dateTime: dt);
                             // signupController.birthTE?.text = formatDate(
                             //     type: TypeDate.ddMMyyyy, dateTime: dt);
                           },
@@ -216,7 +216,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       : Get.theme.colorScheme.onBackground)),
                           child: Center(
                             child: textBodyMedium(
-                                text: 'Nam',
+                                 'Nam',
                                 color: !sex
                                     ? Colors.grey
                                     : Get.theme.colorScheme.onBackground),
@@ -243,7 +243,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       : Get.theme.colorScheme.onBackground)),
                           child: Center(
                             child: textBodyMedium(
-                                text: 'Nữ',
+                                 'Nữ',
                                 color: sex
                                     ? Colors.grey
                                     : Get.theme.colorScheme.onBackground),
@@ -315,7 +315,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         textTitleSmall(
-                            text: 'Đăng kí'.toUpperCase(), color: Colors.black),
+                             'Đăng kí'.toUpperCase(), color: Colors.black),
                         const Icon(
                           LucideIcons.arrowRight,
                           size: 4 * 6,
@@ -332,7 +332,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     },
                     child: Ink(
                       child: textBodyMedium(
-                          text: 'Đã có tài khoản? Đăng nhập',
+                           'Đã có tài khoản? Đăng nhập',
                           decoration: TextDecoration.underline),
                     ),
                   ),

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Widget textDisplayLarge(
-    {required String text,
+    String text,{
     double fontSize = 45,
     Color? color,
     FontStyle? fontStyle,
@@ -60,7 +60,7 @@ Widget textDisplayLarge(
 }
 
 Widget textDisplayMedium(
-    {required String text,
+    String text,{
     double fontSize = 35,
     Color? color,
     FontStyle? fontStyle,
@@ -114,7 +114,7 @@ Widget textDisplayMedium(
 }
 
 Widget textDisplaySmall(
-    {required String text,
+    String text,{
     double fontSize = 25,
     Color? color,
     FontStyle? fontStyle,
@@ -168,7 +168,7 @@ Widget textDisplaySmall(
 }
 
 Widget textHeadlineLarge(
-    {required String text,
+    String text,{
     double fontSize = 28.5,
     Color? color,
     FontStyle? fontStyle,
@@ -222,7 +222,7 @@ Widget textHeadlineLarge(
 }
 
 Widget textHeadlineMedium(
-    {required String text,
+    String text,{
     double fontSize = 25.5,
     Color? color,
     FontStyle? fontStyle,
@@ -276,7 +276,7 @@ Widget textHeadlineMedium(
 }
 
 Widget textHeadlineSmall(
-    {required String text,
+    String text,{
     double fontSize = 20,
     Color? color,
     FontStyle? fontStyle,
@@ -330,7 +330,7 @@ Widget textHeadlineSmall(
 }
 
 Widget textTitleLarge(
-    {required String text,
+    String text,{
     double fontSize = 18.5,
     Color? color,
     FontStyle? fontStyle,
@@ -384,7 +384,7 @@ Widget textTitleLarge(
 }
 
 Widget textTitleMedium(
-    {required String text,
+    String text,{
     double fontSize = 16.5,
     Color? color,
     FontStyle? fontStyle,
@@ -438,7 +438,7 @@ Widget textTitleMedium(
 }
 
 Widget textTitleSmall(
-    {required String text,
+    String text,{
     double fontSize = 13.5,
     Color? color,
     FontStyle? fontStyle,
@@ -492,7 +492,7 @@ Widget textTitleSmall(
 }
 
 Widget textLableLarge(
-    {required String text,
+    String text,{
     double fontSize = 18,
     Color? color,
     FontStyle? fontStyle,
@@ -546,7 +546,7 @@ Widget textLableLarge(
 }
 
 Widget textLableMedium(
-    {required String text,
+    String text,{
     double fontSize = 15.5,
     Color? color,
     FontStyle? fontStyle,
@@ -600,7 +600,7 @@ Widget textLableMedium(
 }
 
 Widget textLableSmall(
-    {required String text,
+    String text,{
     double fontSize = 13,
     Color? color,
     FontStyle? fontStyle,
@@ -654,7 +654,7 @@ Widget textLableSmall(
 }
 
 Widget textBodyLarge(
-    {required String text,
+    String text,{
     double fontSize = 18,
     Color? color,
     FontStyle? fontStyle,
@@ -708,7 +708,7 @@ Widget textBodyLarge(
 }
 
 Widget textBodyMedium(
-    {required String text,
+    String text,{
     double fontSize = 15.5,
     Color? color,
     FontStyle? fontStyle,
@@ -762,7 +762,7 @@ Widget textBodyMedium(
 }
 
 Widget textBodySmall(
-    {required String text,
+    String text,{
     double fontSize = 12.5,
     Color? color,
     FontStyle? fontStyle,

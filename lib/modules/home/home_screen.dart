@@ -1,3 +1,5 @@
+
+import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_controller.dart';
 import 'package:quan_ly_ban_hang/modules/home/home_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/bottom_nav_bar.dart';
@@ -14,13 +16,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeController homeController = Get.find();
+  AccountDetailController accountController = Get.find();
 
   @override
   void initState() {
     homeController.init();
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +40,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeIn,
                         );
+                        if (index == 2) {
+                          accountController.getDataUser();
+                        }
                         homeController.updateUI();
                       }),
-                  pageController: homeController.pageController,
+                  // pageController: homeController.pageController,
                   selectedIndex: homeController.selectItemScreen),
               appBar: null,
             ),

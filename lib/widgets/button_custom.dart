@@ -25,7 +25,7 @@ Widget buttonCustom({
             spacing: 4 * 5,
             children: [
               textBodyMedium(
-                text: title,
+                 title,
                 fontWeight: FontWeight.w700,
               ),
             ],

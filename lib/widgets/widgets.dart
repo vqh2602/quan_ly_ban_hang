@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+
 import 'package:quan_ly_ban_hang/widgets/color_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:lottie/lottie.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:quan_ly_ban_hang/data/models/tag.dart' as tag;
 
 Widget searchBar(
     {double? width,
@@ -14,7 +13,7 @@ Widget searchBar(
     required TextEditingController controller}) {
   return Container(
     // margin: const EdgeInsets.symmetric(horizontal: 4 * 5),
-    width:width ?? Get.width ,
+    width: width ?? Get.width,
     decoration: BoxDecoration(
       color: colorF3.withOpacity(0.3),
       borderRadius: BorderRadius.circular(30),
@@ -61,53 +60,26 @@ Widget searchBar(
 }
 
 //avater tròn
-Widget avatarImage(
-    {required String url,
-    double? radius,
-    bool isFileImage = false,
-    Uint8List? imageF}) {
+Widget avatarImage({
+  required String url,
+  double? radius,
+}) {
   bool loadImageError = false;
   return StatefulBuilder(builder: (context, setState) {
-    return !isFileImage
-        ? CircleAvatar(
-            radius: radius,
-            backgroundColor: Colors.transparent,
-            backgroundImage: NetworkImage(url),
-            onBackgroundImageError:
-                (dynamic exception, StackTrace? stackTrace) {
-              setState(() {
-                loadImageError = true;
-              });
-            },
-            child: loadImageError
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.asset('assets/images/image_notfound.jpg'))
-                : null)
-        : CircleAvatar(
-            radius: radius,
-            backgroundColor: Colors.transparent,
-            backgroundImage:
-                const AssetImage('assets/images/image_notfound.jpg'),
-            child: ClipOval(
-              child: SizedBox.fromSize(
-                size: Size.fromRadius(radius ?? 20), // Image radius
-                child: (imageF == null)
-                    ? Image.asset(
-                        'assets/images/image_notfound.jpg',
-                        fit: BoxFit.cover,
-                      )
-                    : Image.memory(
-                        imageF,
-                        errorBuilder: (buildContext, object, stackTrace) =>
-                            Image.asset(
-                          'assets/images/image_notfound.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-              ),
-            ));
+    return CircleAvatar(
+        radius: radius,
+        backgroundColor: Colors.transparent,
+        backgroundImage: NetworkImage(url),
+        onBackgroundImageError: (dynamic exception, StackTrace? stackTrace) {
+          setState(() {
+            loadImageError = true;
+          });
+        },
+        child: loadImageError
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: Image.asset('assets/images/image_notfound.jpg'))
+            : null);
   });
 }
 
@@ -144,7 +116,7 @@ Widget buttonSetting({
                 iconStart,
                 size: 4 * 6,
               ),
-              textTitleSmall(text: title),
+              textTitleSmall(title),
             ],
           ),
           isToggle
@@ -182,7 +154,7 @@ Widget noData({required Function inReload}) {
               child: Lottie.asset('assets/animate/nodata.json',
                   width: Get.width, fit: BoxFit.fill)),
           textBodyMedium(
-            text: 'Không có dữ liệu',
+            'Không có dữ liệu',
             color: Get.theme.colorScheme.onBackground,
           ),
           GFButton(
@@ -205,83 +177,3 @@ Widget cWidth(double val) => SizedBox(
 Widget cHeight(double val) => SizedBox(
       height: val,
     );
-
-Widget filterChip(
-    {required tag.Data tagData,
-    required bool isSelect,
-    required Function(tag.Data?) onChange}) {
-  return ChoiceChip(
-    label: textBodySmall(
-      text: tagData.name ?? '',
-      color: Colors.black,
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20.0),
-      side: BorderSide(color: colorF1),
-    ),
-    selectedColor: colorF3,
-    disabledColor: Get.theme.colorScheme.background,
-    selected: isSelect,
-    avatar: null,
-    onSelected: (bool value) {
-      onChange(tagData);
-    },
-  );
-}
-
-filterAlertTags(
-    {required List<tag.Data> result,
-    required List<tag.Data?> choices,
-    required Function(tag.Data?) onChange,
-    required Function onSubmit}) {
-  Get.dialog(
-    AlertDialog(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextButton(
-            onPressed: () {
-              Get.back();
-            },
-            style: TextButton.styleFrom(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: textBodyMedium(text: 'Huỷ'.tr),
-          ),
-          textTitleMedium(text: 'Lọc'.tr),
-          TextButton(
-            onPressed: () {
-              Get.back();
-              onSubmit();
-            },
-            style: TextButton.styleFrom(
-              minimumSize: Size.zero,
-              padding: EdgeInsets.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: textBodyMedium(text: 'Xác nhận'.tr),
-          ),
-        ],
-      ),
-      content: StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) => Wrap(
-          spacing: 4,
-          children: [
-            for (var item1 in result) ...[
-              filterChip(
-                tagData: item1,
-                isSelect: choices.contains(item1) ? true : false,
-                onChange: (item1) {
-                  onChange(item1);
-                  setState(() {});
-                },
-              )
-            ]
-          ],
-        ),
-      ),
-    ),
-  );
-}

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:photo_view/photo_view.dart';
 
 import 'library/shimmer/shimmer.dart';
 
@@ -53,11 +56,47 @@ Widget imageNetwork(
         (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
       if (loadingProgress == null) return child;
       return Center(
-        child:  ShimmerPro.sized(
-          scaffoldBackgroundColor: Colors.grey.shade200,
-          height: double.infinity,
-          width: double.infinity)
-      );
+          child: ShimmerPro.sized(
+              scaffoldBackgroundColor: Colors.grey.shade200,
+              height: double.infinity,
+              width: double.infinity));
     },
   );
+}
+
+class ViewImageWithZoom extends StatelessWidget {
+  const ViewImageWithZoom({Key? key, required this.url, required this.index})
+      : super(key: key);
+  final String url;
+  final num index;
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: 'hero_show_image$index',
+      child: Stack(
+        children: [
+          PhotoView(
+            imageProvider: NetworkImage(url),
+            minScale: 0.0,
+            maxScale: 3.0,
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: SafeArea(
+              child: IconButton(
+                color: Get.theme.colorScheme.onBackground.withOpacity(0.3),
+                icon: Icon(
+                  LucideIcons.x,
+                  color: Get.theme.colorScheme.background,
+                ),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
