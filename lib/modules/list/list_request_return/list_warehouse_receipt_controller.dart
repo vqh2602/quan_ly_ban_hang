@@ -1,36 +1,36 @@
 import 'dart:async';
 import 'package:get/get.dart';
-import 'package:quan_ly_ban_hang/data/models/sales_order.dart';
+import 'package:quan_ly_ban_hang/data/models/request_return.dart';
 import 'package:quan_ly_ban_hang/data/models/status.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/appwrite_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/filterdata_mixin.dart';
-import 'package:quan_ly_ban_hang/share_function/mixin/sales_order_mixin.dart';
+import 'package:quan_ly_ban_hang/share_function/mixin/request_return_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 
-class ListSalesOrderController extends GetxController
+class ListRequestReturnController extends GetxController
     with
         GetTickerProviderStateMixin,
         StateMixin,
         AppWriteMixin,
         FilterDataMixin,
-        SalesOrderMixin {
-  List<SalesOrder>? listSalesOrder = [];
+        RequestReturnMixin {
+  List<RequestReturn>? listRequestReturn = [];
   List<Status>? listStatus = [];
   @override
   Future<void> onInit() async {
     super.onInit();
     loadingUI();
-    await initSalesOrderMixin();
-    await getListSalesOrder();
+    await initRequestReturnMixin();
+    await getListRequestReturn();
     await getListStatus();
     changeUI();
   }
 
-  getListSalesOrder() async {
-    listSalesOrder?.clear();
+  getListRequestReturn() async {
+    listRequestReturn?.clear();
     loadingUI();
-    listSalesOrder = await getListSalesOrderMixin();
-    listSalesOrder
+    listRequestReturn = await getListRequestReturnMixin();
+    listRequestReturn
         ?.sort((a, b) => (b.createdAt ?? '').compareTo(a.createdAt ?? ''));
     changeUI();
   }

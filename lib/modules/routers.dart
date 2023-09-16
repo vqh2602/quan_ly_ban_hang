@@ -10,10 +10,14 @@ import 'package:quan_ly_ban_hang/modules/details/detail_customer/customer_detail
 import 'package:quan_ly_ban_hang/modules/details/detail_customer/customer_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_binding.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_screen.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_request_return/detail_request_return_binding.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_request_return/detail_request_return_screen.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_sales_invoice/detail_sales_invoice_binding.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_sales_invoice/detail_sales_invoice_screen.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_supplier/supplier_detail_binding.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_supplier/supplier_detail_screen.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_warehouse_receipt/detail_warehouse_receipt_binding.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_warehouse_receipt/detail_warehouse_receipt_screen.dart';
 
 import 'package:quan_ly_ban_hang/modules/home/home_binding.dart';
 import 'package:quan_ly_ban_hang/modules/home/home_screen.dart';
@@ -23,16 +27,22 @@ import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_bind
 import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_request_return/list_warehouse_receipt_binding.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_request_return/list_warehouse_receipt_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_supplier/list_supplier_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_supplier/list_supplier_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_warehouse_receipt/list_warehouse_receipt_binding.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_warehouse_receipt/list_warehouse_receipt_screen.dart';
 import 'package:quan_ly_ban_hang/modules/splash/splash_binding.dart';
 import 'package:quan_ly_ban_hang/modules/splash/splash_screen.dart';
 
 import 'package:get/get.dart';
+import 'package:quan_ly_ban_hang/modules/statistical/statistical_binding.dart';
+import 'package:quan_ly_ban_hang/modules/statistical/statistical_screen.dart';
 
 List<GetPage> routes = [
   GetPage(
@@ -111,5 +121,30 @@ List<GetPage> routes = [
     name: SupplierDetailScreen.routeName,
     page: () => const SupplierDetailScreen(),
     binding: SupplierDetailBinding(),
+  ),
+  GetPage(
+    name: ListWarehouseReceiptSreen.routeName,
+    page: () => const ListWarehouseReceiptSreen(),
+    binding: ListWarehouseReceiptBinding(),
+  ),
+  GetPage(
+    name: DetailWarehouseReceiptScreen.routeName,
+    page: () => const DetailWarehouseReceiptScreen(),
+    binding: DetailWarehouseReceiptBinding(),
+  ),
+  GetPage(
+    name: ListRequestReturnSreen.routeName,
+    page: () => const ListRequestReturnSreen(),
+    binding: ListRequestReturnBinding(),
+  ),
+  GetPage(
+    name: DetailRequestReturnScreen.routeName,
+    page: () => const DetailRequestReturnScreen(),
+    binding: DetailRequestReturnBinding(),
+  ),
+  GetPage(
+    name: StatisticalScreen.routeName,
+    page: () => const StatisticalScreen(),
+    binding: StatisticalBinding(),
   ),
 ];

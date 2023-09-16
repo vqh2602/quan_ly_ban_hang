@@ -44,4 +44,18 @@ class ModuleConfig {
 
   /// Chi tiết hoá đơn bán hàng
   String tblDetailSalesOrderID = 'tbl_detailSalesOrder';
+
+  /// đơn nhập kho
+  String tblWarehouseReceiptID = 'tbl_warehouseReceipt';
+
+  /// chi tiết đơn nhập kho
+  String tblDetailWarehouseReceiptID = 'tbl_detailWarehouseReceipt';
+
+  /// yêu cầu đổi trả
+  String tblRequestReturnID = 'tbl_requestReturn';
+
+  /// chi tiết yêu cầu đổi trả
+  String tblDetailRequestReturnID = 'tbl_detailRequestReturn';
+
+  /// log ghi nhật ký
 }

@@ -28,7 +28,23 @@ mixin AppWriteMixin {
     await getListCategoryMixin();
     await getListDepartmentMixin();
     await getListPermissionMixin();
+    // await realTime();
   }
+
+//   realTime() {
+//     final realtime = Realtime(client);
+// // Subscribe to files channel
+//     final subscription = realtime.subscribe([
+//       'databases.${Env.config.appWriteDatabaseID}.collections.${Env.config.tblSalesOrderID}.documents'
+//     ]);
+
+//     subscription.stream.listen((response) {
+//       if (response.events.contains('databases.*.collections.*.documents.*')) {
+//         // Log when a new file is uploaded
+//         // print('realtime_db: ${response.payload}');
+//       }
+//     });
+//   }
 
   /// đăng nhập
   Future<User?> loginMixin(

@@ -9,14 +9,31 @@ Widget blockStatistical(
     required String date,
     required String value,
     required Color color,
+    EdgeInsetsGeometry? margin,
+    EdgeInsetsGeometry? padding,
+    bool isBoxShadow = false,
+    double? height,
+    Widget? icon,
+    bool isFormatCurrency = true,
     required Function onTap}) {
   return Container(
-    margin: const EdgeInsets.only(top: 12, left: 20, right: 20),
-    padding: const EdgeInsets.all(8),
+    margin: margin ?? const EdgeInsets.only(top: 12, left: 20, right: 20),
+    padding: padding ?? const EdgeInsets.all(8),
+    height: height,
     decoration: BoxDecoration(
-        color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 1,
+          blurRadius: 3,
+          offset: const Offset(0, 3), // Di chuyển đổ bóng theo trục x và y
+        ),
+      ],
+    ),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
@@ -27,14 +44,18 @@ Widget blockStatistical(
             radius: 30.0,
             backgroundColor: Colors.white,
             child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  textTitleMedium( '18', fontWeight: FontWeight.w900),
-                  textTitleSmall( 'N', fontWeight: FontWeight.w900),
-                ],
-              ),
+              child: icon ??
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: textTitleSmall(
+                              ShareFuntion.formatNumber(number: value),
+                              fontWeight: FontWeight.w900,textAlign: TextAlign.center)),
+                    ],
+                  ),
             ),
           ),
         ),
@@ -47,12 +68,13 @@ Widget blockStatistical(
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  textTitleSmall( title),
-                  textBodySmall( date, color: Colors.grey),
+                  textTitleSmall(title),
+                  textBodySmall(date, color: Colors.grey),
                 ],
               ),
-              textTitleMedium(
-                   ShareFuntion.formatCurrency(num.parse(value)))
+              textTitleMedium(isFormatCurrency
+                  ? ShareFuntion.formatCurrency(num.parse(value))
+                  : value)
             ],
           ),
         ),

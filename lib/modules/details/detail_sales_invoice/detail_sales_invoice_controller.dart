@@ -103,6 +103,10 @@ class DetailSalesInvoiceController extends GetxController
 
   initDataCreate() async {
     uidCreate = uuid.v4();
+
+    customerItemSelect = null;
+    listDetailSalesOrderCustomEdit = [];
+    personnelShipperItemSelect = null;
     //fill dữ liệu vào các trường select
     // customerItemSelect = listCustomer
     //     ?.where((element) => element.value == customer?.uid)
@@ -122,6 +126,7 @@ class DetailSalesInvoiceController extends GetxController
     //     ?.where((element) => element.value == salesOrder?.personnelShipperId)
     //     .firstOrNull;
     initTE(salesOrder: null);
+    update();
   }
 
 // lấy dl don hang qua id
@@ -242,10 +247,10 @@ class DetailSalesInvoiceController extends GetxController
   // tạo hoá đơn bán
   createSaleOder() async {
     loadingUI();
-    if (customerItemSelect?.value == null ||
-        personnelSaleItemSelect?.value == null ||
-        personnelShipperItemSelect?.value == null ||
-        listDetailSalesOrderCustomEdit != null ||
+    if (customerItemSelect?.value != null &&
+        personnelSaleItemSelect?.value != null &&
+        personnelShipperItemSelect?.value != null &&
+        listDetailSalesOrderCustomEdit != null &&
         (listDetailSalesOrderCustomEdit?.length ?? 0) > 0) {
       salesOrder = await createDetailSalesOrderMixin(
           salesOrder: SalesOrder(
@@ -584,7 +589,7 @@ class DetailSalesInvoiceController extends GetxController
         moneyGuestsTE?.text != '' &&
         num.parse(moneyGuestsTE?.text ?? '0') > 0) {
       changeMoneyData = double.parse(moneyGuestsTE?.text ?? '0') -
-          (calculateTotalMoney() - double.parse(partlyPaidTE?.text ?? '0'));
+          (calculateTotalMoney());
     }
     return changeMoneyData;
   }

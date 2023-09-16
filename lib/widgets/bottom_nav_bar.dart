@@ -7,6 +7,7 @@ import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/modules/qr_scan/qr_screen.dart';
+import 'package:quan_ly_ban_hang/modules/statistical/statistical_screen.dart';
 import 'package:quan_ly_ban_hang/widgets/library/flashy_tab_bar2.dart';
 
 // Widget bottomNavigationBar(
@@ -78,9 +79,7 @@ List<FlashyTabBarItem> items = [
 
 List<Widget> widgetOptions = <Widget>[
   const DashBroadScreen(),
-  Container(
-    color: Colors.red,
-  ),
+  const StatisticalScreen(),
   const AccountDetailScreen(),
   const QrScan(),
 ];

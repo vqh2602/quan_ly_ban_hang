@@ -15,6 +15,7 @@ Color a50 = const Color(0xffFFF0F3);
 
 Color b500 = const Color(0xff72B6F7);
 Color bg500 = const Color(0xffFAFCFF);
+Color bg700 = const Color(0xffF1F7FF);
 
 class ThemeService {
   final _box = GetStorage();

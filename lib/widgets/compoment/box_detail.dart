@@ -6,7 +6,7 @@ import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
 Widget boxDetail({required Widget child}) {
   return Container(
-    padding:const EdgeInsets.only(left: 20,right: 20,top: 12,bottom: 12),
+    padding: const EdgeInsets.only(left: 20, right: 20, top: 12, bottom: 12),
     decoration: BoxDecoration(
       color: Colors.white,
       boxShadow: [
@@ -31,21 +31,28 @@ Widget titleEditTitle(
     Function()? onTap,
     bool showEdit = true}) {
   return Container(
-    margin: const EdgeInsets.only(top: 4,bottom: 4),
+    margin: const EdgeInsets.only(top: 4, bottom: 4),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             textBodyMedium(title, fontWeight: boldTitle ?? FontWeight.normal),
             if (showEdit)
-              IconButton(
-                onPressed: () {
+              InkWell(
+                onTap: () {
                   if (onTap != null) onTap();
                 },
-                icon: const Icon(FontAwesomeIcons.lightPenToSquare),
-                color: Get.theme.primaryColor,
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: Icon(
+                      FontAwesomeIcons.lightPenToSquare,
+                      color: Get.theme.primaryColor,
+                    )),
+                // color: Get.theme.primaryColor,
               ),
           ],
         ),
