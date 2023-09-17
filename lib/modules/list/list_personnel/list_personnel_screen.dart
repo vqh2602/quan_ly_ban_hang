@@ -8,7 +8,9 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_controller.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_iteam_personnel.dart';
 import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loadding_refreshindicator.dart';
 import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loding_list.dart';
@@ -91,8 +93,15 @@ class _ListPersonnelState extends State<ListPersonnelSreen> {
         ),
         createFloatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              Get.toNamed(AccountDetailScreen.routeName,
-                  arguments: {'type': 'create'});
+              if (ShareFuntion()
+                  .checkPermissionUserLogin(permission: ['QL', 'C_NV', 'AD'])) {
+                Get.toNamed(AccountDetailScreen.routeName,
+                    arguments: {'type': 'create'});
+              } else {
+                buildToast(
+                    message: 'Không có quyền xem thông tin',
+                    status: TypeToast.toastError);
+              }
             },
             label:
                 const Icon(FontAwesomeIcons.solidRectangleHistoryCirclePlus)));

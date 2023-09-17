@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutx_ui/flutx.dart';
 import 'package:get/get.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
-import 'package:quan_ly_ban_hang/modules/list/list_tools/data_tools.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_tool.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
@@ -20,6 +19,8 @@ class ListToolsSreen extends StatefulWidget {
 }
 
 class _ListToolsState extends State<ListToolsSreen> {
+  ListToolsController listToolsController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return buildBody(
@@ -33,14 +34,19 @@ class _ListToolsState extends State<ListToolsSreen> {
               margin: alignment_20_0(),
               padding: const EdgeInsets.only(bottom: 12),
               child: textSearch(
-                  onTapSearch: () {}, textController: TextEditingController()),
+                  onTapSearch: () {
+                    listToolsController
+                        .onSearch(listToolsController.textSearchTE.text);
+                  },
+                  textController: listToolsController.textSearchTE),
             ),
             Expanded(
-              child: Container(
+                child: listToolsController.obx(
+              (state) => Container(
                 padding: alignment_20_0(),
                 child: AnimationLimiter(
                   child: GridView.builder(
-                    itemCount: listDataTools.length,
+                    itemCount: listToolsController.listDataToolResult.length,
                     itemBuilder: (BuildContext context, int index) {
                       return AnimationConfiguration.staggeredList(
                         position: index,
@@ -49,7 +55,8 @@ class _ListToolsState extends State<ListToolsSreen> {
                           verticalOffset: 50.0,
                           child: FadeInAnimation(
                             child: itemTool(
-                              dataTool: listDataTools[index],
+                              dataTool:
+                                  listToolsController.listDataToolResult[index],
                               textColor: Colors.black,
                               isTextSmall: false,
                               // iconColor: Colors.white,
@@ -59,7 +66,8 @@ class _ListToolsState extends State<ListToolsSreen> {
                       );
                     },
                     padding: const EdgeInsets.only(top: 12),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
@@ -67,7 +75,7 @@ class _ListToolsState extends State<ListToolsSreen> {
                   ),
                 ),
               ),
-            ),
+            )),
           ],
         ),
       ),
@@ -75,13 +83,13 @@ class _ListToolsState extends State<ListToolsSreen> {
         title: textTitleLarge('Danh sách tính năng'),
         surfaceTintColor: bg500,
         backgroundColor: bg500,
-        actions: [
-          IconButton(
-            icon: const Icon(LucideIcons.filter),
-            onPressed: () {
-              showBottomSheetFilter();
-            },
-          )
+        actions: const [
+          // IconButton(
+          //   icon: const Icon(LucideIcons.filter),
+          //   onPressed: () {
+          //     showBottomSheetFilter();
+          //   },
+          // )
         ],
       ),
     );

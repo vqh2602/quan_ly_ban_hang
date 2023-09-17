@@ -85,9 +85,13 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                           children: [
                             IconButton(
                               onPressed: () {},
-                              icon: const Icon(
-                                FontAwesomeIcons.lightBars,
-                                color: Colors.white,
+                              icon: const Badge(
+                                textColor: Colors.white,
+                                backgroundColor: Colors.white,
+                                child: Icon(
+                                  FontAwesomeIcons.bell,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                             textTitleMedium('Trang chủ', color: Colors.white),

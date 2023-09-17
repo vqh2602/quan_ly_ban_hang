@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_customer/customer_detail_controller.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/s_show_chose.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
@@ -67,8 +69,24 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                 Container(
                   margin: const EdgeInsets.only(right: 20),
                   child: FxButton.medium(
-                    borderRadiusAll: 100,
+                      borderRadiusAll: 100,
                       onPressed: () {
+                        if (ShareFuntion().checkPermissionUserLogin(
+                            permission: [
+                              'QL',
+                              'BH',
+                              'GH',
+                              'C_KH',
+                              'E_KH',
+                              'AD'
+                            ])) {
+                        } else {
+                          buildToast(
+                              message: 'Không có quyền xem thông tin',
+                              status: TypeToast.toastError);
+                          return;
+                        }
+
                         if (keyForm1.currentState?.validate() ?? false) {
                           if (isView) {
                             customerDetailController.updateCustomer();

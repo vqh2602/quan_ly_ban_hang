@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_request_return/detail_request_return_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/box_detail.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_2line.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_icon_title.dart';
@@ -532,6 +533,15 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                                       '0xff${ShareFuntion.getStatusWithIDFunc(isEdit ? detailRequestReturnController.statusBrowsingItemSelect?.value : detailRequestReturnController.requestReturn?.browsingStatus, listStatus: detailRequestReturnController.listStatus)?.color}'))),
                               value: '',
                               onTap: () {
+                                if (ShareFuntion().checkPermissionUserLogin(
+                                    permission: ['QL', 'AD'])) {
+                                } else {
+                                  buildToast(
+                                      message:
+                                          'Không có quyền xem thông tin',
+                                      status: TypeToast.toastError);
+                                  return;
+                                }
                                 Get.bottomSheet(detailRequestReturnController
                                     .obx((state) => showBottomListChose(
                                           options: detailRequestReturnController
@@ -701,6 +711,15 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                     child: FxButton.medium(
                       borderRadiusAll: 100,
                       onPressed: () async {
+                        if (ShareFuntion().checkPermissionUserLogin(
+                            permission: ['QL', 'NK', 'C_YC', 'E_YC', 'AD'])) {
+                        } else {
+                          buildToast(
+                              message: 'Không có quyền xem thông tin',
+                              status: TypeToast.toastError);
+                          return;
+                        }
+
                         if (isView && !isEdit) {
                           setState(() {
                             isView = true;

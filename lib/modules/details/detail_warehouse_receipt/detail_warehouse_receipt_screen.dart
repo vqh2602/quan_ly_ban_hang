@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_warehouse_receipt/detail_warehouse_receipt_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/box_detail.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_2line.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_icon_title.dart';
@@ -567,6 +568,15 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                       '0xff${ShareFuntion.getStatusWithIDFunc(isEdit ? detailWarehouseReceiptController.statusBrowsingItemSelect?.value : detailWarehouseReceiptController.warehouseReceipt?.browsingStatus, listStatus: detailWarehouseReceiptController.listStatus)?.color}'))),
                               value: '',
                               onTap: () {
+                                if (ShareFuntion().checkPermissionUserLogin(
+                                    permission: ['QL', 'AD'])) {
+                                } else {
+                                  buildToast(
+                                      message:
+                                          'Không có quyền xem thông tin',
+                                      status: TypeToast.toastError);
+                                  return;
+                                }
                                 Get.bottomSheet(detailWarehouseReceiptController
                                     .obx((state) => showBottomListChose(
                                           options:
@@ -743,6 +753,15 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                     child: FxButton.medium(
                       borderRadiusAll: 100,
                       onPressed: () async {
+                        if (ShareFuntion().checkPermissionUserLogin(
+                            permission: ['QL', 'NK', 'C_NK', 'E_NK', 'AD'])) {
+                        } else {
+                          buildToast(
+                              message: 'Không có quyền xem thông tin',
+                              status: TypeToast.toastError);
+                          return;
+                        }
+
                         if (isView && !isEdit) {
                           setState(() {
                             isView = true;

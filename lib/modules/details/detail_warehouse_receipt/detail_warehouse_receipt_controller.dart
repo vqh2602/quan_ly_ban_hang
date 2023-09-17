@@ -19,6 +19,7 @@ import 'package:quan_ly_ban_hang/share_function/mixin/personnel_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/product_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/user_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/warehouse_receipt_mixin.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:uuid/uuid.dart';
 
@@ -194,9 +195,22 @@ class DetailWarehouseReceiptController extends GetxController
     update();
   }
 
-// cập nhật hoá đơn bán
+// cập nhật hóa đơn nhập
   updateSaleOder() async {
     loadingUI();
+    // KIỂM tra trạng thái duyệt => đã duyệt và hoàn tất k cho sửa trừa admin
+    if ((warehouseReceipt?.deliveryStatus ==
+                '7dafedc3-edd3-453a-8724-b2c4d75b3912' &&
+            warehouseReceipt?.browsingStatus ==
+                '6616adbe-cec8-4477-94a8-4175d7d2cabe') &&
+        !ShareFuntion().checkPermissionUserLogin(permission: ['QL', 'AD'])) {
+    } else {
+      buildToast(
+          message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
+          status: TypeToast.getError);
+      return;
+    }
+
     // cập nhật ds sản phâm trong hoá đơn
     await updateDetailProductInWarehouseReceipt();
 
@@ -218,7 +232,7 @@ class DetailWarehouseReceiptController extends GetxController
     changeUI();
   }
 
-  // tạo hoá đơn bán
+  // tạo hóa đơn nhập
   createSaleOder() async {
     loadingUI();
     if (supplierItemSelect?.value != null &&

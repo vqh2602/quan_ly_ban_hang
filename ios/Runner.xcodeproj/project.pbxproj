@@ -400,7 +400,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = F54V2R3D84;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -423,7 +423,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E355F9F2B53027A4FB1327B5 /* Pods-Runner.debug-dev.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = F54V2R3D84;
 				INFOPLIST_KEY_CFBundleDisplayName = OMIYAGE;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -436,7 +436,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 200E701C4907062824FD861F /* Pods-Runner.profile-dev.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = F54V2R3D84;
 				INFOPLIST_KEY_CFBundleDisplayName = OMIYAGE;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -449,7 +449,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = ED652AEE13804779A8EB357E /* Pods-Runner.release-dev.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = F54V2R3D84;
 				INFOPLIST_KEY_CFBundleDisplayName = OMIYAGE;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -462,7 +462,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 68F195A19BEB6DD87366B031 /* Pods-Runner.debug-prod.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = F54V2R3D84;
 				INFOPLIST_KEY_CFBundleDisplayName = OMIYAGE;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -475,7 +475,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CC87DC153C20D8CA136B0ABC /* Pods-Runner.profile-prod.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = F54V2R3D84;
 				INFOPLIST_KEY_CFBundleDisplayName = OMIYAGE;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -488,7 +488,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 76148DF169CD912089236021 /* Pods-Runner.release-prod.xcconfig */;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = F54V2R3D84;
 				INFOPLIST_KEY_CFBundleDisplayName = OMIYAGE;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -821,7 +821,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = F54V2R3D84;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -847,7 +847,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = F54V2R3D84;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;

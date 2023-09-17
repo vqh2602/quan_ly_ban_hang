@@ -6,7 +6,7 @@ import 'package:quan_ly_ban_hang/config/config.dart';
 import 'package:quan_ly_ban_hang/data/models/detail_request_return.dart';
 import 'package:quan_ly_ban_hang/data/models/request_return.dart';
 import 'package:quan_ly_ban_hang/data/repositories/appwrite_repo.dart';
-import 'package:quan_ly_ban_hang/modules/list/list_request_return/list_warehouse_receipt_controller.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_request_return/list_request_return_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 
 ListRequestReturnController listRequestReturnController = Get.find();

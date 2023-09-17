@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_supplier/supplier_detail_controller.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/theme_textinput.dart';
@@ -66,8 +68,16 @@ class _SupplierDetailScreenState extends State<SupplierDetailScreen> {
                 Container(
                   margin: const EdgeInsets.only(right: 20),
                   child: FxButton.medium(
-                    borderRadiusAll: 100,
+                      borderRadiusAll: 100,
                       onPressed: () {
+                        if (ShareFuntion().checkPermissionUserLogin(
+                            permission: ['QL', 'NK', 'C_NCC', 'E_NCC', 'AD'])) {
+                        } else {
+                          buildToast(
+                              message: 'Không có quyền xem thông tin',
+                              status: TypeToast.toastError);
+                          return;
+                        }
                         if (keyForm1.currentState?.validate() ?? false) {
                           if (isView) {
                             supplierDetailController.updateSupplier();
@@ -116,7 +126,6 @@ class _SupplierDetailScreenState extends State<SupplierDetailScreen> {
                                   decoration:
                                       textFieldInputStyle(label: 'Tên ncc (*)'),
                                 ),
-                                
                               ],
                             ),
                           )
@@ -133,7 +142,6 @@ class _SupplierDetailScreenState extends State<SupplierDetailScreen> {
                         decoration: textFieldInputStyle(label: 'Số điện thoại'),
                         maxLines: 1,
                       ),
-        
                       const SizedBox(
                         height: 4 * 5,
                       ),

@@ -19,6 +19,7 @@ import 'package:quan_ly_ban_hang/share_function/mixin/supplier_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/personnel_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/product_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/user_mixin.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:uuid/uuid.dart';
 
@@ -199,6 +200,19 @@ class DetailRequestReturnController extends GetxController
 // cập nhật hoá đơn bán
   updateSaleOder() async {
     loadingUI();
+    // KIỂM tra trạng thái duyệt => đã duyệt và hoàn tất k cho sửa trừa admin
+    if ((requestReturn?.supplierStatus ==
+                '00f36339-cf48-4b84-8eef-c52081ee0013' &&
+            requestReturn?.browsingStatus ==
+                '6616adbe-cec8-4477-94a8-4175d7d2cabe') &&
+        !ShareFuntion().checkPermissionUserLogin(permission: ['QL', 'AD'])) {
+    } else {
+      buildToast(
+          message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
+          status: TypeToast.getError);
+      return;
+    }
+
     // cập nhật ds sản phâm trong hoá đơn
     await updateDetailProductInRequestReturn();
 

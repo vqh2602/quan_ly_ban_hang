@@ -10,6 +10,7 @@ import 'package:quan_ly_ban_hang/widgets/chart/bar_chart_sample6.dart';
 import 'package:quan_ly_ban_hang/widgets/chart/barchart1.dart';
 import 'package:quan_ly_ban_hang/widgets/chart/line_chart_sample2.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/block_statistical.dart';
+import 'package:quan_ly_ban_hang/widgets/hide_widget.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
@@ -69,9 +70,7 @@ class _StatisticalScreenState extends State<StatisticalScreen>
                     icon: const Icon(LucideIcons.sparkles),
                     onPressed: () async {
                       await statisticalController.getListOderByFilter();
-                      setState(() {
-                        
-                      });
+                      setState(() {});
                     },
                   )
                 ],
@@ -82,72 +81,78 @@ class _StatisticalScreenState extends State<StatisticalScreen>
 
   Widget _buildBody() {
     return statisticalController.obx((state) => SafeArea(
-          child: Container(
-            color: bg500,
-            margin: alignment_20_0(),
-            child: Column(children: [
+          child: Stack(
+            children: [
               Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: bg700,
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            tabController.animateTo(0);
-                            setState(() {});
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: tabController.index == 0
-                                    ? Colors.white
-                                    : Colors.transparent),
-                            child: textBodyMedium('Chi tiết',
-                                color: tabController.index == 0
-                                    ? Colors.black
-                                    : Colors.grey,
-                                textAlign: TextAlign.center),
+                color: bg500,
+                margin: alignment_20_0(),
+                child: Column(children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: bg700,
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                tabController.animateTo(0);
+                                setState(() {});
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: tabController.index == 0
+                                        ? Colors.white
+                                        : Colors.transparent),
+                                child: textBodyMedium('Chi tiết',
+                                    color: tabController.index == 0
+                                        ? Colors.black
+                                        : Colors.grey,
+                                    textAlign: TextAlign.center),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      cWidth(20),
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            tabController.animateTo(1);
-                            setState(() {});
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: tabController.index == 1
-                                    ? Colors.white
-                                    : Colors.transparent),
-                            child: textBodyMedium('Thống kê',
-                                color: tabController.index == 1
-                                    ? Colors.black
-                                    : Colors.grey,
-                                textAlign: TextAlign.center),
-                          ),
-                        ),
-                      )
-                    ]),
+                          cWidth(20),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                tabController.animateTo(1);
+                                setState(() {});
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: tabController.index == 1
+                                        ? Colors.white
+                                        : Colors.transparent),
+                                child: textBodyMedium('Thống kê',
+                                    color: tabController.index == 1
+                                        ? Colors.black
+                                        : Colors.grey,
+                                    textAlign: TextAlign.center),
+                              ),
+                            ),
+                          )
+                        ]),
+                  ),
+                  cHeight(20),
+                  Expanded(
+                      child: TabBarView(
+                    controller: tabController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [_tabDetail(), _tabChart()],
+                  ))
+                ]),
               ),
-              cHeight(20),
-              Expanded(
-                  child: TabBarView(
-                controller: tabController,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [_tabDetail(), _tabChart()],
-              ))
-            ]),
+              hideWidget(
+                  permission: ['QL', 'ADMIN', 'TK', 'AD'], height: Get.height)
+            ],
           ),
         ));
   }

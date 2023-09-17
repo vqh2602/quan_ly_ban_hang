@@ -8,6 +8,7 @@ import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_sales_invoice/detail_sales_invoice_controller.dart';
 import 'package:quan_ly_ban_hang/modules/print_pos/print_pos.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/box_detail.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_2line.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_icon_title.dart';
@@ -993,6 +994,22 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                     child: FxButton.medium(
                       borderRadiusAll: 100,
                       onPressed: () async {
+                        if (ShareFuntion().checkPermissionUserLogin(
+                            permission: [
+                              'QL',
+                              'BH',
+                              'GH',
+                              'C_HD',
+                              'E_HD',
+                              'AD'
+                            ])) {
+                        } else {
+                          buildToast(
+                              message: 'Không có quyền xem thông tin',
+                              status: TypeToast.toastError);
+                          return;
+                        }
+
                         if (isView && !isEdit) {
                           setState(() {
                             isView = true;

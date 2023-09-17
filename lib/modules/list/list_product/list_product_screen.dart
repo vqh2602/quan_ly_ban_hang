@@ -8,7 +8,9 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_controller.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_product.dart';
 import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loadding_refreshindicator.dart';
 import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loding_list.dart';
@@ -90,8 +92,15 @@ class _ListProductState extends State<ListProductSreen> {
         ),
         createFloatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              Get.toNamed(DetailProductSreen.routeName,
-                  arguments: {'type': 'create'});
+              if (ShareFuntion().checkPermissionUserLogin(
+                  permission: ['QL', 'NK', 'C_SP', 'AD'])) {
+                Get.toNamed(DetailProductSreen.routeName,
+                    arguments: {'type': 'create'});
+              }else{
+                  buildToast(
+                    message: 'Không có quyền xem thông tin',
+                    status: TypeToast.toastError);
+              }
             },
             label:
                 const Icon(FontAwesomeIcons.solidRectangleHistoryCirclePlus)));

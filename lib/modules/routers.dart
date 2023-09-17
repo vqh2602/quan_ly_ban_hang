@@ -27,8 +27,8 @@ import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_bind
 import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_screen.dart';
-import 'package:quan_ly_ban_hang/modules/list/list_request_return/list_warehouse_receipt_binding.dart';
-import 'package:quan_ly_ban_hang/modules/list/list_request_return/list_warehouse_receipt_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_request_return/list_request_return_binding.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_request_return/list_request_return_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_supplier/list_supplier_binding.dart';
