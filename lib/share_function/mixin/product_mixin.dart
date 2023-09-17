@@ -1,15 +1,39 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:bottom_bar_matu/utils/app_utils.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:quan_ly_ban_hang/config/config.dart';
 import 'package:quan_ly_ban_hang/data/models/product.dart';
 import 'package:quan_ly_ban_hang/data/repositories/appwrite_repo.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
+
+ListProductController listProductController = Get.find();
 
 mixin ProductMixin {
   AppWriteRepo appWriteRepo = AppWriteRepo();
   GetStorage box = GetStorage();
   List<Product>? listProductMixin = [];
+
+  initProductMixin() async {
+    await realTime();
+  }
+
+// lắng ghe sự kiện thay đổi và vập nhật - realtime
+  realTime() {
+    final realtime = Realtime(client);
+// Subscribe to files channel
+    final subscription = realtime.subscribe([
+      'databases.${Env.config.appWriteDatabaseID}.collections.${Env.config.tblProductID}.documents'
+    ]);
+    subscription.stream.listen((response) async {
+      if (response.events.contains('databases.*.collections.*.documents.*')) {
+        await listProductController.getListProducts();
+        // Log when a new file is uploaded
+        // print('realtime_db: ${response.payload}');
+      }
+    });
+  }
 
   /// ds sản phẩm
   Future<List<Product>?> getListProductMixin({bool isCache = false}) async {

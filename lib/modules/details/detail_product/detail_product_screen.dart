@@ -10,6 +10,7 @@ import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/data/models/unit.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/box_detail.dart';
 import 'package:quan_ly_ban_hang/widgets/image_custom.dart';
 import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
@@ -497,6 +498,15 @@ class _DetailProductState extends State<DetailProductSreen> {
                     child: FxButton.medium(
                       borderRadiusAll: 100,
                       onPressed: () {
+                        if (ShareFuntion().checkPermissionUserLogin(
+                            permission: ['QL', 'NK', 'C_SP', 'E_SP', 'AD'])) {
+                        } else {
+                          buildToast(
+                              message: 'Không có quyền xem thông tin',
+                              status: TypeToast.toastError);
+                          return;
+                        }
+
                         setState(() {
                           isIconEdit = !isIconEdit;
                           if (isIconEdit) {

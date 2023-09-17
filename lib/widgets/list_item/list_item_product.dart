@@ -17,6 +17,7 @@ Widget itemProduct({
   EdgeInsets? margin,
   double? quantity,
   Function? onTap,
+  bool isImportPrice = false, // hiện giá nhập hay k
   Function?
       onHoverDelete, // ấn giữ xoá sp ra khỏi list - dùng cho các màn hoá đơn
 }) {
@@ -92,7 +93,9 @@ Widget itemProduct({
                         textTitleMedium('x$quantity', color: b500),
                       Expanded(
                         child: textTitleMedium(
-                            ShareFuntion.formatCurrency(product?.price ?? 0),
+                            ShareFuntion.formatCurrency(isImportPrice
+                                ? product?.importPrice ?? 0
+                                : product?.price ?? 0),
                             color: a500,
                             textAlign: TextAlign.right),
                       ),

@@ -9,7 +9,9 @@ import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 
 import 'package:quan_ly_ban_hang/modules/details/detail_customer/customer_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_customer/list_customer_controller.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_customer.dart';
 import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loadding_refreshindicator.dart';
 import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loding_list.dart';
@@ -59,7 +61,6 @@ class _ListCustomerState extends State<ListCustomerSreen> {
                       child: ListView.builder(
                         itemCount:
                             listCustomerController.listCustomer?.length ?? 0,
-                            
                         itemBuilder: (BuildContext context, int index) {
                           return AnimationConfiguration.staggeredList(
                             position: index,
@@ -68,8 +69,8 @@ class _ListCustomerState extends State<ListCustomerSreen> {
                               verticalOffset: 50.0,
                               child: FadeInAnimation(
                                 child: itemCustomer(
-                                  customer:
-                                      listCustomerController.listCustomer?[index],
+                                  customer: listCustomerController
+                                      .listCustomer?[index],
                                 ),
                               ),
                             ),
@@ -96,8 +97,15 @@ class _ListCustomerState extends State<ListCustomerSreen> {
         ),
         createFloatingActionButton: FloatingActionButton.extended(
             onPressed: () {
-              Get.toNamed(CustomerDetailScreen.routeName,
-                  arguments: {'type': 'create'});
+              if (ShareFuntion().checkPermissionUserLogin(
+                  permission: ['QL', 'BH', 'GH', 'C_KH', 'AD'])) {
+                Get.toNamed(CustomerDetailScreen.routeName,
+                    arguments: {'type': 'create'});
+              } else {
+                buildToast(
+                    message: 'Không có quyền xem thông tin',
+                    status: TypeToast.toastError);
+              }
             },
             label:
                 const Icon(FontAwesomeIcons.solidRectangleHistoryCirclePlus)));

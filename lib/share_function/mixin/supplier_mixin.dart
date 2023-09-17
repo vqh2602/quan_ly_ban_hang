@@ -8,25 +8,31 @@ import 'package:quan_ly_ban_hang/data/models/supplier.dart';
 mixin SupplierMixin {
   AppWriteRepo appWriteRepo = AppWriteRepo();
   GetStorage box = GetStorage();
+  List<Supplier>? listSupplierMixin = [];
 
   /// ds khach hàng
-  Future<List<Supplier>?> getListSupplierMixin() async {
-    List<Supplier>? listSupplier;
+  Future<List<Supplier>?> getListSupplierMixin({bool isCache = false}) async {
+    if (isCache &&
+        listSupplierMixin != null &&
+        (listSupplierMixin?.isNotEmpty ?? false)) {
+      return listSupplierMixin;
+    }
+
     var res = await appWriteRepo.databases.listDocuments(
         databaseId: Env.config.appWriteDatabaseID,
         collectionId: Env.config.tblSupplierID);
     if (res.documents.isNotEmpty) {
-      listSupplier =
+      listSupplierMixin =
           res.documents.map((e) => Supplier.fromJson(e.data)).toList();
     } else {
       buildToast(
           title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
       return null;
     }
-    return listSupplier;
+    return listSupplierMixin;
   }
 
-  /// chi tiết khach hang
+  /// chi tiết ncc
   Future<Supplier?> getDetailSupplierMixin({String? id}) async {
     Supplier? supplier;
     var res = await appWriteRepo.databases.getDocument(
@@ -35,6 +41,24 @@ mixin SupplierMixin {
         documentId: id ?? '');
     if (res.data.isNotEmpty) {
       supplier = Supplier.fromJson(res.data);
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return supplier;
+  }
+
+  /// chi tiết qua uid
+  Future<Supplier?> getDetailSupplierWithUidMixin({String? uid}) async {
+    Supplier? supplier;
+    var res = await appWriteRepo.databases.listDocuments(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblSupplierID,
+        queries: [Query.equal('id', uid)]);
+    if (res.documents.isNotEmpty) {
+      supplier =
+          res.documents.map((e) => Supplier.fromJson(e.data)).firstOrNull;
     } else {
       buildToast(
           title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);

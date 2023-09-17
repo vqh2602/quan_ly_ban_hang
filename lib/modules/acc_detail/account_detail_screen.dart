@@ -207,7 +207,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                         onTap: () {
                           if (isCreate || isView) {
                             ShareFuntion.dateTimePicker(
-                                onComplete: () {},
+                   
                                 onchange: (date) {
                                   accountDetailController.birthday = date;
                                   accountDetailController

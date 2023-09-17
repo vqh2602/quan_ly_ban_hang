@@ -20,6 +20,7 @@ class ListProductController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     loadingUI();
+    await initProductMixin();
     await getListProducts();
     await getListUnit();
     changeUI();

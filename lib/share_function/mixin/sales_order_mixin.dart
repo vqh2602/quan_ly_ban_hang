@@ -1,14 +1,42 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:quan_ly_ban_hang/config/config.dart';
 import 'package:quan_ly_ban_hang/data/models/detail_sales_order.dart';
 import 'package:quan_ly_ban_hang/data/models/sales_order.dart';
 import 'package:quan_ly_ban_hang/data/repositories/appwrite_repo.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
+
+ListSalesOrderController listSalesOrderController = Get.find();
 
 mixin SalesOrderMixin {
   AppWriteRepo appWriteRepo = AppWriteRepo();
   GetStorage box = GetStorage();
+
+  initSalesOrderMixin() async {
+    await realTime();
+  }
+
+// lắng ghe sự kiện thay đổi và vập nhật - realtime
+  realTime() {
+    final realtime = Realtime(client);
+// Subscribe to files channel
+    final subscription = realtime.subscribe([
+      'databases.${Env.config.appWriteDatabaseID}.collections.${Env.config.tblSalesOrderID}.documents'
+    ]);
+
+    subscription.stream.listen((response) async {
+      if (response.events.contains('databases.*.collections.*.documents.*')) {
+        await listSalesOrderController.getListSalesOrder();
+        // Log when a new file is uploaded
+        if (kDebugMode) {
+          print('realtime_db: salse oder');
+        }
+      }
+    });
+  }
 
   /// ds đơn bán hàng
   Future<List<SalesOrder>?> getListSalesOrderMixin() async {
@@ -22,6 +50,30 @@ mixin SalesOrderMixin {
     } else {
       buildToast(
           title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return listSalesOrder;
+  }
+
+  /// ds đơn bán hàng filter
+  Future<List<SalesOrder>?> getListOderByFilterMixin(
+      {required int month, required int year}) async {
+    List<SalesOrder>? listSalesOrder;
+    var res = await appWriteRepo.databases.listDocuments(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblSalesOrderID,
+        queries: [
+          Query.greaterThanEqual("timeOrder", DateTime(year, month, 1)),
+          Query.lessThanEqual("timeOrder", DateTime(year, month, 31)),
+        ]);
+    if (res.documents.isNotEmpty) {
+      listSalesOrder =
+          res.documents.map((e) => SalesOrder.fromJson(e.data)).toList();
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra khi lấy dữ liệu doanh số',
+          message: '',
+          status: TypeToast.getError);
       return null;
     }
     return listSalesOrder;

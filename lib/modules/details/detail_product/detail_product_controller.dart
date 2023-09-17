@@ -154,6 +154,7 @@ class DetailProductController extends GetxController
         discount: double.parse(discountTE?.text ?? '0'),
         note: noteTE?.text,
         image: imageUrl,
+        numberSales: 0,
         unit: selectedUnit?.value,
         category: listCategorySelect?.map((e) => e.value ?? '').toList() ?? [],
       ));

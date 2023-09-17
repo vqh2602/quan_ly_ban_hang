@@ -10,15 +10,17 @@ import 'package:quan_ly_ban_hang/data/models/category.dart';
 import 'package:quan_ly_ban_hang/data/models/status.dart';
 import 'package:quan_ly_ban_hang/data/models/unit.dart';
 import 'package:quan_ly_ban_hang/data/models/user.dart';
+import 'package:quan_ly_ban_hang/share_function/mixin/user_mixin.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum TypeDate { ddMMyyyy, yyyyMMdd, ddMMyyyyhhmm, hhmm, dd, yyyy, mM }
 
-class ShareFuntion {
-  static void dateTimePicker(
-      {required Function(DateTime) onchange, required Function onComplete}) {
+class ShareFuntion with UserMixin {
+  static void dateTimePicker({
+    required Function(DateTime) onchange,
+  }) {
     Get.bottomSheet(
         backgroundColor: Get.theme.colorScheme.background,
         Container(
@@ -29,8 +31,8 @@ class ShareFuntion {
               initialDateTime: DateTime.now(),
               //backgroundColor: Colors.white,
               dateOrder: DatePickerDateOrder.dmy,
-              mode: CupertinoDatePickerMode.date),
-        )).whenComplete(() => onComplete());
+              mode: CupertinoDatePickerMode.monthYear),
+        ));
   }
 
   static String formatDate({required TypeDate type, dynamic dateTime}) {
@@ -212,5 +214,23 @@ class ShareFuntion {
     List<T> uniqueObjects =
         list1.where((item) => !set2.contains(item)).toList();
     return uniqueObjects;
+  }
+
+  /// kiểm tra quyền ng dùng đang đăng nhập
+  bool checkPermissionUserLogin({List<String>? permission}) {
+    User? user = getUserInBox();
+    bool per = false;
+
+    permission?.forEach((element) {
+      if (user.permission?.contains(element) ?? false) {
+        per = true;
+      }
+    });
+    permission?.forEach((element) {
+      if (user.department?.contains(element) ?? false) {
+        per = true;
+      }
+    });
+    return per;
   }
 }

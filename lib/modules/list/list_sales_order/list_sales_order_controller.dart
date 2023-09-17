@@ -20,6 +20,7 @@ class ListSalesOrderController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     loadingUI();
+    await initSalesOrderMixin();
     await getListSalesOrder();
     await getListStatus();
     changeUI();

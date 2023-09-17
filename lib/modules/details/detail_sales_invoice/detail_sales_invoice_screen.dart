@@ -8,6 +8,7 @@ import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_sales_invoice/detail_sales_invoice_controller.dart';
 import 'package:quan_ly_ban_hang/modules/print_pos/print_pos.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
+import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/box_detail.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_2line.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/icon_title_icon_title.dart';
@@ -111,67 +112,72 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                   child: Column(
                     children: [
                       SafeArea(
-                        child: Container(
-                          color: Get.theme.primaryColor,
-                          height: 120,
-                          width: Get.width,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 4 * 8),
-                                child: Row(
+                        child: isCreate
+                            ? const SizedBox()
+                            : Container(
+                                color: Get.theme.primaryColor,
+                                height: 120,
+                                width: Get.width,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    const Icon(
-                                      FontAwesomeIcons.lightTruckClock,
-                                      color: Colors.white,
+                                    Container(
+                                      margin:
+                                          const EdgeInsets.only(left: 4 * 8),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            FontAwesomeIcons.lightTruckClock,
+                                            color: Colors.white,
+                                          ),
+                                          cWidth(4 * 5),
+                                          Expanded(
+                                            child: textTitleLarge(
+                                                ShareFuntion.getStatusWithIDFunc(
+                                                            detailSalesInvoiceController
+                                                                .salesOrder
+                                                                ?.deliveryStatus,
+                                                            listStatus:
+                                                                detailSalesInvoiceController
+                                                                    .listStatus)
+                                                        ?.name ??
+                                                    'Trống',
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    cWidth(4 * 5),
-                                    Expanded(
-                                      child: textTitleLarge(
-                                          ShareFuntion.getStatusWithIDFunc(
-                                                      detailSalesInvoiceController
-                                                          .salesOrder
-                                                          ?.deliveryStatus,
-                                                      listStatus:
+                                    Container(
+                                      margin:
+                                          const EdgeInsets.only(left: 4 * 8),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            FontAwesomeIcons.lightCashRegister,
+                                            color: Colors.white,
+                                          ),
+                                          cWidth(4 * 5),
+                                          textTitleLarge(
+                                              ShareFuntion.getStatusWithIDFunc(
                                                           detailSalesInvoiceController
-                                                              .listStatus)
-                                                  ?.name ??
-                                              'Trống',
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
+                                                              .salesOrder
+                                                              ?.paymentStatus,
+                                                          listStatus:
+                                                              detailSalesInvoiceController
+                                                                  .listStatus)
+                                                      ?.name ??
+                                                  'Trống',
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 4 * 8),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      FontAwesomeIcons.lightCashRegister,
-                                      color: Colors.white,
-                                    ),
-                                    cWidth(4 * 5),
-                                    textTitleLarge(
-                                        ShareFuntion.getStatusWithIDFunc(
-                                                    detailSalesInvoiceController
-                                                        .salesOrder
-                                                        ?.paymentStatus,
-                                                    listStatus:
-                                                        detailSalesInvoiceController
-                                                            .listStatus)
-                                                ?.name ??
-                                            'Trống',
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                       boxDetail(
                           child: Column(
@@ -407,16 +413,20 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                                   ?.quantity
                                                   .toString() ??
                                               '0'),
-                                      onTap: () {
-                                        showBottomSheetAddProduct(
-                                            detailSalesOrderCustom: isEdit
-                                                ? (detailSalesInvoiceController
-                                                        .listDetailSalesOrderCustomEdit?[
-                                                    indext])
-                                                : (detailSalesInvoiceController
-                                                        .listDetailSalesOrderCustom?[
-                                                    indext]));
-                                      },
+                                      onTap: isEdit
+                                          ? () {
+                                              if (isEdit) {
+                                                showBottomSheetAddProduct(
+                                                    detailSalesOrderCustom: isEdit
+                                                        ? (detailSalesInvoiceController
+                                                                .listDetailSalesOrderCustomEdit?[
+                                                            indext])
+                                                        : (detailSalesInvoiceController
+                                                                .listDetailSalesOrderCustom?[
+                                                            indext]));
+                                              }
+                                            }
+                                          : null,
                                       onHoverDelete: () {
                                         ShareFuntion.onPopDialog(
                                             context: context,
@@ -567,17 +577,33 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                               showEdit: false,
                               colorValue: a500),
                           titleEditTitle(
-                              title: 'Tiền khách đưa',
-                              value: ShareFuntion.formatCurrency(
-                                isEdit
-                                    ? num.parse(detailSalesInvoiceController
-                                            .moneyGuestsTE?.text ??
-                                        '0')
-                                    : detailSalesInvoiceController
-                                            .salesOrder?.moneyGuests ??
-                                        0,
-                              ),
-                              showEdit: isEdit),
+                            title: 'Tiền khách đưa',
+                            value: ShareFuntion.formatCurrency(
+                              isEdit
+                                  ? num.parse(detailSalesInvoiceController
+                                          .moneyGuestsTE?.text ??
+                                      '0')
+                                  : detailSalesInvoiceController
+                                          .salesOrder?.moneyGuests ??
+                                      0,
+                            ),
+                            showEdit: isEdit,
+                            onTap: () {
+                              Get.bottomSheet(
+                                showBottomTextInput(
+                                    detailSalesInvoiceController.moneyGuestsTE,
+                                    onCancel: () {
+                                  detailSalesInvoiceController.moneyGuestsTE
+                                      ?.text = detailSalesInvoiceController
+                                          .salesOrder?.moneyGuests
+                                          .toString() ??
+                                      '0';
+                                }, onSubmitted: () {
+                                  detailSalesInvoiceController.updateUI();
+                                }),
+                              );
+                            },
+                          ),
                           titleEditTitle(
                               title: 'Trả lại',
                               value: ShareFuntion.formatCurrency(
@@ -968,6 +994,22 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                     child: FxButton.medium(
                       borderRadiusAll: 100,
                       onPressed: () async {
+                        if (ShareFuntion().checkPermissionUserLogin(
+                            permission: [
+                              'QL',
+                              'BH',
+                              'GH',
+                              'C_HD',
+                              'E_HD',
+                              'AD'
+                            ])) {
+                        } else {
+                          buildToast(
+                              message: 'Không có quyền xem thông tin',
+                              status: TypeToast.toastError);
+                          return;
+                        }
+
                         if (isView && !isEdit) {
                           setState(() {
                             isView = true;

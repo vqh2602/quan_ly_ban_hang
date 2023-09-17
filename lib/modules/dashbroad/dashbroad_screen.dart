@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -12,13 +13,19 @@ import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_tools/data_tools.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_warehouse_receipt/list_warehouse_receipt_controller.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_warehouse_receipt/list_warehouse_receipt_screen.dart';
+import 'package:quan_ly_ban_hang/modules/statistical/statistical_controller.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/block_bottomsheet.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/block_statistical.dart';
+import 'package:quan_ly_ban_hang/widgets/hide_widget.dart';
 import 'package:quan_ly_ban_hang/widgets/library/dragghome/draggable_home.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_bill_of_sale.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_product.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_tool.dart';
+import 'package:quan_ly_ban_hang/widgets/list_item/list_item_warehouse_receipt.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
@@ -35,7 +42,9 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
   DashBroadController dashBroadController = Get.find();
   ListProductController listProductController = Get.find();
   ListSalesOrderController listSalesOrderController = Get.find();
+  ListWarehouseReceiptController listWarehouseReceiptController = Get.find();
   AccountDetailController accountController = Get.find();
+  StatisticalController statisticalController = Get.find();
   bool showHeader = true;
   ScrollController scrollController = ScrollController();
 
@@ -76,9 +85,13 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                           children: [
                             IconButton(
                               onPressed: () {},
-                              icon: const Icon(
-                                FontAwesomeIcons.lightBars,
-                                color: Colors.white,
+                              icon: const Badge(
+                                textColor: Colors.white,
+                                backgroundColor: Colors.white,
+                                child: Icon(
+                                  FontAwesomeIcons.bell,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                             textTitleMedium('Trang chủ', color: Colors.white),
@@ -117,49 +130,104 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                 // headerBottomBar: headerBottomBarWidget(),
                 body: [
                   cHeight(8),
-                  Container(
-                    margin: alignment_20_0(),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        textTitleLarge(
-                          'Đơn hàng bán',
-                          color: Colors.black,
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              Get.toNamed(ListSalesOrderSreen.routeName);
-                            },
-                            icon: const Icon(
-                              FontAwesomeIcons.ellipsis,
-                              color: Colors.black,
-                            ))
-                      ],
+                  if (ShareFuntion().checkPermissionUserLogin(
+                      permission: ['QL', 'BH', 'AD'])) ...[
+                    Container(
+                      margin: alignment_20_0(),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          textTitleLarge(
+                            'Đơn hàng bán',
+                            color: Colors.black,
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                Get.toNamed(ListSalesOrderSreen.routeName);
+                              },
+                              icon: const Icon(
+                                FontAwesomeIcons.ellipsis,
+                                color: Colors.black,
+                              ))
+                        ],
+                      ),
                     ),
-                  ),
-                  listSalesOrderController.obx(
-                    (state) => Container(
-                      // margin: alignment_20_0(),
-                      constraints: const BoxConstraints(maxHeight: 460),
-                      child: ListView.builder(
-                          itemCount: (listSalesOrderController
-                                          .listSalesOrder?.length ??
-                                      0) >
-                                  5
-                              ? 5
-                              : listSalesOrderController.listSalesOrder?.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.only(top: 12),
-                          itemBuilder: (context, indext) {
-                            return itemBillOfSale(
-                                listStatus: listSalesOrderController.listStatus,
-                                salesOrder: listSalesOrderController
-                                    .listSalesOrder![indext]);
-                          }),
+                    listSalesOrderController.obx(
+                      (state) => Container(
+                        // margin: alignment_20_0(),
+                        constraints: const BoxConstraints(maxHeight: 460),
+                        child: ListView.builder(
+                            itemCount: (listSalesOrderController
+                                            .listSalesOrder?.length ??
+                                        0) >
+                                    5
+                                ? 5
+                                : listSalesOrderController
+                                    .listSalesOrder?.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.only(top: 12),
+                            itemBuilder: (context, indext) {
+                              return itemBillOfSale(
+                                  listStatus:
+                                      listSalesOrderController.listStatus,
+                                  salesOrder: listSalesOrderController
+                                      .listSalesOrder![indext]);
+                            }),
+                      ),
                     ),
-                  ),
+                  ],
+                  if (ShareFuntion().checkPermissionUserLogin(
+                      permission: ['QL', 'NK', 'AD'])) ...[
+                    Container(
+                      margin: alignment_20_0(),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          textTitleLarge(
+                            'Đơn nhập kho',
+                            color: Colors.black,
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                Get.toNamed(
+                                    ListWarehouseReceiptSreen.routeName);
+                              },
+                              icon: const Icon(
+                                FontAwesomeIcons.ellipsis,
+                                color: Colors.black,
+                              ))
+                        ],
+                      ),
+                    ),
+                    listWarehouseReceiptController.obx(
+                      (state) => Container(
+                        // margin: alignment_20_0(),
+                        constraints: const BoxConstraints(maxHeight: 460),
+                        child: ListView.builder(
+                            itemCount: (listWarehouseReceiptController
+                                            .listWarehouseReceipt?.length ??
+                                        0) >
+                                    5
+                                ? 5
+                                : listWarehouseReceiptController
+                                    .listWarehouseReceipt?.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.only(top: 12),
+                            itemBuilder: (context, indext) {
+                              return itemWarehouseReceipt(
+                                  listStatus:
+                                      listWarehouseReceiptController.listStatus,
+                                  warehouseReceipt:
+                                      listWarehouseReceiptController
+                                          .listWarehouseReceipt![indext]);
+                            }),
+                      ),
+                    ),
+                  ],
                   Container(
                     margin: alignment_20_0(),
                     child: Row(
@@ -221,18 +289,42 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               cHeight(kTextTabBarHeight),
-              blockStatistical(
-                  title: 'Doanh số',
-                  date: 'tháng 8/2023',
-                  value: '180000000',
-                  color: a500,
-                  onTap: () {}),
-              blockStatistical(
-                  title: 'Lợi nhuận',
-                  date: 'tháng 8/2023',
-                  value: '15000000',
-                  color: b500,
-                  onTap: () {}),
+              Stack(
+                children: [
+                  statisticalController.obx(
+                    (state) => Column(
+                      children: [
+                        blockStatistical(
+                            title: 'Doanh số',
+                            date:
+                                'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
+                            value: statisticalController
+                                .calculateTotalRevenue(
+                                    listData: statisticalController
+                                        .listSalesOrderHome)
+                                .toString(),
+                            color: a500,
+                            onTap: () {}),
+                        blockStatistical(
+                            title: 'Lợi nhuận',
+                            date:
+                                'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
+                            value: statisticalController
+                                .calculateTotalProfit(
+                                    listData: statisticalController
+                                        .listSalesOrderHome)
+                                .toString(),
+                            color: b500,
+                            onTap: () {}),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                      padding: alignment_20_0(),
+                      child:
+                          hideWidget(permission: ['QL', 'ADMIN', 'TK', 'AD']))
+                ],
+              ),
               cHeight(12),
               Container(
                 margin: alignment_20_0(),
