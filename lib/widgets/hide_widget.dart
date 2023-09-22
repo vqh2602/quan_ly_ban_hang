@@ -8,18 +8,22 @@ Widget hideWidget(
     {required List<String> permission,
     double? height,
     EdgeInsetsGeometry? padding}) {
-  return BlurryContainer(
-    blur: ShareFuntion().checkPermissionUserLogin(permission: permission)
-        ? 0
-        : 10,
-    padding: padding ?? alignment_20_0(),
-    child: Container(
-      alignment: Alignment.center,
-      width: double.infinity,
-      height: height ?? 200,
-      child: ShareFuntion().checkPermissionUserLogin(permission: permission)
-          ? const SizedBox()
-          : textBodyMedium('Không có quyền xem thông tin'),
+      bool hide = ShareFuntion().checkPermissionUserLogin(permission: permission);
+  return Visibility(
+    visible: !hide,
+    child: BlurryContainer(
+      blur: hide
+          ? 0
+          : 10,
+      padding: padding ?? alignment_20_0(),
+      child: Container(
+        alignment: Alignment.center,
+        width: double.infinity,
+        height: height ?? 200,
+        child: hide
+            ? const SizedBox()
+            : textBodyMedium('Không có quyền xem thông tin'),
+      ),
     ),
   );
 }

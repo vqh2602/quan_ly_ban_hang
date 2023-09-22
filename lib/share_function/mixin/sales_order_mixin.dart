@@ -57,23 +57,28 @@ mixin SalesOrderMixin {
 
   /// ds đơn bán hàng filter
   Future<List<SalesOrder>?> getListOderByFilterMixin(
-      {required int month, required int year}) async {
+      {required int? month, required int? year, String? deliveryStatus}) async {
     List<SalesOrder>? listSalesOrder;
     var res = await appWriteRepo.databases.listDocuments(
         databaseId: Env.config.appWriteDatabaseID,
         collectionId: Env.config.tblSalesOrderID,
         queries: [
-          Query.greaterThanEqual("timeOrder", DateTime(year, month, 1)),
-          Query.lessThanEqual("timeOrder", DateTime(year, month, 31)),
+          if (month != null && year != null) ...[
+            Query.greaterThanEqual("timeOrder", DateTime(year, month, 1)),
+            Query.lessThanEqual("timeOrder", DateTime(year, month, 31)),
+          ],
+          if (deliveryStatus != null) ...[
+            Query.equal("deliveryStatus", deliveryStatus),
+          ]
         ]);
     if (res.documents.isNotEmpty) {
       listSalesOrder =
           res.documents.map((e) => SalesOrder.fromJson(e.data)).toList();
     } else {
-      buildToast(
-          title: 'Có lỗi xảy ra khi lấy dữ liệu doanh số',
-          message: '',
-          status: TypeToast.getError);
+      // buildToast(
+      //     title: 'Có lỗi xảy ra khi lấy dữ liệu doanh số',
+      //     message: '',
+      //     status: TypeToast.getError);
       return null;
     }
     return listSalesOrder;

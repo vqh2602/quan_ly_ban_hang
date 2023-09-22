@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:expandable_text/expandable_text.dart';
@@ -9,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/data/models/unit.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_controller.dart';
+import 'package:quan_ly_ban_hang/modules/qr_scan/qr_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/box_detail.dart';
@@ -20,7 +22,7 @@ import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
 /// tham số truyền vào
-/// [type]: **view** - xem, và sửa; **create** - tạo
+/// [type]: **view** - xem, và sửa; **create** - tạo **QR** mã qr
 /// [productID]: id của product, nếu type là chế độ view thì gọi api lấy tt sản phẩm
 class DetailProductSreen extends StatefulWidget {
   const DetailProductSreen({super.key});
@@ -32,6 +34,7 @@ class DetailProductSreen extends StatefulWidget {
 
 class _DetailProductState extends State<DetailProductSreen> {
   DetailProductController detailProductController = Get.find();
+  QrController qrController = Get.find();
   final ImagePicker picker = ImagePicker();
   var arguments = Get.arguments;
   bool isView = false; // XEM HAY LÀ TẠO MỚI
@@ -43,12 +46,31 @@ class _DetailProductState extends State<DetailProductSreen> {
         isView = true;
       });
     }
+    if (arguments['type'] == 'QR') {
+      setState(() {
+        isView = true;
+      });
+    }
     if (arguments['type'] == 'create') {
       setState(() {
         isIconEdit = true;
       });
     }
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (arguments['type'] == 'QR') {
+      // khởi động lại camera, gắn lại giá trị nhập mã
+      Timer.run(() {
+        // You can call setState from here
+        qrController.startCamera();
+        qrController.setNhapCodeData();
+      });
+    }
+
+    super.dispose();
   }
 
   @override
@@ -73,6 +95,7 @@ class _DetailProductState extends State<DetailProductSreen> {
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 textTitleMedium('Ảnh sản phẩm'),
                                 isIconEdit
@@ -90,7 +113,9 @@ class _DetailProductState extends State<DetailProductSreen> {
                                           }
                                         },
                                         icon: const Icon(
-                                            FontAwesomeIcons.lightPenToSquare),
+                                          FontAwesomeIcons.lightPenToSquare,
+                                          size: 18,
+                                        ),
                                         color: Get.theme.primaryColor,
                                       )
                                     : const SizedBox()
@@ -357,6 +382,7 @@ class _DetailProductState extends State<DetailProductSreen> {
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 textTitleMedium('Danh mục (nhãn)'),
                                 isIconEdit
@@ -394,7 +420,9 @@ class _DetailProductState extends State<DetailProductSreen> {
                                                       )));
                                         },
                                         icon: const Icon(
-                                            FontAwesomeIcons.lightPenToSquare),
+                                          FontAwesomeIcons.lightPenToSquare,
+                                          size: 18,
+                                        ),
                                         color: Get.theme.primaryColor,
                                       )
                                     : const SizedBox()
@@ -435,6 +463,7 @@ class _DetailProductState extends State<DetailProductSreen> {
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 textTitleMedium('Ghi chú'),
                                 isIconEdit
@@ -456,7 +485,9 @@ class _DetailProductState extends State<DetailProductSreen> {
                                           );
                                         },
                                         icon: const Icon(
-                                            FontAwesomeIcons.lightPenToSquare),
+                                          FontAwesomeIcons.lightPenToSquare,
+                                          size: 18,
+                                        ),
                                         color: Get.theme.primaryColor,
                                       )
                                     : const SizedBox()
@@ -528,7 +559,8 @@ class _DetailProductState extends State<DetailProductSreen> {
                         }
                       },
                       shadowColor: Colors.transparent,
-                      child: arguments['type'] == 'view'
+                      child: arguments['type'] == 'view' ||
+                              arguments['type'] == 'QR'
                           ? isIconEdit
                               ? textTitleMedium('Lưu', color: Colors.white)
                               : textTitleMedium('Sửa', color: Colors.white)

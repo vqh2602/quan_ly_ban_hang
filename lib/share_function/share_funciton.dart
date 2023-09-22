@@ -233,4 +233,5 @@ class ShareFuntion with UserMixin {
     });
     return per;
   }
-}
+
+  }

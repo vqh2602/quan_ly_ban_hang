@@ -140,6 +140,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                             child: Ink(
                               child: CircleAvatar(
                                 radius: 60,
+                                backgroundColor: Colors.transparent,
                                 child: SizedBox(
                                   width: double.infinity,
                                   height: double.infinity,
@@ -206,14 +207,11 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                       TextFormField(
                         onTap: () {
                           if (isCreate || isView) {
-                            ShareFuntion.dateTimePicker(
-                   
-                                onchange: (date) {
-                                  accountDetailController.birthday = date;
-                                  accountDetailController
-                                      .updateDataTextEditing();
-                                  accountDetailController.update();
-                                });
+                            ShareFuntion.dateTimePicker(onchange: (date) {
+                              accountDetailController.birthday = date;
+                              accountDetailController.updateDataTextEditing();
+                              accountDetailController.update();
+                            });
                           }
                         },
                         style: textStyleCustom(fontSize: 16),

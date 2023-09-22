@@ -51,6 +51,7 @@ Widget titleEditTitle(
                     child: Icon(
                       FontAwesomeIcons.lightPenToSquare,
                       color: Get.theme.primaryColor,
+                      size: 16,
                     )),
                 // color: Get.theme.primaryColor,
               ),

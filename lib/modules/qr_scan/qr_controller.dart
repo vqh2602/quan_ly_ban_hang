@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:quan_ly_ban_hang/data/models/product.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_screen.dart';
+import 'package:quan_ly_ban_hang/share_function/mixin/product_mixin.dart';
+import 'package:vibration/vibration.dart';
 
 class QrController extends GetxController
-    with GetTickerProviderStateMixin, StateMixin {
-  Rx<Barcode?> result = Rx<Barcode?>(null); // kết quả
-  RxBool statusCamera = true.obs; // bật / tắt // trạng thái camera
-  RxBool flashCamera = true.obs; // bật / tắt // đèn flash
-  RxBool flipCam = true.obs; // bật / tắt // came trước / cam sau
+    with GetTickerProviderStateMixin, StateMixin, ProductMixin {
+  Barcode? result; // kết quả
+  bool statusCamera = true; // bật / tắt // trạng thái camera
+  bool flashCamera = true; // bật / tắt // đèn flash
+  bool flipCam = true; // bật / tắt // came trước / cam sau
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   String? screen; // điều hướng sang: gom mã , kiểm kê
   String? dataQr;
   bool playSound = true;
 
-  Rx<bool> nhapCode = false.obs;
+  bool nhapCode = false;
   TextEditingController textEditingControllerCode = TextEditingController();
 
   @override
@@ -26,7 +30,7 @@ class QrController extends GetxController
 
   // tự nhập code khi qr không quét đc mã
   void setNhapCode() {
-    nhapCode.value = !nhapCode.value;
+    nhapCode = !nhapCode;
     // print('nhapdoe : $nhapCode');
     update();
   }
@@ -40,10 +44,10 @@ class QrController extends GetxController
   Future<void> postNhapCode(String? code) async {
     if (code != '') {
       dataQr = code;
-      result.value = null;
+      result = null;
       // set dungwf cam
       await controller!.pauseCamera(); // dừng
-      statusCamera.value = false;
+      statusCamera = false;
       update();
       goToItemInfo();
     } else {
@@ -54,23 +58,24 @@ class QrController extends GetxController
 
   //lấy dữ liệu và sử dụng cho các màn sau
   Future<void> updateResult(Barcode data) async {
-    result.value = data;
-    // print('ketqua: ${await QrDataConnect().getDataWithID(QrDataConnect().apiUrl(result.value!.code!))}');
+    result = data;
+    // print('ketqua: ${await QrDataConnect().getDataWithID(QrDataConnect().apiUrl(result!.code!))}');
     //   update();
   }
 
   // khu vực điều hướng camera
   Future<void> startCamera() async {
     await controller!.resumeCamera(); // dừng
-    statusCamera.value = true;
+    statusCamera = true;
     playSound = true;
-    // print('ketqua: ${await QrDataConnect().getDataWithID(QrDataConnect().apiUrl(result.value!.code!))}');
+    // print('ketqua: ${await QrDataConnect().getDataWithID(QrDataConnect().apiUrl(result!.code!))}');
     //   update();
   }
 
   Future<void> flipCamera(QRViewController controller) async {
-    await controller.flipCamera().whenComplete(
-        () => flipCam.value = !flipCam.value); // lật camera ( trước/ sau)
+    await controller
+        .flipCamera()
+        .whenComplete(() => flipCam = !flipCam); // lật camera ( trước/ sau)
     update();
   }
 
@@ -78,22 +83,22 @@ class QrController extends GetxController
     // bật flash
     await controller
         .toggleFlash()
-        .whenComplete(() => flashCamera.value = !flashCamera.value);
+        .whenComplete(() => flashCamera = !flashCamera);
     update();
   }
 
   Future<void> pauseStartCamera(QRViewController controller) async {
-    statusCamera.value
+    statusCamera
         ? await controller.pauseCamera() // dừng
         : await controller.resumeCamera(); // tiếp tục
-    statusCamera.value = !statusCamera.value;
+    statusCamera = !statusCamera;
     // gắn lại giá trị ban đầu sau mỗi lần ấn nút
-    result.value = null;
+    result = null;
     update();
   }
   // Future<void> pauseCamera(QRViewController controller) async {
   //   await controller.pauseCamera(); // dừng
-  //   statusCamera.value = false;
+  //   statusCamera = false;
   //   update();
   // }
 
@@ -103,8 +108,8 @@ class QrController extends GetxController
     controller.scannedDataStream.listen((scanData) {
       updateResult(scanData).whenComplete(() async {
         // pauseCamera(controller);
-        dataQr = result.value!.code;
-        result.value = null;
+        dataQr = result!.code;
+        result = null;
         update();
         //print('data: ${dataQr} | ');
         playSound = true;
@@ -125,7 +130,24 @@ class QrController extends GetxController
   }
 
   // chuyển màn
-  void goToItemInfo() {
+  Future<void> goToItemInfo() async {
+    loadingUI();
+    Product? product;
+    try {
+      if (await Vibration.hasVibrator() ?? false) {
+        Vibration.vibrate();
+      }
+      product = await getListProductWithBardcodeMixin(bardcode: dataQr);
+    } on Exception catch (_) {}
+    changeUI();
+    if (product == null) {
+      Get.snackbar('Có lỗi xảy ra', 'Không tìm thấy sản phẩm',
+          backgroundColor: Colors.red, colorText: Colors.white);
+      return;
+    }
+
+    Get.toNamed(DetailProductSreen.routeName,
+        arguments: {"product": product, "type": "QR"});
     // Get.toNamed(
     //   // ProductDetailScreen.routeName,
     //   arguments: {"qr_code_data": dataQr},
@@ -141,4 +163,15 @@ class QrController extends GetxController
     // }
   }
 
+  changeUI() {
+    change(null, status: RxStatus.success());
+  }
+
+  updateUI() {
+    update();
+  }
+
+  loadingUI() {
+    change(null, status: RxStatus.loading());
+  }
 }

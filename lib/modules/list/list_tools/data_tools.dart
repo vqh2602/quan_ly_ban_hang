@@ -65,7 +65,7 @@ List<DataTool> listDataTools = [
           ),
       backgroundColor: Colors.white,
       name: 'Tạo đơn nhập kho',
-      group: 'hoadon',
+      group: 'nhapkho',
       onTap: () {
         if (ShareFuntion()
             .checkPermissionUserLogin(permission: ['QL', 'C_NK', 'NK', 'AD'])) {
@@ -87,7 +87,7 @@ List<DataTool> listDataTools = [
           ),
       backgroundColor: Colors.green,
       name: 'Tạo yêu cầu đổi trả',
-      group: 'hoadon',
+      group: 'nhapkho',
       onTap: () {
         if (ShareFuntion()
             .checkPermissionUserLogin(permission: ['QL', 'C_YC', 'NK', 'AD'])) {
@@ -256,7 +256,7 @@ List<DataTool> listDataTools = [
           ),
       backgroundColor: Colors.purple,
       name: 'Quản lý đơn hàng bán',
-      group: 'ncc',
+      group: 'hoadon',
       onTap: () {
         if (ShareFuntion()
             .checkPermissionUserLogin(permission: ['QL', 'BH', 'GH', 'AD'])) {
@@ -277,7 +277,7 @@ List<DataTool> listDataTools = [
           ),
       backgroundColor: Colors.indigo,
       name: 'Quản lý đơn nhập kho',
-      group: 'ncc',
+      group: 'nhapkho',
       onTap: () {
         if (ShareFuntion()
             .checkPermissionUserLogin(permission: ['QL', 'NK', 'V_NK', 'AD'])) {
@@ -298,7 +298,7 @@ List<DataTool> listDataTools = [
           ),
       backgroundColor: Colors.white,
       name: 'Quản lý yêu cầu đổi trả',
-      group: 'ncc',
+      group: 'nhapkho',
       onTap: () {
         if (ShareFuntion()
             .checkPermissionUserLogin(permission: ['QL', 'NK', 'V_NK', 'AD'])) {

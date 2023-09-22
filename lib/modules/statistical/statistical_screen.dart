@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
@@ -6,9 +7,9 @@ import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quan_ly_ban_hang/widgets/chart/bar_chart_sample6.dart';
 import 'package:quan_ly_ban_hang/widgets/chart/barchart1.dart';
 import 'package:quan_ly_ban_hang/widgets/chart/line_chart_sample2.dart';
+import 'package:quan_ly_ban_hang/widgets/chart/radar_chart_sample1.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/block_statistical.dart';
 import 'package:quan_ly_ban_hang/widgets/hide_widget.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
@@ -58,6 +59,7 @@ class _StatisticalScreenState extends State<StatisticalScreen>
                       ShareFuntion.dateTimePicker(
                         onchange: (date) {
                           statisticalController.date = date;
+
                           statisticalController.update();
                         },
                       );
@@ -202,23 +204,25 @@ class _StatisticalScreenState extends State<StatisticalScreen>
               height: 90,
               icon: Icon(FontAwesomeIcons.receipt, color: a500),
               onTap: () {}),
-          cHeight(20),
-          blockStatistical(
-              title: 'Số lượng sản phẩm đã bán',
-              date: 'tháng 8/2023',
-              value: '15000000',
-              color: b500,
-              margin: EdgeInsets.zero,
-              padding:
-                  const EdgeInsets.only(top: 8, right: 8, left: 20, bottom: 8),
-              height: 90,
-              icon: Icon(FontAwesomeIcons.boxOpen, color: b500),
-              onTap: () {}),
+          // cHeight(20),
+          // blockStatistical(
+          //     title: 'Số lượng sản phẩm đã bán',
+          //     date:
+          //         'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
+          //     value: '15000000',
+          //     color: b500,
+          //     margin: EdgeInsets.zero,
+          //     padding:
+          //         const EdgeInsets.only(top: 8, right: 8, left: 20, bottom: 8),
+          //     height: 90,
+          //     icon: Icon(FontAwesomeIcons.boxOpen, color: b500),
+          //     onTap: () {}),
           cHeight(20),
           blockStatistical(
               title: 'Tiền nhập hàng',
-              date: 'tháng 8/2023',
-              value: '15000000',
+              date:
+                  'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
+              value: statisticalController.calculateTotalWarehouse().toString(),
               color: a500,
               margin: EdgeInsets.zero,
               padding:
@@ -229,8 +233,11 @@ class _StatisticalScreenState extends State<StatisticalScreen>
           cHeight(20),
           blockStatistical(
               title: 'Tiền hoàn trả hàng',
-              date: 'tháng 8/2023',
-              value: '15000000',
+              date:
+                  'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
+              value: statisticalController
+                  .calculateTotalRequestReturn()
+                  .toString(),
               color: b500,
               margin: EdgeInsets.zero,
               padding:
@@ -241,8 +248,11 @@ class _StatisticalScreenState extends State<StatisticalScreen>
           cHeight(20),
           blockStatistical(
               title: 'Tỷ lệ thành công',
-              date: 'tháng 8/2023',
-              value: '15000000',
+              date:
+                  'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
+              isFormatCurrency: false,
+              value:
+                  '${statisticalController.calculateTotalSuccessRate().toStringAsFixed(2)} %',
               color: a500,
               margin: EdgeInsets.zero,
               padding:
@@ -257,35 +267,85 @@ class _StatisticalScreenState extends State<StatisticalScreen>
   }
 
   Widget _tabChart() {
-    return Container(
-      color: Colors.transparent,
-      child: SingleChildScrollView(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        textTitleMedium('Biểu đồ doanh thu, lợi nhuận'),
-        BarChartSample2(data: [
-          makeGroupData(
-              0,
-              statisticalController.calculateTotalRevenue(type: 1) / 1000000,
-              statisticalController.calculateTotalProfit(type: 1) / 1000000),
-          makeGroupData(
-              1,
-              statisticalController.calculateTotalRevenue(type: 2) / 1000000,
-              statisticalController.calculateTotalProfit(type: 2) / 1000000),
-          makeGroupData(
-              2,
-              statisticalController.calculateTotalRevenue(type: 3) / 1000000,
-              statisticalController.calculateTotalProfit(type: 3) / 1000000),
-          makeGroupData(
-              3,
-              statisticalController.calculateTotalRevenue(type: 4) / 1000000,
-              statisticalController.calculateTotalProfit(type: 4) / 1000000),
-        ]),
-        textTitleMedium('Biểu đồ tăng trưởng đơn hàng'),
-        const LineChartSample2(),
-        textTitleMedium('Biểu đồ tỷ lệ thành công'),
-        const BarChartSample3()
-      ])),
-    );
+    return statisticalController.obx((state) => Container(
+          color: Colors.transparent,
+          child: SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                textTitleMedium('Biểu đồ doanh thu, lợi nhuận'),
+                BarChartSample2(data: [
+                  makeGroupData(
+                      0,
+                      statisticalController.calculateTotalRevenue(type: 1) /
+                          1000000,
+                      statisticalController.calculateTotalProfit(type: 1) /
+                          1000000),
+                  makeGroupData(
+                      1,
+                      statisticalController.calculateTotalRevenue(type: 2) /
+                          1000000,
+                      statisticalController.calculateTotalProfit(type: 2) /
+                          1000000),
+                  makeGroupData(
+                      2,
+                      statisticalController.calculateTotalRevenue(type: 3) /
+                          1000000,
+                      statisticalController.calculateTotalProfit(type: 3) /
+                          1000000),
+                  makeGroupData(
+                      3,
+                      statisticalController.calculateTotalRevenue(type: 4) /
+                          1000000,
+                      statisticalController.calculateTotalProfit(type: 4) /
+                          1000000),
+                ]),
+                cHeight(10),
+                textTitleMedium('Biểu đồ tăng trưởng đơn hàng'),
+                LineChartSample2(
+                    spots: [
+                      FlSpot(
+                          0,
+                          double.parse(statisticalController
+                              .calculateTotalRevenue(
+                                  type: 1, isNumberSalse: true)
+                              .toString())),
+                      FlSpot(
+                          1,
+                          double.parse(statisticalController
+                              .calculateTotalRevenue(
+                                  type: 2, isNumberSalse: true)
+                              .toString())),
+                      FlSpot(
+                          2,
+                          double.parse(statisticalController
+                              .calculateTotalRevenue(
+                                  type: 3, isNumberSalse: true)
+                              .toString())),
+                      FlSpot(
+                          3,
+                          double.parse(statisticalController
+                              .calculateTotalRevenue(
+                                  type: 4, isNumberSalse: true)
+                              .toString())),
+                    ],
+                    maxY: double.parse(statisticalController
+                        .calculateTotalRevenue(isNumberSalse: true)
+                        .toString())),
+                cHeight(20),
+                textTitleMedium('Biểu đồ tỷ lệ thành công'),
+                PieChartSample2(
+                  x: double.parse(statisticalController
+                      .calculateTotalSuccessRate(type: 0)
+                      .toString()),
+                  y: double.parse(statisticalController
+                      .calculateTotalSuccessRate(type: 2)
+                      .toString()),
+                  z: double.parse(statisticalController
+                      .calculateTotalSuccessRate(type: 1)
+                      .toString()),
+                )
+              ])),
+        ));
   }
 }

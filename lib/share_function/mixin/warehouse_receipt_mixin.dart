@@ -17,6 +17,7 @@ mixin WarehouseReceiptMixin {
   initWarehouseReceiptMixin() async {
     await realTime();
   }
+
 // lắng ghe sự kiện thay đổi và vập nhật - realtime
   realTime() {
     final realtime = Realtime(client);
@@ -31,6 +32,35 @@ mixin WarehouseReceiptMixin {
         // print('realtime_db: ${response.payload}');
       }
     });
+  }
+
+  /// ds đơn nhập filter
+  Future<List<WarehouseReceipt>?> getListWarehouseReceiptByFilterMixin(
+      {required int? month, required int? year, String? statusBrowsing}) async {
+    List<WarehouseReceipt>? listSalesOrder;
+    var res = await appWriteRepo.databases.listDocuments(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblWarehouseReceiptID,
+        queries: [
+          if (month != null && year != null) ...[
+            Query.greaterThanEqual("timeWarehouse", DateTime(year, month, 1)),
+            Query.lessThanEqual("timeWarehouse", DateTime(year, month, 31)),
+          ],
+          if (statusBrowsing != null) ...[
+            Query.equal("browsingStatus", statusBrowsing),
+          ]
+        ]);
+    if (res.documents.isNotEmpty) {
+      listSalesOrder =
+          res.documents.map((e) => WarehouseReceipt.fromJson(e.data)).toList();
+    } else {
+      // buildToast(
+      //     title: 'Có lỗi xảy ra khi lấy dữ liệu doanh số',
+      //     message: '',
+      //     status: TypeToast.getError);
+      return null;
+    }
+    return listSalesOrder;
   }
 
   /// ds đơn bán hàng
@@ -61,7 +91,7 @@ mixin WarehouseReceiptMixin {
       warehouseReceipt = WarehouseReceipt.fromJson(res.data);
     } else {
       buildToast(
-          title: 'Có lỗi xảy ra khi lấy thông tin dánh sách sản phẩm hoá đơn',
+          title: 'Có lỗi xảy ra khi lấy thông tin dánh sách sản phẩm đơn nhập',
           message: '',
           status: TypeToast.getError);
       return null;
@@ -123,16 +153,18 @@ mixin WarehouseReceiptMixin {
   }
 
   /// danh sách chi tiết sản phẩm trong hoá đơn
-  Future<List<DetailWarehouseReceipt>?> getListDetailProductInWarehouseReceiptMixin(
-      {required String? idWarehouseReceipt}) async {
+  Future<List<DetailWarehouseReceipt>?>
+      getListDetailProductInWarehouseReceiptMixin(
+          {required String? idWarehouseReceipt}) async {
     List<DetailWarehouseReceipt>? listDetailSalseOrder;
     var res = await appWriteRepo.databases.listDocuments(
         databaseId: Env.config.appWriteDatabaseID,
         collectionId: Env.config.tblDetailWarehouseReceiptID,
         queries: [Query.equal('wareHouseId', idWarehouseReceipt)]);
     if (res.documents.isNotEmpty) {
-      listDetailSalseOrder =
-          res.documents.map((e) => DetailWarehouseReceipt.fromJson(e.data)).toList();
+      listDetailSalseOrder = res.documents
+          .map((e) => DetailWarehouseReceipt.fromJson(e.data))
+          .toList();
     } else {
       buildToast(
           title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);

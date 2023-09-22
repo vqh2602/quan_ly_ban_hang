@@ -200,16 +200,17 @@ class DetailWarehouseReceiptController extends GetxController
     loadingUI();
     // KIỂM tra trạng thái duyệt => đã duyệt và hoàn tất k cho sửa trừa admin
     if ((warehouseReceipt?.deliveryStatus ==
-                '7dafedc3-edd3-453a-8724-b2c4d75b3912' &&
-            warehouseReceipt?.browsingStatus ==
-                '6616adbe-cec8-4477-94a8-4175d7d2cabe') &&
-        !ShareFuntion().checkPermissionUserLogin(permission: ['QL', 'AD'])) {
-    } else {
-      buildToast(
-          message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
-          status: TypeToast.getError);
-      return;
-    }
+            '7dafedc3-edd3-453a-8724-b2c4d75b3912' &&
+        warehouseReceipt?.browsingStatus ==
+            '6616adbe-cec8-4477-94a8-4175d7d2cabe')) {
+      if (!ShareFuntion().checkPermissionUserLogin(permission: ['QL', 'AD'])) {
+        buildToast(
+            message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
+            status: TypeToast.getError);
+        changeUI();
+        return;
+      }
+    } else {}
 
     // cập nhật ds sản phâm trong hoá đơn
     await updateDetailProductInWarehouseReceipt();

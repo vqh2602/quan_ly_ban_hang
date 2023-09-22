@@ -23,6 +23,8 @@ import 'package:quan_ly_ban_hang/modules/home/home_binding.dart';
 import 'package:quan_ly_ban_hang/modules/home/home_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_customer/list_customer_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_customer/list_customer_screen.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_notifycation/list_notifycation_binding.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_notifycation/list_notifycation_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_binding.dart';
@@ -147,4 +149,9 @@ List<GetPage> routes = [
     page: () => const StatisticalScreen(),
     binding: StatisticalBinding(),
   ),
+  GetPage(
+      name: ListNotifycationSreen.routeName,
+      page: () => const ListNotifycationSreen(),
+      binding: ListNotifycationBinding(),
+      transition: Transition.downToUp),
 ];

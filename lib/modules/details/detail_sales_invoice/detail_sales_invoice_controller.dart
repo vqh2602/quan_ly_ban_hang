@@ -20,6 +20,7 @@ import 'package:quan_ly_ban_hang/share_function/mixin/personnel_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/product_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/sales_order_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/user_mixin.dart';
+import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:uuid/uuid.dart';
 
@@ -204,6 +205,18 @@ class DetailSalesInvoiceController extends GetxController
   updateSaleOder() async {
     loadingUI();
     // cập nhật ds sản phâm trong hoá đơn
+    // KIỂM tra trạng thái giao và thanh toán => k cho sửa trừa admin
+    if ((salesOrder?.deliveryStatus == '7dafedc3-edd3-453a-8724-b2c4d75b3912' &&
+        salesOrder?.paymentStatus == 'adc1e2af-fa93-4f5b-b985-dbbedb53ba89')) {
+      if (!ShareFuntion().checkPermissionUserLogin(permission: ['QL', 'AD'])) {
+        buildToast(
+            message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
+            status: TypeToast.getError);
+        changeUI();
+        return;
+      }
+    } else {}
+
     await updateDetailProductInSalesOrder();
 
     salesOrder = await updateDetailSalesOrderMixin(
@@ -588,8 +601,8 @@ class DetailSalesInvoiceController extends GetxController
     if (moneyGuestsTE?.text != null &&
         moneyGuestsTE?.text != '' &&
         num.parse(moneyGuestsTE?.text ?? '0') > 0) {
-      changeMoneyData = double.parse(moneyGuestsTE?.text ?? '0') -
-          (calculateTotalMoney());
+      changeMoneyData =
+          double.parse(moneyGuestsTE?.text ?? '0') - (calculateTotalMoney());
     }
     return changeMoneyData;
   }

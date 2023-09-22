@@ -13,7 +13,7 @@ import 'package:uuid/uuid.dart';
 
 class DetailProductController extends GetxController
     with GetTickerProviderStateMixin, StateMixin, AppWriteMixin, ProductMixin {
-        final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   var arguments = Get.arguments;
   Product? product;
   List<SelectOptionItem>? listUnit = []; // ds đơn vị tính
@@ -41,6 +41,9 @@ class DetailProductController extends GetxController
     await initDataList();
     if (arguments['type'] == 'view') {
       await getDetaiProduct(arguments['productID']);
+    }
+    if (arguments['type'] == 'QR') {
+      await getDetaiProduct(null, productData: arguments['product']);
     }
 
     changeUI();
@@ -79,7 +82,7 @@ class DetailProductController extends GetxController
 // lấy dl sản phẩm qua id
   getDetaiProduct(String? id, {Product? productData}) async {
     loadingUI();
-    if (product == null) {
+    if (productData == null) {
       product = await getDetailProductMixin(id: id);
     } else {
       product = productData;
