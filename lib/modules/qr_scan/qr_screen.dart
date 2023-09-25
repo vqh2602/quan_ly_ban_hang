@@ -55,7 +55,7 @@ class _QrScanState extends State<QrScan> {
                           alignment: Alignment.bottomCenter,
                           child: Container(
                             margin: const EdgeInsets.only(
-                                bottom: kBottomNavigationBarHeight + 20),
+                                bottom: kBottomNavigationBarHeight + 50),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -120,7 +120,7 @@ class _QrScanState extends State<QrScan> {
                             child: Container(
                               margin: const EdgeInsets.only(top: 12),
                               child: AnimatedContainer(
-                                  margin: const EdgeInsets.only(top: 4 * 7),
+                                  margin: const EdgeInsets.only(top: 4 ),
                                   padding: const EdgeInsets.all(4 * 5),
                                   duration: const Duration(seconds: 1),
                                   curve: Curves.fastOutSlowIn,
@@ -283,37 +283,38 @@ class _QrScanState extends State<QrScan> {
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: SafeArea(
-                            child: ElevatedButton.icon(
-                              onPressed: () => Get.back(),
-                              icon: const Icon(
-                                LucideIcons.chevronLeft,
-                                color: Colors.white,
-                              ),
-                              label: textBodySmall(
-                                'Quay lại',
-                                color: Colors.white,
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  backgroundColor: Colors.transparent),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: SafeArea(
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                LucideIcons.history,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        )
+                        // Align(
+                        //   alignment: Alignment.topLeft,
+                        //   child: SafeArea(
+                        //     child: ElevatedButton.icon(
+                        //       onPressed: () => Get.back(),
+                        //       icon: const Icon(
+                        //         LucideIcons.chevronLeft,
+                        //         color: Colors.white,
+                        //       ),
+                        //       label: textBodySmall(
+                        //         'Quay lại',
+                        //         color: Colors.white,
+                        //       ),
+                        //       style: ElevatedButton.styleFrom(
+                        //           elevation: 0,
+                        //           backgroundColor: Colors.transparent),
+                        //     ),
+                        //   ),
+                        // ),
+                        // Align(
+                        //   alignment: Alignment.topRight,
+                        //   child: SafeArea(
+                        //     child: IconButton(
+                        //       onPressed: () {},
+                        //       icon: const Icon(
+                        //         LucideIcons.history,
+                        //         color: Colors.white,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // )
+                     
                       ],
                     ),
                   ),

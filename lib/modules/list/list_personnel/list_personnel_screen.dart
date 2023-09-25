@@ -11,6 +11,7 @@ import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_cont
 import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
+import 'package:quan_ly_ban_hang/widgets/empty.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_iteam_personnel.dart';
 import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loadding_refreshindicator.dart';
 import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loding_list.dart';
@@ -55,25 +56,34 @@ class _ListPersonnelState extends State<ListPersonnelSreen> {
                     );
                   },
                   child: AnimationLimiter(
-                    child: ListView.builder(
-                      itemCount:
-                          listPersonnelController.listPersonnel?.length ?? 0,
-                      itemBuilder: (BuildContext context, int index) {
-                        return AnimationConfiguration.staggeredList(
-                          position: index,
-                          duration: const Duration(milliseconds: 500),
-                          child: SlideAnimation(
-                            verticalOffset: 50.0,
-                            child: FadeInAnimation(
-                              child: itemPersonnel(
-                                personnel: listPersonnelController
-                                    .listPersonnel?[index],
-                              ),
-                            ),
+                    child: listPersonnelController.listPersonnelResult !=
+                                null &&
+                            listPersonnelController.listPersonnelResult!.isEmpty
+                        ? emptyWidget(
+                            onTap: () async {
+                              await listPersonnelController.getListPersonnels();
+                            },
+                          )
+                        : ListView.builder(
+                            itemCount: listPersonnelController
+                                    .listPersonnelResult?.length ??
+                                0,
+                            itemBuilder: (BuildContext context, int index) {
+                              return AnimationConfiguration.staggeredList(
+                                position: index,
+                                duration: const Duration(milliseconds: 500),
+                                child: SlideAnimation(
+                                  verticalOffset: 50.0,
+                                  child: FadeInAnimation(
+                                    child: itemPersonnel(
+                                      personnel: listPersonnelController
+                                          .listPersonnelResult?[index],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
                   ),
                 ),
             onLoading: const LoadingList()),
@@ -109,45 +119,56 @@ class _ListPersonnelState extends State<ListPersonnelSreen> {
 
   showBottomSheetFilter() {
     Get.bottomSheet(
-        Container(
-          height: Get.height * 0.8,
-          decoration: BoxDecoration(
-              color: bg500,
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(100), topRight: Radius.circular(0))),
-          child: Column(children: [
-            Container(
-              margin: const EdgeInsets.only(top: 12, bottom: 12),
-              child: Container(
-                width: 100,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Get.theme.primaryColor,
-                  borderRadius: BorderRadius.circular(100),
+        listPersonnelController.obx(
+          (state) => Container(
+            height: Get.height * 0.5,
+            decoration: BoxDecoration(
+                color: bg500,
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
+            child: Column(children: [
+              Container(
+                margin: const EdgeInsets.only(top: 12, bottom: 12),
+                child: Container(
+                  width: 100,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Get.theme.primaryColor,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-                child: Container(
-              margin: alignment_20_0(),
-              child: Column(
-                children: [
-                  cHeight(20),
-                  textSearch(
-                      onTapSearch: () {},
-                      textController: TextEditingController()),
-                ],
-              ),
-            )),
-            Container(
-              margin: alignment_20_8(),
-              child: FxButton.block(
-                onPressed: () {},
-                borderRadiusAll: 20,
-                child: textTitleMedium('Tìm kiếm', color: Colors.white),
-              ),
-            )
-          ]),
+              Expanded(
+                  child: Container(
+                margin: alignment_20_0(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    cHeight(20),
+                    textSearch(
+                        onTapSearch: () {},
+                        textController: listPersonnelController.textSearchTE),
+                    cHeight(20),
+                  ],
+                ),
+              )),
+              Container(
+                margin: alignment_20_8(),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FxButton.large(
+                    onPressed: () async {
+                      await listPersonnelController.searchAndSortList();
+                    },
+
+                    // borderRadiusAll: 20,
+                    child: textTitleMedium('Tìm kiếm', color: Colors.white),
+                  ),
+                ),
+              )
+            ]),
+          ),
         ),
         isScrollControlled: true,
         isDismissible: true,
