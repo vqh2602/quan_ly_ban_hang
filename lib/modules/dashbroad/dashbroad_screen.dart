@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -7,6 +6,7 @@ import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_controller.dart';
 import 'package:quan_ly_ban_hang/modules/acc_detail/account_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/dashbroad/dashbroad_controller.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_notifycation/list_notifycation_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_controller.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_product/list_product_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_sales_order/list_sales_order_controller.dart';
@@ -84,7 +84,9 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.toNamed(ListNotifycationSreen.routeName);
+                              },
                               icon: const Badge(
                                 textColor: Colors.white,
                                 backgroundColor: Colors.white,
@@ -122,7 +124,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                           ],
                         ))),
 
-                expandedHeight: 460,
+                expandedHeight: 470,
                 // actions: [
                 //   IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
                 // ],
@@ -292,33 +294,33 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
               Stack(
                 children: [
                   statisticalController.obx(
-                    (state) => Column(
-                      children: [
-                        blockStatistical(
-                            title: 'Doanh số',
-                            date:
-                                'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
-                            value: statisticalController
-                                .calculateTotalRevenue(
-                                    listData: statisticalController
-                                        .listSalesOrderHome)
-                                .toString(),
-                            color: a500,
-                            onTap: () {}),
-                        blockStatistical(
-                            title: 'Lợi nhuận',
-                            date:
-                                'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
-                            value: statisticalController
-                                .calculateTotalProfit(
-                                    listData: statisticalController
-                                        .listSalesOrderHome)
-                                .toString(),
-                            color: b500,
-                            onTap: () {}),
-                      ],
-                    ),
-                  ),
+                      (state) => Column(
+                            children: [
+                              blockStatistical(
+                                  title: 'Doanh số',
+                                  date:
+                                      'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
+                                  value: statisticalController
+                                      .calculateTotalRevenue(
+                                          listData: statisticalController
+                                              .listSalesOrderHome)
+                                      .toString(),
+                                  color: a500,
+                                  onTap: () {}),
+                              blockStatistical(
+                                  title: 'Lợi nhuận',
+                                  date:
+                                      'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
+                                  value: statisticalController
+                                      .calculateTotalProfit(
+                                          listData: statisticalController
+                                              .listSalesOrderHome)
+                                      .toString(),
+                                  color: b500,
+                                  onTap: () {}),
+                            ],
+                          ),
+                      onLoading: const LoadingCustom()),
                   Padding(
                       padding: alignment_20_0(),
                       child:

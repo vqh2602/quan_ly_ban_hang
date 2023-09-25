@@ -3,6 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutx_ui/flutx.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_tools/data_tools.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_tool.dart';
@@ -20,6 +21,18 @@ class ListToolsSreen extends StatefulWidget {
 
 class _ListToolsState extends State<ListToolsSreen> {
   ListToolsController listToolsController = Get.find();
+  final FocusNode _focus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _focus.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +47,7 @@ class _ListToolsState extends State<ListToolsSreen> {
               margin: alignment_20_0(),
               padding: const EdgeInsets.only(bottom: 12),
               child: textSearch(
+                  focusNode: _focus,
                   onTapSearch: () {
                     listToolsController
                         .onSearch(listToolsController.textSearchTE.text);
@@ -44,34 +58,40 @@ class _ListToolsState extends State<ListToolsSreen> {
                 child: listToolsController.obx(
               (state) => Container(
                 padding: alignment_20_0(),
-                child: AnimationLimiter(
-                  child: GridView.builder(
-                    itemCount: listToolsController.listDataToolResult.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return AnimationConfiguration.staggeredList(
-                        position: index,
-                        duration: const Duration(milliseconds: 500),
-                        child: SlideAnimation(
-                          verticalOffset: 50.0,
-                          child: FadeInAnimation(
-                            child: itemTool(
-                              dataTool:
-                                  listToolsController.listDataToolResult[index],
-                              textColor: Colors.black,
-                              isTextSmall: false,
-                              // iconColor: Colors.white,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    padding: const EdgeInsets.only(top: 12),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                    ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (listToolsController.textSearchTE.text != "" &&
+                          _focus.hasFocus) ...[
+                        textBodyMedium(
+                            'Kết quả tìm kiếm: ${listToolsController.textSearchTE.text}',
+                            color: Colors.grey),
+                        _listData(
+                            listDataToolResult:
+                                listToolsController.listDataToolResultSearch),
+                        cHeight(20),
+                      ],
+                      textBodyMedium('Bán hàng', color: Colors.grey),
+                      _listData(
+                          listDataToolResult:
+                              listToolsController.listDataToolResult1),
+                      cHeight(20),
+                      textBodyMedium('Nhập kho', color: Colors.grey),
+                      _listData(
+                          listDataToolResult:
+                              listToolsController.listDataToolResult2),
+                      cHeight(20),
+                      textBodyMedium('Người dùng', color: Colors.grey),
+                      _listData(
+                          listDataToolResult:
+                              listToolsController.listDataToolResult3),
+                      cHeight(20),
+                      textBodyMedium('Sản phẩm', color: Colors.grey),
+                      _listData(
+                          listDataToolResult:
+                              listToolsController.listDataToolResult4),
+                    ],
                   ),
                 ),
               ),
@@ -91,6 +111,47 @@ class _ListToolsState extends State<ListToolsSreen> {
           //   },
           // )
         ],
+      ),
+    );
+  }
+
+  _listData({List<DataTool>? listDataToolResult}) {
+    return Container(
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8, bottom: 20),
+      margin: const EdgeInsets.only(top: 8),
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: AnimationLimiter(
+        child: GridView.builder(
+          itemCount: listDataToolResult?.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (BuildContext context, int index) {
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: const Duration(milliseconds: 500),
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: itemTool(
+                    dataTool: listDataToolResult?[index],
+                    textColor: Colors.black,
+                    isTextSmall: false,
+                    // iconColor: Colors.white,
+                  ),
+                ),
+              ),
+            );
+          },
+          padding: const EdgeInsets.only(top: 12),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 14,
+            mainAxisSpacing: 14,
+          ),
+        ),
       ),
     );
   }

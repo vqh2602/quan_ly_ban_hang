@@ -145,4 +145,24 @@ mixin ProductMixin {
     }
     return product;
   }
+
+  /// sản phẩm với MÃ VẠCH
+  Future<Product?> getListProductWithBardcodeMixin({String? bardcode}) async {
+    Product? product;
+    var res = await appWriteRepo.databases.listDocuments(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblProductID,
+        queries: [Query.equal('bardcode', bardcode)]);
+    if (res.documents.isNotEmpty) {
+      product = res.documents
+          .map((e) => Product.fromJson(e.data))
+          .toList()
+          .firstOrNull;
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return product;
+  }
 }

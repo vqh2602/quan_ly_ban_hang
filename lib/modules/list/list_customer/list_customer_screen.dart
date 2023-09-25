@@ -12,6 +12,7 @@ import 'package:quan_ly_ban_hang/modules/list/list_customer/list_customer_contro
 import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
+import 'package:quan_ly_ban_hang/widgets/empty.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_customer.dart';
 import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loadding_refreshindicator.dart';
 import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loding_list.dart';
@@ -58,25 +59,34 @@ class _ListCustomerState extends State<ListCustomerSreen> {
                   child: Container(
                     color: Colors.transparent,
                     child: AnimationLimiter(
-                      child: ListView.builder(
-                        itemCount:
-                            listCustomerController.listCustomer?.length ?? 0,
-                        itemBuilder: (BuildContext context, int index) {
-                          return AnimationConfiguration.staggeredList(
-                            position: index,
-                            duration: const Duration(milliseconds: 500),
-                            child: SlideAnimation(
-                              verticalOffset: 50.0,
-                              child: FadeInAnimation(
-                                child: itemCustomer(
-                                  customer: listCustomerController
-                                      .listCustomer?[index],
-                                ),
-                              ),
+                      child: listCustomerController.listCustomerResult !=
+                                  null &&
+                              listCustomerController.listCustomerResult!.isEmpty
+                          ? emptyWidget(
+                              onTap: () async {
+                                await listCustomerController.getListCustomers();
+                              },
+                            )
+                          : ListView.builder(
+                              itemCount: listCustomerController
+                                      .listCustomerResult?.length ??
+                                  0,
+                              itemBuilder: (BuildContext context, int index) {
+                                return AnimationConfiguration.staggeredList(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 500),
+                                  child: SlideAnimation(
+                                    verticalOffset: 50.0,
+                                    child: FadeInAnimation(
+                                      child: itemCustomer(
+                                        customer: listCustomerController
+                                            .listCustomerResult?[index],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ),
                 ),
@@ -113,45 +123,56 @@ class _ListCustomerState extends State<ListCustomerSreen> {
 
   showBottomSheetFilter() {
     Get.bottomSheet(
-        Container(
-          height: Get.height * 0.8,
-          decoration: BoxDecoration(
-              color: bg500,
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(100), topRight: Radius.circular(0))),
-          child: Column(children: [
-            Container(
-              margin: const EdgeInsets.only(top: 12, bottom: 12),
-              child: Container(
-                width: 100,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Get.theme.primaryColor,
-                  borderRadius: BorderRadius.circular(100),
+        listCustomerController.obx(
+          (state) => Container(
+            height: Get.height * 0.5,
+            decoration: BoxDecoration(
+                color: bg500,
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
+            child: Column(children: [
+              Container(
+                margin: const EdgeInsets.only(top: 12, bottom: 12),
+                child: Container(
+                  width: 100,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Get.theme.primaryColor,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-                child: Container(
-              margin: alignment_20_0(),
-              child: Column(
-                children: [
-                  cHeight(20),
-                  textSearch(
-                      onTapSearch: () {},
-                      textController: TextEditingController()),
-                ],
-              ),
-            )),
-            Container(
-              margin: alignment_20_8(),
-              child: FxButton.block(
-                onPressed: () {},
-                borderRadiusAll: 20,
-                child: textTitleMedium('Tìm kiếm', color: Colors.white),
-              ),
-            )
-          ]),
+              Expanded(
+                  child: Container(
+                margin: alignment_20_0(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    cHeight(20),
+                    textSearch(
+                        onTapSearch: () {},
+                        textController: listCustomerController.textSearchTE),
+                    cHeight(20),
+                  ],
+                ),
+              )),
+              Container(
+                margin: alignment_20_8(),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FxButton.large(
+                    onPressed: () async {
+                      await listCustomerController.searchAndSortList();
+                    },
+
+                    // borderRadiusAll: 20,
+                    child: textTitleMedium('Tìm kiếm', color: Colors.white),
+                  ),
+                ),
+              )
+            ]),
+          ),
         ),
         isScrollControlled: true,
         isDismissible: true,

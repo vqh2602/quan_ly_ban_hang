@@ -118,6 +118,7 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               textTitleMedium('Thông tin nhà cung cấp'),
                               if (isEdit)
@@ -155,7 +156,7 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                                                 )));
                                   },
                                   icon: const Icon(
-                                      FontAwesomeIcons.lightPenToSquare),
+                                      FontAwesomeIcons.lightPenToSquare, size: 18,),
                                   color: Get.theme.primaryColor,
                                 ),
                             ],
@@ -200,6 +201,7 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               textTitleMedium('Danh sách sản phẩm'),
                               if (isEdit)
@@ -260,7 +262,7 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                                                 )));
                                   },
                                   icon: const Icon(
-                                      FontAwesomeIcons.lightPenToSquare),
+                                      FontAwesomeIcons.lightPenToSquare, size: 18,),
                                   color: Get.theme.primaryColor,
                                 ),
                             ],
@@ -842,12 +844,12 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                               if (val == null) {
                                 return 'Không để trống';
                               }
-                              if (num.parse(val) >
-                                  (detailRequestReturnCustom
-                                          ?.product?.quantity ??
-                                      0)) {
-                                return 'Vượt quá giới hạn kho';
-                              }
+                              // if (num.parse(val) >
+                              //     (detailRequestReturnCustom
+                              //             ?.product?.quantity ??
+                              //         0)) {
+                              //   return 'Vượt quá giới hạn kho';
+                              // }
                               return null;
                             },
                             readOnly: (isView || isCreate) ? false : true,

@@ -1,5 +1,4 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:quan_ly_ban_hang/config/config.dart';
@@ -31,14 +30,14 @@ mixin RequestReturnMixin {
       if (response.events.contains('databases.*.collections.*.documents.*')) {
         await listRequestReturnController.getListRequestReturn();
         // Log when a new file is uploaded
-        if (kDebugMode) {
-          print('realtime_db ycdt');
-        }
+        // if (kDebugMode) {
+        //   print('realtime_db ycdt');
+        // }
       }
     });
   }
 
-  /// ds đơn bán hàng
+  /// ds đơn yeu cau
   Future<List<RequestReturn>?> getListRequestReturnMixin() async {
     List<RequestReturn>? listRequestReturn;
     var res = await appWriteRepo.databases.listDocuments(
@@ -55,6 +54,36 @@ mixin RequestReturnMixin {
     return listRequestReturn;
   }
 
+  /// ds đơn nhập filter
+  Future<List<RequestReturn>?> getListRequestReturnByFilterMixin(
+      {required int? month, required int? year, String? statusBrowsing}) async {
+    List<RequestReturn>? listSalesOrder;
+    var res = await appWriteRepo.databases.listDocuments(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblRequestReturnID,
+        queries: [
+          if (month != null && year != null) ...[
+            Query.greaterThanEqual(
+                "timeRequestReturn", DateTime(year, month, 1)),
+            Query.lessThanEqual("timeRequestReturn", DateTime(year, month, 31)),
+          ],
+          if (statusBrowsing != null) ...[
+            Query.equal("browsingStatus", statusBrowsing),
+          ]
+        ]);
+    if (res.documents.isNotEmpty) {
+      listSalesOrder =
+          res.documents.map((e) => RequestReturn.fromJson(e.data)).toList();
+    } else {
+      // buildToast(
+      //     title: 'Có lỗi xảy ra khi lấy dữ liệu doanh số',
+      //     message: '',
+      //     status: TypeToast.getError);
+      return null;
+    }
+    return listSalesOrder;
+  }
+
   /// chi tiết đơn bán
   Future<RequestReturn?> getDetailRequestReturnMixin({String? id}) async {
     RequestReturn? requestReturn;
@@ -66,7 +95,8 @@ mixin RequestReturnMixin {
       requestReturn = RequestReturn.fromJson(res.data);
     } else {
       buildToast(
-          title: 'Có lỗi xảy ra khi lấy thông tin dánh sách sản phẩm hoá đơn',
+          title:
+              'Có lỗi xảy ra khi lấy thông tin dánh sách sản phẩm yêu cầu đổi trả',
           message: '',
           status: TypeToast.getError);
       return null;

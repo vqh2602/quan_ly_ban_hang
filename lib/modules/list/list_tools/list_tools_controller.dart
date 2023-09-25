@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:convert_vietnamese/convert_vietnamese.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,21 +10,42 @@ class ListToolsController extends GetxController
   GetStorage box = GetStorage();
   TextEditingController textSearchTE = TextEditingController();
   List<DataTool> listDataToolResult = listDataTools;
+  List<DataTool> listDataToolResult1 = [];
+  List<DataTool> listDataToolResult2 = [];
+  List<DataTool> listDataToolResult3 = [];
+  List<DataTool> listDataToolResult4 = [];
+  List<DataTool> listDataToolResultSearch = [];
   @override
   Future<void> onInit() async {
     super.onInit();
-
+    listDataToolResult1 = listDataToolResult
+        .where((element) =>
+            element.group == 'hoadon' || element.group == 'khachhang')
+        .toList();
+    listDataToolResult2 = listDataToolResult
+        .where(
+            (element) => element.group == 'nhapkho' || element.group == 'ncc')
+        .toList();
+    listDataToolResult3 = listDataToolResult
+        .where((element) => element.group == 'nhanvien')
+        .toList();
+    listDataToolResult4 = listDataToolResult
+        .where((element) => element.group == 'sanpham')
+        .toList();
     changeUI();
   }
 
   onSearch(String val) {
     if (val == '') {
-      listDataToolResult = listDataTools;
+      listDataToolResultSearch = listDataTools;
       update();
       return;
     }
-    listDataToolResult = listDataTools
-        .where((element) => element.name?.contains(val) ?? false)
+
+    listDataToolResultSearch = listDataTools
+        .where((element) => removeDiacritics(element.name ?? '')
+            .toLowerCase()
+            .contains(removeDiacritics(val).toLowerCase()))
         .toList();
     update();
   }

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:convert_vietnamese/convert_vietnamese.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/data/models/supplier.dart';
 import 'package:quan_ly_ban_hang/data/models/unit.dart';
@@ -15,7 +17,9 @@ class ListSupplierController extends GetxController
         FilterDataMixin,
         SupplierMixin {
   List<Supplier>? listSupplier = [];
+  List<Supplier>? listSupplierResult = [];
   List<Unit>? listUnit = [];
+  TextEditingController textSearchTE = TextEditingController();
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -27,10 +31,30 @@ class ListSupplierController extends GetxController
 
   getListSuppliers() async {
     listSupplier?.clear();
+    listSupplierResult?.clear();
     loadingUI();
     listSupplier = await getListSupplierMixin();
     listSupplier?.sort((a, b) => (b.name ?? 'a').compareTo(a.name ?? 'a'));
+    listSupplierResult = [...listSupplier ?? []];
     changeUI();
+  }
+
+  searchAndSortList() {
+    if (textSearchTE.text == '') {
+      listSupplierResult = [...listSupplier ?? []];
+    } else {
+      listSupplierResult = listSupplier
+          ?.where((element) =>
+              removeDiacritics(element.name ?? '').toLowerCase().contains(
+                  removeDiacritics(textSearchTE.text).toLowerCase()) ||
+              removeDiacritics(element.phone ?? '')
+                  .toLowerCase()
+                  .contains(removeDiacritics(textSearchTE.text).toLowerCase()))
+          .toList();
+    }
+
+    Get.back();
+    updateUI();
   }
 
   getListUnit() async {

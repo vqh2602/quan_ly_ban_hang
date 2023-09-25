@@ -1,5 +1,4 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:quan_ly_ban_hang/config/config.dart';
 import 'package:quan_ly_ban_hang/data/models/category.dart';
@@ -9,7 +8,6 @@ import 'package:quan_ly_ban_hang/data/models/unit.dart';
 import 'package:quan_ly_ban_hang/data/models/user.dart';
 import 'package:quan_ly_ban_hang/data/repositories/appwrite_repo.dart';
 import 'package:quan_ly_ban_hang/data/storage.dart';
-import 'package:quan_ly_ban_hang/modules/splash/splash_screen.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/data/models/permission.dart' as permission;
 
@@ -62,7 +60,7 @@ mixin AppWriteMixin {
         user = User.fromJson(res.documents.first.data);
         await box.write(Storages.dataUser, res.documents.first.data);
         await box.write(Storages.dataLoginTime, DateTime.now().toString());
-        Get.offAndToNamed(SplashScreen.routeName);
+        // Get.offAndToNamed(SplashScreen.routeName);
 
         buildToast(
             title: 'Đăng nhập thành công',

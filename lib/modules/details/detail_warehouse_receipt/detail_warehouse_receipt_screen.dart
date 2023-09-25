@@ -120,6 +120,7 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               textTitleMedium('Thông tin nhà cung cấp'),
                               if (isEdit)
@@ -157,7 +158,7 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                                 )));
                                   },
                                   icon: const Icon(
-                                      FontAwesomeIcons.lightPenToSquare),
+                                      FontAwesomeIcons.lightPenToSquare, size: 18,),
                                   color: Get.theme.primaryColor,
                                 ),
                             ],
@@ -202,6 +203,7 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               textTitleMedium('Danh sách sản phẩm'),
                               if (isEdit)
@@ -262,7 +264,7 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                                 )));
                                   },
                                   icon: const Icon(
-                                      FontAwesomeIcons.lightPenToSquare),
+                                      FontAwesomeIcons.lightPenToSquare, size: 18,),
                                   color: Get.theme.primaryColor,
                                 ),
                             ],

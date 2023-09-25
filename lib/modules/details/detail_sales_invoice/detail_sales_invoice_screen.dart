@@ -185,6 +185,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               textTitleMedium('Thông tin khách hàng'),
                               if (isEdit)
@@ -220,7 +221,9 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                             )));
                                   },
                                   icon: const Icon(
-                                      FontAwesomeIcons.lightPenToSquare),
+                                    FontAwesomeIcons.lightPenToSquare,
+                                    size: 18,
+                                  ),
                                   color: Get.theme.primaryColor,
                                 ),
                             ],
@@ -265,6 +268,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               textTitleMedium('Danh sách sản phẩm'),
                               if (isEdit)
@@ -280,6 +284,14 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                                       detailSalesInvoiceController
                                                           .listProductSelect,
                                                   onSelect: (p0) {
+                                                    if (p0.data.quantity == 0) {
+                                                      buildToast(
+                                                          message:
+                                                              'Sản phẩm đã hết hàng',
+                                                          status: TypeToast
+                                                              .toastError);
+                                                      return;
+                                                    }
                                                     if (detailSalesInvoiceController
                                                             .listProductSelect
                                                             ?.contains(p0) ??
@@ -319,13 +331,18 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                                       cWidth(8),
                                                       Expanded(
                                                           child: textBodyMedium(
-                                                              p0.key ?? ''))
+                                                              p0.key ?? '')),
+                                                      textBodySmall(p0
+                                                          .data.quantity
+                                                          .toString())
                                                     ],
                                                   ),
                                                 )));
                                   },
                                   icon: const Icon(
-                                      FontAwesomeIcons.lightPenToSquare),
+                                    FontAwesomeIcons.lightPenToSquare,
+                                    size: 18,
+                                  ),
                                   color: Get.theme.primaryColor,
                                 ),
                             ],
@@ -1183,4 +1200,5 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
         elevation: 0,
         backgroundColor: Colors.grey.withOpacity(0));
   }
+
 }
