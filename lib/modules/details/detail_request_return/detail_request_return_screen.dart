@@ -388,7 +388,7 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                                           .requestReturn?.totalAmountRefunded ??
                                       0,
                             ),
-                            showEdit: false,
+                            showEdit: isEdit,
                             colorValue: a500,
                             onTap: () {
                               Get.bottomSheet(

@@ -140,7 +140,7 @@ mixin RequestReturnMixin {
       if (res.data.isNotEmpty) {
         result = RequestReturn.fromJson(res.data);
         buildToast(
-            title: 'Tạo mới hoá đơn thành công',
+            title: 'Tạo mới thành công',
             message: '',
             status: TypeToast.getSuccess);
       } else {
@@ -229,10 +229,10 @@ mixin RequestReturnMixin {
           data: detailRequestReturn?.toJson() ?? {});
       if (res.data.isNotEmpty) {
         result = DetailRequestReturn.fromJson(res.data);
-        buildToast(
-            title: 'Đã thêm sản phẩm',
-            message: '',
-            status: TypeToast.getSuccess);
+        // buildToast(
+        //     title: 'Đã thêm sản phẩm',
+        //     message: '',
+        //     status: TypeToast.getSuccess);
       } else {
         buildToast(
             title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);

@@ -429,7 +429,7 @@ class DetailRequestReturnController extends GetxController
                 requestReturnId: requestReturn?.uid,
                 productId: product?.uid,
                 id: element2.id,
-                quantity: 1,
+                quantity: element2.quantity,
                 importPrice: product?.importPrice,
                 note: '',
                 uid: element2.uid,
@@ -446,8 +446,6 @@ class DetailRequestReturnController extends GetxController
 
       for (var element in listProductSelectData) {
         Product? product = element.data;
-        // nếu sản phẩm đã tồn tại,ghi đè lên
-
         listDetailRequestReturnCustomEdit?.add(DetailRequestReturnCustom(
           detailRequestReturn: DetailRequestReturn(
             uid: uuid.v4(),

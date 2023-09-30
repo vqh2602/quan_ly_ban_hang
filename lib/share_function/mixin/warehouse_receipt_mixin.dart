@@ -225,10 +225,10 @@ mixin WarehouseReceiptMixin {
           data: detailWarehouseReceipt?.toJson() ?? {});
       if (res.data.isNotEmpty) {
         result = DetailWarehouseReceipt.fromJson(res.data);
-        buildToast(
-            title: 'Đã thêm sản phẩm',
-            message: '',
-            status: TypeToast.getSuccess);
+        // buildToast(
+        //     title: 'Đã thêm sản phẩm',
+        //     message: '',
+        //     status: TypeToast.getSuccess);
       } else {
         buildToast(
             title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);

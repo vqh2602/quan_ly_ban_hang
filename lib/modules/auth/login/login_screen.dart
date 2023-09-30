@@ -67,7 +67,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration:
                                   textFieldInputStyle(label: 'Số điện thoại'),
                               maxLines: 1,
-                              validator: loginController.validateString,
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return "Tài khoản không được để trống";
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(
                               height: 4 * 6,
@@ -90,7 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                           : LucideIcons.eyeOff),
                                     ),
                                   )),
-                              validator: loginController.validateString,
+                              validator: (text) {
+                                if (text == null || text.isEmpty) {
+                                  return "Mật khẩu không được để trống";
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(
                               height: 4 * 2,
@@ -101,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: Ink(
                                 child: textBodyMedium(
-                                    'Quyên mật khẩu? liên hệ với quản lí để cấp lại mật khẩu.',
+                                    'Quên mật khẩu? liên hệ với quản lí để cấp lại mật khẩu.',
                                     decoration: TextDecoration.underline),
                               ),
                             ),

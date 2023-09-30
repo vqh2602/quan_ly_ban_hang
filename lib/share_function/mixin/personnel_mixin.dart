@@ -101,4 +101,31 @@ mixin PersonnelMixin {
 
     return result;
   }
+
+  /// tìm kiếm sdt hoặc cccd đã tồn tại chưa
+  /// **Cập nhật** truyền đủ phone và cccd
+  /// [ nếu list rỗng đúng, list có 1 phần tử đúng, list > 1 phần tử sai]
+  /// **Tạo mới**
+  /// [ nếu list rỗng đúng, list có 1 phần tử sai, list > 1 phần tử sai]
+  /// ds ng dùng
+  Future<List<Personnel>?> checkUniquePersonnelMixin(
+      {String? phone, String? cccd}) async {
+    List<Personnel>? listPersonnel = [];
+    var res = await appWriteRepo.databases.listDocuments(
+        databaseId: Env.config.appWriteDatabaseID,
+        collectionId: Env.config.tblPersonnelID,
+        queries: [
+          if (phone != null) ...[Query.equal('phone', phone)],
+          if (cccd != null) ...[Query.equal('cccd', cccd)]
+        ]);
+    if (res.documents.isNotEmpty) {
+      listPersonnel =
+          res.documents.map((e) => Personnel.fromJson(e.data)).toList();
+    } else {
+      buildToast(
+          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      return null;
+    }
+    return listPersonnel;
+  }
 }

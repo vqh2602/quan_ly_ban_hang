@@ -42,7 +42,6 @@ mixin UserMixin {
     }
     return result;
   }
-
   Future<void> saveUserInBox({User? user, Map? dataUser}) async {
     await box.write(Storages.dataUser, dataUser ?? user?.toJson());
   }

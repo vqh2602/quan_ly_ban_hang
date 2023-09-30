@@ -474,7 +474,7 @@ class DetailSalesInvoiceController extends GetxController
                 salesOrderId: salesOrder?.uid,
                 productId: product?.uid,
                 id: element2.id,
-                quantity: 1,
+                quantity: element2.quantity,
                 importPrice: product?.importPrice,
                 price: product?.price,
                 discount: product?.discount,
@@ -490,11 +490,8 @@ class DetailSalesInvoiceController extends GetxController
       // tạo mới phần tử
       listProductSelectData
           .removeWhere((element) => listResultEqual.contains(element));
-
       for (var element in listProductSelectData) {
         Product? product = element.data;
-        // nếu sản phẩm đã tồn tại,ghi đè lên
-
         listDetailSalesOrderCustomEdit?.add(DetailSalesOrderCustom(
           detailSalesOrder: DetailSalesOrder(
             uid: uuid.v4(),
@@ -577,19 +574,19 @@ class DetailSalesInvoiceController extends GetxController
 
   // tính tổng tiền -> thành tiền
   num calculateTotalMoney() {
-    num? totalMoneyData = 0;
-    listDetailSalesOrderCustomEdit?.forEach((element) {
-      totalMoneyData = (totalMoneyData ?? 0) +
-          ((element.detailSalesOrder?.quantity ?? 0) *
-              (element.detailSalesOrder?.price ?? 0));
-    });
+    num? totalMoneyData = calculateTotalMoneyProduct();
+    // listDetailSalesOrderCustomEdit?.forEach((element) {
+    //   totalMoneyData = (totalMoneyData ?? 0) +
+    //       ((element.detailSalesOrder?.quantity ?? 0) *
+    //           (element.detailSalesOrder?.price ?? 0));
+    // });
     // (tổng tiền + tiền thuế ) - (thanh toán 1 phần + giảm giá) + phụ phí
-    return ((totalMoneyData ?? 0) +
-            ((totalMoneyData ?? 0) *
+    return ((totalMoneyData) +
+            ((totalMoneyData) *
                 (double.parse(vatTE?.text ?? '0')) /
                 100)) -
         (double.parse(partlyPaidTE?.text ?? '0') +
-            ((totalMoneyData ?? 0) *
+            ((totalMoneyData) *
                 (double.parse(discountTE?.text ?? '0')) /
                 100)) +
         double.parse(surchargeTE?.text ?? '0');

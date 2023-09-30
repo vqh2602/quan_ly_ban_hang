@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutx_ui/flutx.dart';
 import 'package:get/get.dart';
@@ -37,7 +36,7 @@ class LoginController extends GetxController
     GlobalKey<FormState> keyForm1 = GlobalKey<FormState>(debugLabel: '_FormL2');
     user = await loginMixin(phone: phoneTE.text, password: passWTE.text);
 
-    if (user?.resetPassword) {
+    if (user != null && user.resetPassword) {
       await Get.dialog(StatefulBuilder(
         builder: (context, setState) {
           return Material(

@@ -228,10 +228,10 @@ mixin SalesOrderMixin {
           data: detailSalesOrder?.toJson() ?? {});
       if (res.data.isNotEmpty) {
         result = DetailSalesOrder.fromJson(res.data);
-        buildToast(
-            title: 'Đã thêm sản phẩm',
-            message: '',
-            status: TypeToast.getSuccess);
+        // buildToast(
+        //     title: 'Đã thêm sản phẩm',
+        //     message: '',
+        //     status: TypeToast.getSuccess);
       } else {
         buildToast(
             title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
