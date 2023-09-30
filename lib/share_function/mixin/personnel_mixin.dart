@@ -111,21 +111,34 @@ mixin PersonnelMixin {
   Future<List<Personnel>?> checkUniquePersonnelMixin(
       {String? phone, String? cccd}) async {
     List<Personnel>? listPersonnel = [];
-    var res = await appWriteRepo.databases.listDocuments(
-        databaseId: Env.config.appWriteDatabaseID,
-        collectionId: Env.config.tblPersonnelID,
-        queries: [
-          if (phone != null) ...[Query.equal('phone', phone)],
-          if (cccd != null) ...[Query.equal('cccd', cccd)]
-        ]);
-    if (res.documents.isNotEmpty) {
-      listPersonnel =
-          res.documents.map((e) => Personnel.fromJson(e.data)).toList();
-    } else {
-      buildToast(
-          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
-      return null;
+    if (phone != null) {
+      var res = await appWriteRepo.databases.listDocuments(
+          databaseId: Env.config.appWriteDatabaseID,
+          collectionId: Env.config.tblPersonnelID,
+          queries: [
+            ...[Query.equal('phone', phone)],
+          ]);
+      if (res.documents.isNotEmpty) {
+        listPersonnel.addAll(
+            res.documents.map((e) => Personnel.fromJson(e.data)).toList());
+      }
     }
+    if (cccd != null) {
+      var res2 = await appWriteRepo.databases.listDocuments(
+          databaseId: Env.config.appWriteDatabaseID,
+          collectionId: Env.config.tblPersonnelID,
+          queries: [
+            ...[Query.equal('cccd', cccd)]
+          ]);
+      if (res2.documents.isNotEmpty) {
+        listPersonnel.addAll(
+            res2.documents.map((e) => Personnel.fromJson(e.data)).toList());
+      }
+    }
+    // loại bỏ phần tử trùng
+    final ids = listPersonnel.map((e) => e.uId).toSet();
+    listPersonnel.retainWhere((x) => ids.remove(x.uId));
+    listPersonnel = listPersonnel.toSet().toList();
     return listPersonnel;
   }
 }
