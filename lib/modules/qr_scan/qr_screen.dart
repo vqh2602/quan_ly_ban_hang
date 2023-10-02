@@ -11,6 +11,7 @@ import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 
 class QrScan extends StatefulWidget {
   const QrScan({super.key});
+  static const String routeName = '/detail_qrscan';
 
   @override
   State<QrScan> createState() => _QrScanState();
@@ -18,6 +19,13 @@ class QrScan extends StatefulWidget {
 
 class _QrScanState extends State<QrScan> {
   QrController qrController = Get.find();
+  @override
+  void initState() {
+    qrController.arguments = Get.arguments;
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return buildBody(
@@ -54,8 +62,11 @@ class _QrScanState extends State<QrScan> {
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Container(
-                            margin: const EdgeInsets.only(
-                                bottom: kBottomNavigationBarHeight + 50),
+                            margin: EdgeInsets.only(
+                                bottom: (qrController.arguments?['type'] ==
+                                        'scanProduct')
+                                    ? 12
+                                    : kBottomNavigationBarHeight + 50),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -120,7 +131,7 @@ class _QrScanState extends State<QrScan> {
                             child: Container(
                               margin: const EdgeInsets.only(top: 12),
                               child: AnimatedContainer(
-                                  margin: const EdgeInsets.only(top: 4 ),
+                                  margin: const EdgeInsets.only(top: 4),
                                   padding: const EdgeInsets.all(4 * 5),
                                   duration: const Duration(seconds: 1),
                                   curve: Curves.fastOutSlowIn,
@@ -314,7 +325,6 @@ class _QrScanState extends State<QrScan> {
                         //     ),
                         //   ),
                         // )
-                     
                       ],
                     ),
                   ),

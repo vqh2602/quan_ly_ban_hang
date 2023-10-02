@@ -83,7 +83,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
       body: _buildBody(),
       appBar: (widget.isEdit ?? true)
           ? AppBar(
-              title: textLableLarge('Thông tin tài khoản'),
+              title: textLableLarge(isCreate ? 'Thêm mới tài khoản':'Thông tin tài khoản'),
               // leading: const SizedBox(),
               surfaceTintColor: bg500,
               backgroundColor: bg500,
@@ -332,7 +332,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                                         }
                                         accountDetailController
                                             .updateDataTextEditing();
-                                        accountDetailController.updateUI();
+                                        // accountDetailController.updateUI();
                                       },
                                       buildOption: (p0) =>
                                           textBodyMedium(p0.key ?? ''),

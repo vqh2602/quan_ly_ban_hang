@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -6,6 +8,7 @@ import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_s
 import 'package:quan_ly_ban_hang/share_function/mixin/product_mixin.dart';
 import 'package:vibration/vibration.dart';
 
+/// [type]: scanProduct = màn quét mã vạch phục vụ tạo mới
 class QrController extends GetxController
     with GetTickerProviderStateMixin, StateMixin, ProductMixin {
   Barcode? result; // kết quả
@@ -21,10 +24,13 @@ class QrController extends GetxController
   bool nhapCode = false;
   TextEditingController textEditingControllerCode = TextEditingController();
 
+  var arguments = Get.arguments;
+
   @override
   void onInit() {
     super.onInit();
     textEditingControllerCode.text = '';
+
     change(null, status: RxStatus.success());
   }
 
@@ -49,7 +55,7 @@ class QrController extends GetxController
       await controller!.pauseCamera(); // dừng
       statusCamera = false;
       update();
-      goToItemInfo();
+      (arguments?['type'] == 'scanProduct') ? goBackItemInfo() : goToItemInfo();
     } else {
       Get.snackbar('Có lỗi xảy ra', 'Hãy chắc chắn rằng bạn đã nhập mã',
           backgroundColor: Colors.red, colorText: Colors.white);
@@ -114,7 +120,9 @@ class QrController extends GetxController
         //print('data: ${dataQr} | ');
         playSound = true;
         // playBeep();
-        goToItemInfo();
+        (arguments?['type'] == 'scanProduct')
+            ? goBackItemInfo()
+            : goToItemInfo();
       });
     });
 
@@ -161,6 +169,18 @@ class QrController extends GetxController
     //     {"screen": 'kiemke'},
     //   ]);
     // }
+  }
+
+// trả lại kết quả quét mã:
+  // chuyển màn
+  Future<void> goBackItemInfo() async {
+    try {
+      if (await Vibration.hasVibrator() ?? false) {
+        Vibration.vibrate();
+      }
+    } on Exception catch (_) {}
+
+    Get.back(result: {"data": dataQr, "type": "QR"});
   }
 
   changeUI() {

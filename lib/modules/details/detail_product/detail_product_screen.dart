@@ -11,6 +11,7 @@ import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/data/models/unit.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_controller.dart';
 import 'package:quan_ly_ban_hang/modules/qr_scan/qr_controller.dart';
+import 'package:quan_ly_ban_hang/modules/qr_scan/qr_screen.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/box_detail.dart';
@@ -224,18 +225,35 @@ class _DetailProductState extends State<DetailProductSreen> {
                                   : detailProductController.barcodeTE?.text ??
                                       'Trống',
                               onTap: () {
-                                Get.bottomSheet(
-                                  showBottomTextInput(
-                                      detailProductController.barcodeTE,
-                                      onCancel: () {
-                                    detailProductController.barcodeTE?.text =
+                                ShareFuntion.onPopDialog(
+                                    context: context,
+                                    title: 'Sử dụng trình quét mã',
+                                    onCancel: () {
+                                      Get.back();
+                                      Get.bottomSheet(
+                                        showBottomTextInput(
+                                            detailProductController.barcodeTE,
+                                            onCancel: () {
+                                          detailProductController.barcodeTE
+                                              ?.text = detailProductController
+                                                  .product?.bardcode ??
+                                              '';
+                                        }, onSubmitted: () {
+                                          detailProductController.updateUI();
+                                        }),
+                                      );
+                                    },
+                                    onSubmit: () async {
+                                      Get.back();
+                                      var x = await Get.toNamed(
+                                          QrScan.routeName,
+                                          arguments: {'type': 'scanProduct'});
+                                      if (x != null) {
                                         detailProductController
-                                                .product?.bardcode ??
-                                            '';
-                                  }, onSubmitted: () {
-                                    detailProductController.updateUI();
-                                  }),
-                                );
+                                            .barcodeTE?.text = x['data'].toString();
+                                        detailProductController.updateUI();
+                                      }
+                                    });
                               },
                             ),
                             titleEditTitle(

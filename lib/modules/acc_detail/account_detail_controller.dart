@@ -74,7 +74,7 @@ class AccountDetailController extends GetxController
 
     // await initData();
     // await getDataUser();
-    // changeUI();
+    changeUI();
   }
 
 // lấy ds list data
@@ -134,7 +134,7 @@ class AccountDetailController extends GetxController
             type: TypeDate.ddMMyyyy,
             dateTime: user?.birthday != null
                 ? DateTime.parse(user!.birthday!.toString())
-                : null));
+                : DateTime.now()));
     addressTE = TextEditingController(text: user?.address);
     nameTE = TextEditingController(text: user?.name);
     CCCDTE = TextEditingController(text: user?.cccd);
@@ -154,8 +154,9 @@ class AccountDetailController extends GetxController
     birthday = DateTime.parse(user?.birthday ?? DateTime.now().toString());
     departmentItemSelect = null;
     genderItemSelect = null;
-    listPermissionSelect = null;
+    listPermissionSelect = [];
     update();
+    changeUI();
   }
 
   setValueSelect(User? user) {
@@ -180,6 +181,7 @@ class AccountDetailController extends GetxController
     listPermissionSelect?.forEach((element) {
       x = '$x,${element.value}';
     });
+    
     permissionTE = TextEditingController(text: x);
     birtTE = TextEditingController(
         text: ShareFuntion.formatDate(

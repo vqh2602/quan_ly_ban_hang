@@ -165,4 +165,44 @@ mixin ProductMixin {
     }
     return product;
   }
+
+  /// tìm kiếm mã sản phẩm hoặc mã vạch đã tồn tại chưa
+  /// **Cập nhật** truyền đủ mã sp và mã vạch
+  /// [ nếu list rỗng đúng, list có 1 phần tử đúng, list > 1 phần tử sai]
+  /// **Tạo mới**
+  /// [ nếu list rỗng đúng, list có 1 phần tử sai, list > 1 phần tử sai]
+  /// ds ng dùng
+  Future<List<Product>?> checkUniqueProductMixin(
+      {String? code, String? bardcode}) async {
+    List<Product>? listProduct = [];
+    if (code != null) {
+      var res = await appWriteRepo.databases.listDocuments(
+          databaseId: Env.config.appWriteDatabaseID,
+          collectionId: Env.config.tblProductID,
+          queries: [
+            ...[Query.equal('code', code)],
+          ]);
+      if (res.documents.isNotEmpty) {
+        listProduct.addAll(
+            res.documents.map((e) => Product.fromJson(e.data)).toList());
+      }
+    }
+    if (bardcode != null) {
+      var res2 = await appWriteRepo.databases.listDocuments(
+          databaseId: Env.config.appWriteDatabaseID,
+          collectionId: Env.config.tblProductID,
+          queries: [
+            ...[Query.equal('bardcode', bardcode)]
+          ]);
+      if (res2.documents.isNotEmpty) {
+        listProduct.addAll(
+            res2.documents.map((e) => Product.fromJson(e.data)).toList());
+      }
+    }
+    // loại bỏ phần tử trùng
+    final ids = listProduct.map((e) => e.uid).toSet();
+    listProduct.retainWhere((x) => ids.remove(x.uid));
+    listProduct = listProduct.toSet().toList();
+    return listProduct;
+  }
 }
