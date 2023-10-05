@@ -102,7 +102,7 @@ class LoginController extends GetxController
         });
       } else {}
     } else {
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(const Duration(milliseconds: 300), () {
         user != null ? Get.offAndToNamed(SplashScreen.routeName) : null;
       });
     }

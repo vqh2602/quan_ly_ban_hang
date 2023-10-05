@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -123,6 +121,8 @@ class QrController extends GetxController
         (arguments?['type'] == 'scanProduct')
             ? goBackItemInfo()
             : goToItemInfo();
+
+        if (arguments?['type'] == 'scanProduct') controller.pauseCamera();
       });
     });
 
@@ -181,6 +181,7 @@ class QrController extends GetxController
     } on Exception catch (_) {}
 
     Get.back(result: {"data": dataQr, "type": "QR"});
+    return;
   }
 
   changeUI() {

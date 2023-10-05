@@ -27,7 +27,7 @@ class StatisticalController extends GetxController
     await getListOderByFilter();
     await getListWarehouseFilter();
     await getListRequestReturnFilter();
-    listSalesOrderHome = [...listSalesOrder!];
+    listSalesOrderHome = [...listSalesOrder ?? []];
     update();
   }
 
