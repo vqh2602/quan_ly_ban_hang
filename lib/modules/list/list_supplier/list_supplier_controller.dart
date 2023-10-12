@@ -24,6 +24,7 @@ class ListSupplierController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     loadingUI();
+    await initRequestReturnMixin();
     await getListSuppliers();
     await getListUnit();
     changeUI();

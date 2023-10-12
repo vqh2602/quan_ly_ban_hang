@@ -18,21 +18,37 @@ import 'package:url_launcher/url_launcher.dart';
 enum TypeDate { ddMMyyyy, yyyyMMdd, ddMMyyyyhhmm, hhmm, dd, yyyy, mM }
 
 class ShareFuntion with UserMixin {
-  static void dateTimePicker({
-    required Function(DateTime) onchange,
-  }) {
+  static void dateTimePickerCupertino(
+      {required Function(DateTime) onchange,
+      DatePickerDateOrder? dateOrder,
+      DateTime? initialDateTime,
+      CupertinoDatePickerMode mode = CupertinoDatePickerMode.dateAndTime}) {
     Get.bottomSheet(
         backgroundColor: Get.theme.colorScheme.background,
         Container(
-          height: 200,
+          height: 250,
           padding: EdgeInsets.zero,
           child: CupertinoDatePicker(
               onDateTimeChanged: onchange,
-              initialDateTime: DateTime.now(),
+              initialDateTime: initialDateTime ?? DateTime.now(),
+
               //backgroundColor: Colors.white,
-              dateOrder: DatePickerDateOrder.dmy,
-              mode: CupertinoDatePickerMode.monthYear),
+              dateOrder: dateOrder ?? DatePickerDateOrder.dmy,
+              mode: mode),
         ));
+  }
+
+  static Future<DateTime?> dateTimePickerMaterial({
+    BuildContext? context,
+    DateTime? currentDate,
+    DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
+    DatePickerMode initialDatePickerMode = DatePickerMode.day,
+  }) async {
+    return await showDatePicker(
+        context: context ?? Get.context!,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2101));
   }
 
   static String formatDate({required TypeDate type, dynamic dateTime}) {
@@ -232,6 +248,32 @@ class ShareFuntion with UserMixin {
       }
     });
     return per;
+  }
+
+  static String? validateCCCD(String? s) {
+    // Sử dụng biểu thức chính quy (regex) để kiểm tra xem chuỗi có chỉ chứa số không.
+    final numericRegex = RegExp(r'^[0-9]+$');
+
+    // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
+    return (numericRegex.hasMatch(s ?? '') && s?.length == 12)
+        ? null
+        : 'CCCD phải là số và có 12 kí tự';
+  }
+
+  static String? validateSDT(String? s) {
+    // Sử dụng biểu thức chính quy (regex) để kiểm tra xem chuỗi có chỉ chứa số không.
+    final numericRegex = RegExp(r'^[0-9]+$');
+
+    // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
+    if (numericRegex.hasMatch(s ?? '') && s?.length == 10) {
+      // Kiểm tra xem ký tự đầu tiên của chuỗi có phải là số 0 không.
+      if (s?[0] == '0') {
+        return 'Ký tự đầu tiên phải là số 0';
+      }
+    } else {
+      return 'SDT phải là số và có 12 kí tự';
+    }
+    return null;
   }
 }
 

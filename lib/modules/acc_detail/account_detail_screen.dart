@@ -83,7 +83,8 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
       body: _buildBody(),
       appBar: (widget.isEdit ?? true)
           ? AppBar(
-              title: textLableLarge(isCreate ? 'Thêm mới tài khoản':'Thông tin tài khoản'),
+              title: textLableLarge(
+                  isCreate ? 'Thêm mới tài khoản' : 'Thông tin tài khoản'),
               // leading: const SizedBox(),
               surfaceTintColor: bg500,
               backgroundColor: bg500,
@@ -178,9 +179,10 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                                   onTap: () {},
                                   style: textStyleCustom(fontSize: 16),
                                   controller: accountDetailController.CCCDTE,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(),
                                   readOnly: (isView || isCreate) ? false : true,
-                                  validator:
-                                      accountDetailController.validateString,
+                                  validator: ShareFuntion.validateCCCD,
                                   decoration:
                                       textFieldInputStyle(label: 'Số CCCD (*)'),
                                 ),
@@ -197,7 +199,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                         style: textStyleCustom(fontSize: 16),
                         readOnly: (isView || isCreate) ? false : true,
                         controller: accountDetailController.phoneTE,
-                        validator: accountDetailController.validateString,
+                        validator: ShareFuntion.validateSDT,
                         decoration: textFieldInputStyle(label: 'Số điện thoại'),
                         maxLines: 1,
                       ),
@@ -205,13 +207,16 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                         height: 4 * 5,
                       ),
                       TextFormField(
-                        onTap: () {
+                        onTap: () async {
                           if (isCreate || isView) {
-                            ShareFuntion.dateTimePicker(onchange: (date) {
+                            DateTime? date =
+                                await ShareFuntion.dateTimePickerMaterial(
+                                    context: context);
+                            if (date != null) {
                               accountDetailController.birthday = date;
                               accountDetailController.updateDataTextEditing();
                               accountDetailController.update();
-                            });
+                            }
                           }
                         },
                         style: textStyleCustom(fontSize: 16),

@@ -1,15 +1,43 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:quan_ly_ban_hang/config/config.dart';
 import 'package:quan_ly_ban_hang/data/models/personnel.dart';
 import 'package:quan_ly_ban_hang/data/repositories/appwrite_repo.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_personnel/list_personnel_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
+
+ListPersonnelController listPersonnelController = Get.find();
 
 mixin PersonnelMixin {
   AppWriteRepo appWriteRepo = AppWriteRepo();
   GetStorage box = GetStorage();
 
   List<Personnel>? listPersonnelMixin;
+
+  initRequestReturnMixin() async {
+    await realTime();
+  }
+
+// lắng ghe sự kiện thay đổi và vập nhật - realtime
+  realTime() async {
+    final realtime = Realtime(client);
+// Subscribe to files channel
+    final subscription = realtime.subscribe([
+      'databases.${Env.config.appWriteDatabaseID}.collections.${Env.config.tblPersonnelID}.documents'
+    ]);
+
+    subscription.stream.listen((response) async {
+      if (response.events.contains('databases.*.collections.*.documents.*')) {
+        await listPersonnelController.getListPersonnels();
+        // Log when a new file is uploaded
+        // if (kDebugMode) {
+        //   print('realtime_db ycdt');
+        // }
+      }
+    });
+  }
+
 
   /// ds ng dùng
   Future<List<Personnel>?> getListPersonnelMixin({bool isCache = false}) async {

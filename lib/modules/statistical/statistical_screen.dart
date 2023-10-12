@@ -56,7 +56,7 @@ class _StatisticalScreenState extends State<StatisticalScreen>
                 actions: [
                   InkWell(
                     onTap: () {
-                      ShareFuntion.dateTimePicker(
+                      ShareFuntion.dateTimePickerCupertino(
                         onchange: (date) {
                           statisticalController.date = date;
 

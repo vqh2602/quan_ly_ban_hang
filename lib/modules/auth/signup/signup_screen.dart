@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:quan_ly_ban_hang/modules/auth/login/login_screen.dart';
 import 'package:quan_ly_ban_hang/modules/auth/signup/signup_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
-import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/theme_textinput.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
@@ -40,307 +39,309 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Widget _buildBody() {
-    return SafeArea(
-        child: SingleChildScrollView(
-      child: signupController.obx((state) => Form(
-            key: keyForm1,
-            child: Container(
-              margin: EdgeInsets.zero,
-              padding: alignment_20_0(),
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 4 * 10,
-                  ),
-                  textTitleLarge('Đăng kí'.toUpperCase()),
-                  textBodyMedium(
-                      'Đăng kí tài khoản để có thể truy cập ứng dụng'),
-                  const SizedBox(
-                    height: 4 * 10,
-                  ),
-                  Column(
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          signupController.setAvatar();
-                          // setState(() {
-                          //   try {
-                          //     // imagePath = File(image!.path);
-                          //   } catch (_) {}
-                          // });
-                        },
-                        child: Ink(
-                          child: avatarImage(
-                            url: '',
-                            // isFileImage: true,
-                            // imageF: signupController.base64Image,
-                            radius: 60,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 4 * 10,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              onTap: () {},
-                              style: textStyleCustom(fontSize: 16),
-                              decoration:
-                                  textFieldInputStyle(label: 'Họ & đệm (*)'),
-                              validator: signupController.validateString,
-                              controller: signupController.firstNameTE,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 4 * 5,
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              onTap: () {},
-                              style: textStyleCustom(fontSize: 16),
-                              decoration: textFieldInputStyle(label: 'Tên (*)'),
-                              validator: signupController.validateString,
-                              controller: signupController.lastNameTE,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 4 * 5,
-                  ),
-                  TextFormField(
-                    onTap: () {},
-                    style: textStyleCustom(fontSize: 16),
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: textFieldInputStyle(label: 'Email (*)'),
-                    maxLines: 1,
-                    validator: signupController.validateEmail,
-                    controller: signupController.emailTE,
-                  ),
-                  const SizedBox(
-                    height: 4 * 5,
-                  ),
-                  TextFormField(
-                    onTap: () {},
-                    style: textStyleCustom(fontSize: 16),
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: passwordVisible,
-                    decoration: textFieldInputStyle(
-                        label: 'Mật khẩu (*)',
-                        suffixIcon: InkWell(
-                          onTap: () {
-                            setState(() {
-                              passwordVisible = !passwordVisible;
-                            });
-                          },
-                          child: Ink(
-                            child: Icon(passwordVisible
-                                ? LucideIcons.eye
-                                : LucideIcons.eyeOff),
-                          ),
-                        )),
-                    maxLines: 1,
-                    validator: signupController.validatePass,
-                    controller: signupController.passWTE,
-                  ),
-                  const SizedBox(
-                    height: 4 * 5,
-                  ),
-                  TextFormField(
-                    onTap: () {},
-                    style: textStyleCustom(fontSize: 16),
-                    keyboardType: TextInputType.visiblePassword,
-                    decoration: textFieldInputStyle(
-                        label: 'Nhập lại mật khẩu (*)',
-                        suffixIcon: InkWell(
-                          onTap: () {
-                            setState(() {
-                              passwordVisible = !passwordVisible;
-                            });
-                          },
-                          child: Ink(
-                            child: Icon(passwordVisible
-                                ? LucideIcons.eye
-                                : LucideIcons.eyeOff),
-                          ),
-                        )),
-                    maxLines: 1,
-                    validator: signupController.validateConfirmPass,
-                    controller: signupController.confirmPassTE,
-                  ),
-                  const SizedBox(
-                    height: 4 * 5,
-                  ),
-                  TextFormField(
-                    onTap: () {
-                      ShareFuntion.dateTimePicker(
-                        onchange: (dt) {
-                          signupController.birthTE.text =
-                              ShareFuntion.formatDate(
-                                  type: TypeDate.yyyyMMdd, dateTime: dt);
-                          // signupController.birthTE?.text = formatDate(
-                          //     type: TypeDate.ddMMyyyy, dateTime: dt);
-                        },
-                      );
-                    },
-                    controller: signupController.birthTE,
-                    showCursor: false,
-                    readOnly: true,
-                    style: textStyleCustom(fontSize: 16),
-                    decoration: textFieldInputStyle(label: 'Năm sinh (*)'),
-                  ),
-                  const SizedBox(
-                    height: 4 * 5,
-                  ),
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            sex = true;
-                            signupController.sex = true;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1,
-                                  color: !sex
-                                      ? Colors.grey
-                                      : Get.theme.colorScheme.onBackground)),
-                          child: Center(
-                            child: textBodyMedium('Nam',
-                                color: !sex
-                                    ? Colors.grey
-                                    : Get.theme.colorScheme.onBackground),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 4 * 5,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            sex = false;
-                            signupController.sex = false;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1,
-                                  color: sex
-                                      ? Colors.grey
-                                      : Get.theme.colorScheme.onBackground)),
-                          child: Center(
-                            child: textBodyMedium('Nữ',
-                                color: sex
-                                    ? Colors.grey
-                                    : Get.theme.colorScheme.onBackground),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 4 * 5,
-                  ),
-                  TextFormField(
-                    onTap: () {},
-                    controller: signupController.addressTE,
-                    style: textStyleCustom(fontSize: 16),
-                    decoration: textFieldInputStyle(label: 'Địa chỉ'),
-                    maxLines: 3,
-                  ),
-                  const SizedBox(
-                    height: 4 * 5,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          onTap: () {},
-                          style: textStyleCustom(fontSize: 16),
-                          validator: signupController.numberValidator,
-                          controller: signupController.heightTE,
-                          decoration:
-                              textFieldInputStyle(label: 'Chiều cao (cm)'),
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 4 * 5,
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          onTap: () {},
-                          keyboardType: TextInputType.number,
-                          validator: signupController.numberValidator,
-                          controller: signupController.weightTE,
-                          decoration:
-                              textFieldInputStyle(label: 'Cân nặng (kg)'),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 4 * 10,
-                  ),
-                  GFButton(
-                    onPressed: () {
-                      if (keyForm1.currentState?.validate() ?? false) {
-                        signupController.loadingUI();
-                        signupController.signup();
-                      }
-                    },
-                    padding: const EdgeInsets.only(
-                      left: 4 * 5,
-                      right: 4 * 5,
+    return Material(
+      child: SafeArea(
+          child: SingleChildScrollView(
+        child: signupController.obx((state) => Form(
+              key: keyForm1,
+              child: Container(
+                margin: EdgeInsets.zero,
+                padding: alignment_20_0(),
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 4 * 10,
                     ),
-                    size: 4 * 13,
-                    color: Colors.black,
-                    type: GFButtonType.outline,
-                    fullWidthButton: true,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    textTitleLarge('Đăng kí'.toUpperCase()),
+                    textBodyMedium(
+                        'Đăng kí tài khoản để có thể truy cập ứng dụng'),
+                    const SizedBox(
+                      height: 4 * 10,
+                    ),
+                    Column(
                       children: [
-                        textTitleSmall('Đăng kí'.toUpperCase(),
-                            color: Colors.black),
-                        const Icon(
-                          LucideIcons.arrowRight,
-                          size: 4 * 6,
+                        InkWell(
+                          onTap: () async {
+                            signupController.setAvatar();
+                            // setState(() {
+                            //   try {
+                            //     // imagePath = File(image!.path);
+                            //   } catch (_) {}
+                            // });
+                          },
+                          child: Ink(
+                            child: avatarImage(
+                              url: '',
+                              // isFileImage: true,
+                              // imageF: signupController.base64Image,
+                              radius: 60,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 4 * 10,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                onTap: () {},
+                                style: textStyleCustom(fontSize: 16),
+                                decoration:
+                                    textFieldInputStyle(label: 'Họ & đệm (*)'),
+                                validator: signupController.validateString,
+                                controller: signupController.firstNameTE,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 4 * 5,
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                onTap: () {},
+                                style: textStyleCustom(fontSize: 16),
+                                decoration: textFieldInputStyle(label: 'Tên (*)'),
+                                validator: signupController.validateString,
+                                controller: signupController.lastNameTE,
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 4 * 5,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Get.toNamed(LoginScreen.routeName);
-                    },
-                    child: Ink(
-                      child: textBodyMedium('Đã có tài khoản? Đăng nhập',
-                          decoration: TextDecoration.underline),
+                    const SizedBox(
+                      height: 4 * 5,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 4 * 10,
-                  ),
-                ],
+                    TextFormField(
+                      onTap: () {},
+                      style: textStyleCustom(fontSize: 16),
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: textFieldInputStyle(label: 'Email (*)'),
+                      maxLines: 1,
+                      validator: signupController.validateEmail,
+                      controller: signupController.emailTE,
+                    ),
+                    const SizedBox(
+                      height: 4 * 5,
+                    ),
+                    TextFormField(
+                      onTap: () {},
+                      style: textStyleCustom(fontSize: 16),
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: passwordVisible,
+                      decoration: textFieldInputStyle(
+                          label: 'Mật khẩu (*)',
+                          suffixIcon: InkWell(
+                            onTap: () {
+                              setState(() {
+                                passwordVisible = !passwordVisible;
+                              });
+                            },
+                            child: Ink(
+                              child: Icon(passwordVisible
+                                  ? LucideIcons.eye
+                                  : LucideIcons.eyeOff),
+                            ),
+                          )),
+                      maxLines: 1,
+                      validator: signupController.validatePass,
+                      controller: signupController.passWTE,
+                    ),
+                    const SizedBox(
+                      height: 4 * 5,
+                    ),
+                    TextFormField(
+                      onTap: () {},
+                      style: textStyleCustom(fontSize: 16),
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: textFieldInputStyle(
+                          label: 'Nhập lại mật khẩu (*)',
+                          suffixIcon: InkWell(
+                            onTap: () {
+                              setState(() {
+                                passwordVisible = !passwordVisible;
+                              });
+                            },
+                            child: Ink(
+                              child: Icon(passwordVisible
+                                  ? LucideIcons.eye
+                                  : LucideIcons.eyeOff),
+                            ),
+                          )),
+                      maxLines: 1,
+                      validator: signupController.validateConfirmPass,
+                      controller: signupController.confirmPassTE,
+                    ),
+                    const SizedBox(
+                      height: 4 * 5,
+                    ),
+                    TextFormField(
+                      onTap: () {
+                        // ShareFuntion.dateTimePicker(
+                        //   onchange: (dt) {
+                        //     signupController.birthTE.text =
+                        //         ShareFuntion.formatDate(
+                        //             type: TypeDate.yyyyMMdd, dateTime: dt);
+                        //     // signupController.birthTE?.text = formatDate(
+                        //     //     type: TypeDate.ddMMyyyy, dateTime: dt);
+                        //   },
+                        // );
+                      },
+                      controller: signupController.birthTE,
+                      showCursor: false,
+                      readOnly: true,
+                      style: textStyleCustom(fontSize: 16),
+                      decoration: textFieldInputStyle(label: 'Năm sinh (*)'),
+                    ),
+                    const SizedBox(
+                      height: 4 * 5,
+                    ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              sex = true;
+                              signupController.sex = true;
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 1,
+                                    color: !sex
+                                        ? Colors.grey
+                                        : Get.theme.colorScheme.onBackground)),
+                            child: Center(
+                              child: textBodyMedium('Nam',
+                                  color: !sex
+                                      ? Colors.grey
+                                      : Get.theme.colorScheme.onBackground),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 4 * 5,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              sex = false;
+                              signupController.sex = false;
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 1,
+                                    color: sex
+                                        ? Colors.grey
+                                        : Get.theme.colorScheme.onBackground)),
+                            child: Center(
+                              child: textBodyMedium('Nữ',
+                                  color: sex
+                                      ? Colors.grey
+                                      : Get.theme.colorScheme.onBackground),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 4 * 5,
+                    ),
+                    TextFormField(
+                      onTap: () {},
+                      controller: signupController.addressTE,
+                      style: textStyleCustom(fontSize: 16),
+                      decoration: textFieldInputStyle(label: 'Địa chỉ'),
+                      maxLines: 3,
+                    ),
+                    const SizedBox(
+                      height: 4 * 5,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            onTap: () {},
+                            style: textStyleCustom(fontSize: 16),
+                            validator: signupController.numberValidator,
+                            controller: signupController.heightTE,
+                            decoration:
+                                textFieldInputStyle(label: 'Chiều cao (cm)'),
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 4 * 5,
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            onTap: () {},
+                            keyboardType: TextInputType.number,
+                            validator: signupController.numberValidator,
+                            controller: signupController.weightTE,
+                            decoration:
+                                textFieldInputStyle(label: 'Cân nặng (kg)'),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 4 * 10,
+                    ),
+                    GFButton(
+                      onPressed: () {
+                        if (keyForm1.currentState?.validate() ?? false) {
+                          signupController.loadingUI();
+                          signupController.signup();
+                        }
+                      },
+                      padding: const EdgeInsets.only(
+                        left: 4 * 5,
+                        right: 4 * 5,
+                      ),
+                      size: 4 * 13,
+                      color: Colors.black,
+                      type: GFButtonType.outline,
+                      fullWidthButton: true,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          textTitleSmall('Đăng kí'.toUpperCase(),
+                              color: Colors.black),
+                          const Icon(
+                            LucideIcons.arrowRight,
+                            size: 4 * 6,
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 4 * 5,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(LoginScreen.routeName);
+                      },
+                      child: Ink(
+                        child: textBodyMedium('Đã có tài khoản? Đăng nhập',
+                            decoration: TextDecoration.underline),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 4 * 10,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )),
-    ));
+            )),
+      )),
+    );
   }
 }

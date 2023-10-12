@@ -1,14 +1,41 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:quan_ly_ban_hang/config/config.dart';
 import 'package:quan_ly_ban_hang/data/repositories/appwrite_repo.dart';
+import 'package:quan_ly_ban_hang/modules/list/list_customer/list_customer_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:quan_ly_ban_hang/data/models/customer.dart';
-
+ListCustomerController listCustomerController = Get.find();
 mixin CustomerMixin {
   AppWriteRepo appWriteRepo = AppWriteRepo();
   GetStorage box = GetStorage();
   List<Customer>? listCustomerMixin = [];
+
+
+  initRequestReturnMixin() async {
+    await realTime();
+  }
+
+// lắng ghe sự kiện thay đổi và vập nhật - realtime
+  realTime() async {
+    final realtime = Realtime(client);
+// Subscribe to files channel
+    final subscription = realtime.subscribe([
+      'databases.${Env.config.appWriteDatabaseID}.collections.${Env.config.tblCustomerID}.documents'
+    ]);
+
+    subscription.stream.listen((response) async {
+      if (response.events.contains('databases.*.collections.*.documents.*')) {
+        await listCustomerController.getListCustomers();
+        // Log when a new file is uploaded
+        // if (kDebugMode) {
+        //   print('realtime_db ycdt');
+        // }
+      }
+    });
+  }
+
 
   /// ds khach hàng
   Future<List<Customer>?> getListCustomerMixin({bool isCache = false}) async {

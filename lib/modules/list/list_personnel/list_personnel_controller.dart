@@ -24,6 +24,7 @@ class ListPersonnelController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     loadingUI();
+    await initRequestReturnMixin();
     await getListPersonnels();
     await getListUnit();
     changeUI();
