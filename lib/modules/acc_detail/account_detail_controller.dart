@@ -181,7 +181,7 @@ class AccountDetailController extends GetxController
     listPermissionSelect?.forEach((element) {
       x = '$x,${element.value}';
     });
-    
+
     permissionTE = TextEditingController(text: x);
     birtTE = TextEditingController(
         text: ShareFuntion.formatDate(
@@ -280,7 +280,7 @@ class AccountDetailController extends GetxController
                 address: addressTE?.text,
                 resetPassword: true,
                 password: '12345678',
-                department: departmentTE?.text,
+                department: departmentItemSelect?.value,
                 avatar: avatar));
         changeUI();
         if (result != null) {

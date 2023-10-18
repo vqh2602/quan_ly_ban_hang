@@ -220,6 +220,7 @@ class DetailRequestReturnController extends GetxController
     requestReturn = await updateDetailRequestReturnMixin(
         requestReturn: requestReturn?.copyWith(
       note: noteTE?.text,
+      name: nameTE?.text,
       browsingStatus: statusBrowsingItemSelect?.value,
       supplierName: supplierItemSelect?.key,
       supplierID: supplierItemSelect?.value,
@@ -233,16 +234,21 @@ class DetailRequestReturnController extends GetxController
     changeUI();
   }
 
-  // tạo hoá đơn bán
+  // tạo hoá đơn yc
   createSaleOder() async {
     loadingUI();
     if (supplierItemSelect?.value != null &&
         personnelWarehouseItemSelect?.value != null &&
+        nameTE?.text != null &&
+        nameTE?.text != '' &&
+        num.parse(totalAmountRefundedTE?.text ?? '0') <=
+            calculateTotalMoney() &&
         listDetailRequestReturnCustomEdit != null &&
         (listDetailRequestReturnCustomEdit?.length ?? 0) > 0) {
       requestReturn = await createDetailRequestReturnMixin(
           requestReturn: RequestReturn(
         note: noteTE?.text,
+        name: nameTE?.text,
         supplierID: supplierItemSelect?.value,
         supplierName: supplierItemSelect?.key,
         totalMoney: calculateTotalMoney(),
@@ -254,8 +260,10 @@ class DetailRequestReturnController extends GetxController
         personnelWarehouseStaffName: personnelWarehouseItemSelect?.key,
         uid: uidCreate,
       ));
-      // cập nhật ds sản phâm trong hoá đơn
-      await updateDetailProductInRequestReturn();
+      if (requestReturn?.id != null) {
+        // cập nhật ds sản phâm trong hoá đơn
+        await updateDetailProductInRequestReturn();
+      }
 
       await initDataCreate();
     } else {

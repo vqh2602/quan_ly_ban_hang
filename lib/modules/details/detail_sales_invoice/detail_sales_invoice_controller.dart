@@ -263,6 +263,8 @@ class DetailSalesInvoiceController extends GetxController
     if (customerItemSelect?.value != null &&
         personnelSaleItemSelect?.value != null &&
         personnelShipperItemSelect?.value != null &&
+        double.parse(partlyPaidTE?.text ?? '0') <= calculateTotalMoney() &&
+         double.parse(moneyGuestsTE?.text ?? '0') >= calculateTotalMoney() &&
         listDetailSalesOrderCustomEdit != null &&
         (listDetailSalesOrderCustomEdit?.length ?? 0) > 0) {
       salesOrder = await createDetailSalesOrderMixin(
@@ -307,6 +309,9 @@ class DetailSalesInvoiceController extends GetxController
       buildToast(
           message:
               'Không để trống các trường thông tin: khách hàng, nhân viên, sản phẩm...',
+          status: TypeToast.toastError);
+      buildToast(
+          message: 'Hoặc thanh toán một phần & tiền khách đưa sai giá trị',
           status: TypeToast.toastError);
     }
     changeUI();
@@ -551,12 +556,11 @@ class DetailSalesInvoiceController extends GetxController
   num calculateTotalMoneyProduct() {
     num? totalMoneyData = 0;
     listDetailSalesOrderCustomEdit?.forEach((element) {
-      totalMoneyData = (totalMoneyData ?? 0) +
-          ((element.detailSalesOrder?.quantity ?? 0) *
-              ((element.detailSalesOrder?.price ??
-                  0 -
-                      ((element.detailSalesOrder?.price ?? 0) *
-                          (element.detailSalesOrder?.discount ?? 1)))));
+      num soluong = element.detailSalesOrder?.quantity ?? 0;
+      num sanpham = element.detailSalesOrder?.price ?? 0;
+      num giamgia = ((element.detailSalesOrder?.discount ?? 100) / 100);
+      totalMoneyData =
+          (totalMoneyData ?? 0) + (soluong * (sanpham - (sanpham * giamgia)));
     });
     return totalMoneyData ?? 0;
   }
@@ -575,21 +579,14 @@ class DetailSalesInvoiceController extends GetxController
   // tính tổng tiền -> thành tiền
   num calculateTotalMoney() {
     num? totalMoneyData = calculateTotalMoneyProduct();
-    // listDetailSalesOrderCustomEdit?.forEach((element) {
-    //   totalMoneyData = (totalMoneyData ?? 0) +
-    //       ((element.detailSalesOrder?.quantity ?? 0) *
-    //           (element.detailSalesOrder?.price ?? 0));
-    // });
     // (tổng tiền + tiền thuế ) - (thanh toán 1 phần + giảm giá) + phụ phí
-    return ((totalMoneyData) +
-            ((totalMoneyData) *
-                (double.parse(vatTE?.text ?? '0')) /
-                100)) -
-        (double.parse(partlyPaidTE?.text ?? '0') +
-            ((totalMoneyData) *
-                (double.parse(discountTE?.text ?? '0')) /
-                100)) +
-        double.parse(surchargeTE?.text ?? '0');
+    num vat = double.parse(vatTE?.text ?? '0') / 100;
+    num partlyPaid = double.parse(partlyPaidTE?.text ?? '0');
+    num discount = double.parse(discountTE?.text ?? '0') / 100;
+    num surcharge = double.parse(surchargeTE?.text ?? '0');
+    return ((totalMoneyData) + ((totalMoneyData) * vat)) -
+        (partlyPaid + ((totalMoneyData) * discount)) +
+        surcharge;
   }
 
   // tính tiền trả lại

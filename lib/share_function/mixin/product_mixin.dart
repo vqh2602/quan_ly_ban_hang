@@ -84,10 +84,10 @@ mixin ProductMixin {
         data: product?.toJson());
     if (res.data.isNotEmpty) {
       result = Product.fromJson(res.data);
-      buildToast(
-          title: 'Cập nhật thành công',
-          message: '',
-          status: TypeToast.getSuccess);
+      // buildToast(
+      //     title: 'Cập nhật thành công',
+      //     message: '',
+      //     status: TypeToast.getSuccess);
     } else {
       buildToast(
           title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);

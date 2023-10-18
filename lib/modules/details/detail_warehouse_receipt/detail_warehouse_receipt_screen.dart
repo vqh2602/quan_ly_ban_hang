@@ -158,7 +158,9 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                                 )));
                                   },
                                   icon: const Icon(
-                                      FontAwesomeIcons.lightPenToSquare, size: 18,),
+                                    FontAwesomeIcons.lightPenToSquare,
+                                    size: 18,
+                                  ),
                                   color: Get.theme.primaryColor,
                                 ),
                             ],
@@ -264,7 +266,9 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                                 )));
                                   },
                                   icon: const Icon(
-                                      FontAwesomeIcons.lightPenToSquare, size: 18,),
+                                    FontAwesomeIcons.lightPenToSquare,
+                                    size: 18,
+                                  ),
                                   color: Get.theme.primaryColor,
                                 ),
                             ],
@@ -286,78 +290,87 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                 padding: const EdgeInsets.only(top: 12),
                                 itemBuilder: (context, indext) {
                                   return itemProduct(
-                                    product: isEdit
-                                        ? (detailWarehouseReceiptController
-                                            .listDetailWarehouseReceiptCustomEdit?[
-                                                indext]
-                                            .product
-                                            ?.copyWith(
-                                            importPrice:
-                                                detailWarehouseReceiptController
-                                                    .listDetailWarehouseReceiptCustomEdit?[
-                                                        indext]
-                                                    .detailWarehouseReceipt
-                                                    ?.importPrice,
-                                          ))
-                                        : detailWarehouseReceiptController
-                                            .listDetailWarehouseReceiptCustom?[
-                                                indext]
-                                            .product
-                                            ?.copyWith(
-                                            importPrice:
-                                                detailWarehouseReceiptController
-                                                    .listDetailWarehouseReceiptCustom?[
-                                                        indext]
-                                                    .detailWarehouseReceipt
-                                                    ?.importPrice,
-                                          ),
-                                    listUnit: detailWarehouseReceiptController
-                                        .listUnit,
-                                    isImportPrice: true,
-                                    margin: const EdgeInsets.only(
-                                        bottom: 12, top: 8, left: 8, right: 8),
-                                    quantity: double.tryParse(isEdit
-                                        ? (detailWarehouseReceiptController
-                                                .listDetailWarehouseReceiptCustomEdit?[
-                                                    indext]
-                                                .detailWarehouseReceipt
-                                                ?.quantity
-                                                .toString() ??
-                                            '0')
-                                        : detailWarehouseReceiptController
-                                                .listDetailWarehouseReceiptCustom?[
-                                                    indext]
-                                                .detailWarehouseReceipt
-                                                ?.quantity
-                                                .toString() ??
-                                            '0'),
-                                    onTap: isEdit
-                                        ? () {
-                                            if (isEdit) {
-                                              showBottomSheetAddProduct(
-                                                  detailWarehouseReceiptCustom: isEdit
-                                                      ? (detailWarehouseReceiptController
-                                                              .listDetailWarehouseReceiptCustomEdit?[
-                                                          indext])
-                                                      : (detailWarehouseReceiptController
-                                                              .listDetailWarehouseReceiptCustom?[
-                                                          indext]));
+                                      product: isEdit
+                                          ? (detailWarehouseReceiptController
+                                              .listDetailWarehouseReceiptCustomEdit?[
+                                                  indext]
+                                              .product
+                                              ?.copyWith(
+                                              importPrice:
+                                                  detailWarehouseReceiptController
+                                                      .listDetailWarehouseReceiptCustomEdit?[
+                                                          indext]
+                                                      .detailWarehouseReceipt
+                                                      ?.importPrice,
+                                            ))
+                                          : detailWarehouseReceiptController
+                                              .listDetailWarehouseReceiptCustom?[
+                                                  indext]
+                                              .product
+                                              ?.copyWith(
+                                              importPrice:
+                                                  detailWarehouseReceiptController
+                                                      .listDetailWarehouseReceiptCustom?[
+                                                          indext]
+                                                      .detailWarehouseReceipt
+                                                      ?.importPrice,
+                                            ),
+                                      listUnit: detailWarehouseReceiptController
+                                          .listUnit,
+                                      isImportPrice: true,
+                                      margin: const EdgeInsets.only(
+                                          bottom: 12,
+                                          top: 8,
+                                          left: 8,
+                                          right: 8),
+                                      quantity: double.tryParse(isEdit
+                                          ? (detailWarehouseReceiptController
+                                                  .listDetailWarehouseReceiptCustomEdit?[
+                                                      indext]
+                                                  .detailWarehouseReceipt
+                                                  ?.quantity
+                                                  .toString() ??
+                                              '0')
+                                          : detailWarehouseReceiptController
+                                                  .listDetailWarehouseReceiptCustom?[
+                                                      indext]
+                                                  .detailWarehouseReceipt
+                                                  ?.quantity
+                                                  .toString() ??
+                                              '0'),
+                                      onTap: isEdit
+                                          ? () {
+                                              if (isEdit) {
+                                                showBottomSheetAddProduct(
+                                                    detailWarehouseReceiptCustom: isEdit
+                                                        ? (detailWarehouseReceiptController
+                                                                .listDetailWarehouseReceiptCustomEdit?[
+                                                            indext])
+                                                        : (detailWarehouseReceiptController
+                                                                .listDetailWarehouseReceiptCustom?[
+                                                            indext]));
+                                              }
                                             }
-                                          }
-                                        : null,
-                                    // onHoverDelete: () {
-                                    //   ShareFuntion.onPopDialog(
-                                    //       context: context,
-                                    //       onCancel: () {
-                                    //         Get.back();
-                                    //       },
-                                    //       onSubmit: () {
-                                    //         Get.back();
-                                    //       },
-                                    //       title:
-                                    //           'Xoá sản phẩm ra khỏi danh sách');
-                                    // }
-                                  );
+                                          : null,
+                                      onHoverDelete: () {
+                                        isEdit
+                                            ? ShareFuntion.onPopDialog(
+                                                context: context,
+                                                onCancel: () {
+                                                  Get.back();
+                                                },
+                                                onSubmit: () {
+                                                  detailWarehouseReceiptController
+                                                      .listDetailWarehouseReceiptCustomEdit
+                                                      ?.removeAt(indext);
+                                                  detailWarehouseReceiptController
+                                                      .updateUI();
+                                                  Get.back();
+                                                },
+                                                title:
+                                                    'Xoá sản phẩm ra khỏi danh sách')
+                                            : null;
+                                      });
                                 }),
                           ),
                           cHeight(8),
@@ -414,8 +427,10 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                           titleEditTitle(
                               title: 'Tg tạo đơn',
                               value: ShareFuntion.formatDate(
-                                  dateTime: detailWarehouseReceiptController
-                                      .warehouseReceipt?.timeWarehouse,
+                                  dateTime: isCreate
+                                      ? DateTime.now()
+                                      : detailWarehouseReceiptController
+                                          .warehouseReceipt?.timeWarehouse,
                                   type: TypeDate.ddMMyyyyhhmm),
                               showEdit: false),
                           titleEditTitle(
@@ -694,8 +709,17 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                               ),
                                               cWidth(8),
                                               Expanded(
-                                                  child: textBodyMedium(
-                                                      p0.key ?? ''))
+                                                  child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  textBodyMedium(p0.key ?? ''),
+                                                  textBodySmall(
+                                                      p0.data?.department ??
+                                                          ''),
+                                                ],
+                                              ))
                                             ],
                                           ),
                                         )));
@@ -893,6 +917,9 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                           ?.product?.quantity ??
                                       0)) {
                                 return 'Vượt quá giới hạn kho';
+                              }
+                              if (num.parse(val) < 1) {
+                                return 'Số lượng không nhỏ hơn 1';
                               }
                               return null;
                             },

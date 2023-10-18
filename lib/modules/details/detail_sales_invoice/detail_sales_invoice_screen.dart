@@ -445,16 +445,23 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                             }
                                           : null,
                                       onHoverDelete: () {
-                                        ShareFuntion.onPopDialog(
-                                            context: context,
-                                            onCancel: () {
-                                              Get.back();
-                                            },
-                                            onSubmit: () {
-                                              Get.back();
-                                            },
-                                            title:
-                                                'Xoá sản phẩm ra khỏi danh sách');
+                                        isEdit
+                                            ? ShareFuntion.onPopDialog(
+                                                context: context,
+                                                onCancel: () {
+                                                  Get.back();
+                                                },
+                                                onSubmit: () {
+                                                  detailSalesInvoiceController
+                                                      .listDetailSalesOrderCustomEdit
+                                                      ?.removeAt(indext);
+                                                  detailSalesInvoiceController
+                                                      .updateUI();
+                                                  Get.back();
+                                                },
+                                                title:
+                                                    'Xoá sản phẩm ra khỏi danh sách')
+                                            : null;
                                       });
                                 }),
                           ),
@@ -652,8 +659,10 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                           titleEditTitle(
                               title: 'Tg đặt hàng',
                               value: ShareFuntion.formatDate(
-                                  dateTime: detailSalesInvoiceController
-                                      .salesOrder?.timeOrder,
+                                  dateTime: isCreate
+                                      ? DateTime.now()
+                                      : detailSalesInvoiceController
+                                          .salesOrder?.timeOrder,
                                   type: TypeDate.ddMMyyyyhhmm),
                               showEdit: false),
                           titleEditTitle(
@@ -864,8 +873,16 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                               ),
                                               cWidth(8),
                                               Expanded(
-                                                  child: textBodyMedium(
-                                                      p0.key ?? ''))
+                                                  child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  textBodyMedium(p0.key ?? ''),
+                                                  textBodySmall(
+                                                      p0.data.department ?? ''),
+                                                ],
+                                              ))
                                             ],
                                           ),
                                         )));
@@ -915,8 +932,16 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                               ),
                                               cWidth(8),
                                               Expanded(
-                                                  child: textBodyMedium(
-                                                      p0.key ?? ''))
+                                                  child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  textBodyMedium(p0.key ?? ''),
+                                                  textBodySmall(
+                                                      p0.data.department ?? ''),
+                                                ],
+                                              ))
                                             ],
                                           ),
                                         )));
@@ -1001,7 +1026,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                 ),
               )),
               appBar: AppBar(
-                title: textTitleLarge('SP.12082023.YYSB'),
+                title: textTitleLarge('Thông tin đơn hàng'),
                 centerTitle: false,
                 surfaceTintColor: bg500,
                 backgroundColor: bg500,
@@ -1155,6 +1180,9 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                       0)) {
                                 return 'Vượt quá giới hạn kho';
                               }
+                              if (num.parse(val) < 1) {
+                                return 'Số lượng không nhỏ hơn 1';
+                              }
                               return null;
                             },
                             readOnly: (isView || isCreate) ? false : true,
@@ -1200,5 +1228,4 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
         elevation: 0,
         backgroundColor: Colors.grey.withOpacity(0));
   }
-
 }
