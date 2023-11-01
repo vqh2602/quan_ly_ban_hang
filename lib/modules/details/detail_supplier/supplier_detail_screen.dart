@@ -134,23 +134,27 @@ class _SupplierDetailScreenState extends State<SupplierDetailScreen> {
                       const SizedBox(
                         height: 4 * 5,
                       ),
-                      TextField(
+                      TextFormField(
                         onTap: () {},
                         style: textStyleCustom(fontSize: 16),
                         readOnly: (isView || isCreate) ? false : true,
+                        validator: ShareFuntion.validateSDT,
+                        keyboardType: TextInputType.phone,
                         controller: supplierDetailController.phoneTE,
-                        decoration: textFieldInputStyle(label: 'Số điện thoại'),
+                        decoration:
+                            textFieldInputStyle(label: 'Số điện thoại (*)'),
                         maxLines: 1,
                       ),
                       const SizedBox(
                         height: 4 * 5,
                       ),
-                      TextField(
+                      TextFormField(
                         onTap: () {},
                         style: textStyleCustom(fontSize: 16),
                         controller: supplierDetailController.addressTE,
                         readOnly: (isView || isCreate) ? false : true,
-                        decoration: textFieldInputStyle(label: 'Địa chỉ'),
+                        validator: supplierDetailController.validateString,
+                        decoration: textFieldInputStyle(label: 'Địa chỉ (*)'),
                         maxLines: 3,
                       ),
                       const SizedBox(

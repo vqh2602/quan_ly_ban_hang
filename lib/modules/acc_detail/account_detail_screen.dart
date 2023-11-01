@@ -167,7 +167,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                                   style: textStyleCustom(fontSize: 16),
                                   controller: accountDetailController.nameTE,
                                   validator:
-                                      accountDetailController.validateString,
+                                      ShareFuntion.validateName,
                                   readOnly: (isView || isCreate) ? false : true,
                                   decoration:
                                       textFieldInputStyle(label: 'Họ & tên(*)'),
@@ -268,7 +268,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                               style: textStyleCustom(fontSize: 16),
                               controller: accountDetailController.departmentTE,
                               validator: accountDetailController.validateString,
-                              decoration: textFieldInputStyle(label: 'Chức vụ'),
+                              decoration: textFieldInputStyle(label: 'Chức vụ (*)'),
                               readOnly: true,
                               keyboardType: TextInputType.number,
                             ),
@@ -305,7 +305,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                               validator: accountDetailController.validateString,
                               readOnly: true,
                               decoration:
-                                  textFieldInputStyle(label: 'Giới tính'),
+                                  textFieldInputStyle(label: 'Giới tính (*)'),
                             ),
                           )
                         ],

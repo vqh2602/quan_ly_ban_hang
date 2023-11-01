@@ -840,12 +840,12 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                               if (num.parse(val) < 1) {
                                 return 'Số lượng không nhỏ hơn 1';
                               }
-                              // if (num.parse(val) >
-                              //     (detailRequestReturnCustom
-                              //             ?.product?.quantity ??
-                              //         0)) {
-                              //   return 'Vượt quá giới hạn kho';
-                              // }
+                              if (num.parse(val) >
+                                  (detailRequestReturnCustom
+                                          ?.product?.quantity ??
+                                      0)) {
+                                return 'Vượt quá giới hạn kho';
+                              }
                               return null;
                             },
                             readOnly: (isView || isCreate) ? false : true,

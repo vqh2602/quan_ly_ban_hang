@@ -251,27 +251,48 @@ class ShareFuntion with UserMixin {
   }
 
   static String? validateCCCD(String? s) {
+    if (s == null || s.isEmpty || s == '') {
+      return 'CCCD là bắt buộc';
+    }
     // Sử dụng biểu thức chính quy (regex) để kiểm tra xem chuỗi có chỉ chứa số không.
     final numericRegex = RegExp(r'^[0-9]+$');
 
     // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
-    return (numericRegex.hasMatch(s ?? '') && s?.length == 12)
+    return (numericRegex.hasMatch(s) && s.length == 12)
         ? null
         : 'CCCD phải là số và có 12 kí tự';
   }
 
   static String? validateSDT(String? s) {
+        if (s == null || s.isEmpty || s == '') {
+      return 'Số điện thoại là bắt buộc';
+    }
     // Sử dụng biểu thức chính quy (regex) để kiểm tra xem chuỗi có chỉ chứa số không.
     final numericRegex = RegExp(r'^[0-9]+$');
 
     // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
-    if (numericRegex.hasMatch(s ?? '') && s?.length == 10) {
+    if (numericRegex.hasMatch(s) && s.length == 10) {
       // Kiểm tra xem ký tự đầu tiên của chuỗi có phải là số 0 không.
-      if (s?[0] == '0') {
+      if (s[0] != '0') {
         return 'Ký tự đầu tiên phải là số 0';
       }
     } else {
-      return 'SDT phải là số và có 12 kí tự';
+      return 'SDT phải là số và có 10 kí tự';
+    }
+    return null;
+  }
+
+  static String? validateName(String? s) {
+    // Sử dụng biểu thức chính quy (regex) để kiểm tra
+    if (s == null || s.isEmpty || s == '') {
+      return 'Họ và tên là bắt buộc';
+    }
+    final regex = RegExp(r'^[a-zA-Z0-9ÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰĐđ\s]*$');
+
+    // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
+    if (!regex.hasMatch(s)) {
+    } else {
+      return 'Tên không chứa ký tự đặc biệt';
     }
     return null;
   }

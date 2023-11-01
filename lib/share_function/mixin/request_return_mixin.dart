@@ -170,8 +170,8 @@ mixin RequestReturnMixin {
           .map((e) => DetailRequestReturn.fromJson(e.data))
           .toList();
     } else {
-      buildToast(
-          title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
+      // buildToast(
+      //     title: 'Có lỗi xảy ra', message: '', status: TypeToast.getError);
       return null;
     }
     return listDetailSalseOrder;

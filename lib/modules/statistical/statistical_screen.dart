@@ -55,14 +55,11 @@ class _StatisticalScreenState extends State<StatisticalScreen>
                 backgroundColor: bg500,
                 actions: [
                   InkWell(
-                    onTap: () {
-                      ShareFuntion.dateTimePickerCupertino(
-                        onchange: (date) {
-                          statisticalController.date = date;
-
-                          statisticalController.update();
-                        },
-                      );
+                    onTap: () async {
+                      statisticalController.date =
+                          await ShareFuntion.dateTimePickerMaterial() ??
+                              DateTime.now();
+                      statisticalController.update();
                     },
                     child: textBodyMedium(
                       'T${statisticalController.date.month} ${statisticalController.date.year}',

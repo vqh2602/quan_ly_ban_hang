@@ -147,4 +147,33 @@ mixin CustomerMixin {
 
     return result;
   }
+  // tìm kiếm sdt hoặc cccd đã tồn tại chưa
+  /// **Cập nhật** truyền đủ phone và cccd
+  /// [ nếu list rỗng đúng, list có 1 phần tử đúng, list > 1 phần tử sai]
+  /// **Tạo mới**
+  /// [ nếu list rỗng đúng, list có 1 phần tử sai, list > 1 phần tử sai]
+  /// ds ng dùng
+  Future<List<Customer>?> checkUniqueCustomerMixin(
+      {String? phone,}) async {
+    List<Customer>? listCustomer = [];
+    if (phone != null) {
+      var res = await appWriteRepo.databases.listDocuments(
+          databaseId: Env.config.appWriteDatabaseID,
+          collectionId: Env.config.tblCustomerID,
+          queries: [
+            ...[Query.equal('phone', phone)],
+          ]);
+      if (res.documents.isNotEmpty) {
+        listCustomer.addAll(
+            res.documents.map((e) => Customer.fromJson(e.data)).toList());
+      }
+    }
+    
+    // loại bỏ phần tử trùng
+    final ids = listCustomer.map((e) => e.uid).toSet();
+    listCustomer.retainWhere((x) => ids.remove(x.uid));
+    listCustomer = listCustomer.toSet().toList();
+    return listCustomer;
+  }
+
 }

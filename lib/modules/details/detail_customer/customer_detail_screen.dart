@@ -130,7 +130,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                                   style: textStyleCustom(fontSize: 16),
                                   controller: customerDetailController.nameTE,
                                   validator:
-                                      customerDetailController.validateString,
+                                      ShareFuntion.validateName,
                                   readOnly: (isView || isCreate) ? false : true,
                                   decoration:
                                       textFieldInputStyle(label: 'Họ & tên(*)'),
@@ -143,23 +143,26 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                       const SizedBox(
                         height: 4 * 5,
                       ),
-                      TextField(
+                      TextFormField(
                         onTap: () {},
                         style: textStyleCustom(fontSize: 16),
+                        keyboardType: TextInputType.phone,
                         readOnly: (isView || isCreate) ? false : true,
                         controller: customerDetailController.phoneTE,
-                        decoration: textFieldInputStyle(label: 'Số điện thoại'),
+                        validator: ShareFuntion.validateSDT,
+                        decoration: textFieldInputStyle(label: 'Số điện thoại (*)'),
                         maxLines: 1,
                       ),
                       const SizedBox(
                         height: 4 * 5,
                       ),
-                      TextField(
+                      TextFormField(
                         onTap: () {},
                         style: textStyleCustom(fontSize: 16),
                         controller: customerDetailController.addressTE,
                         readOnly: (isView || isCreate) ? false : true,
-                        decoration: textFieldInputStyle(label: 'Địa chỉ'),
+                        validator: customerDetailController.validateString,
+                        decoration: textFieldInputStyle(label: 'Địa chỉ (*)'),
                         maxLines: 3,
                       ),
                       const SizedBox(
