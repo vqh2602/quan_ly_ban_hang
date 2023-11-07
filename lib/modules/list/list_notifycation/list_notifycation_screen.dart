@@ -74,7 +74,7 @@ class _ListNotifycationState extends State<ListNotifycationSreen> {
                             ),
                             cWidth(20),
                             textBodyLarge(
-                                'Đơn hàng  ${ShareFuntion().checkPermissionUserLogin(permission: [
+                                'Đơn hàng ${ShareFuntion().checkPermissionUserLogin(permission: [
                                       'QL',
                                       'AD',
                                       'BH'

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -7,9 +8,9 @@ import 'package:quan_ly_ban_hang/c_lang/c_translations.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
 import 'package:quan_ly_ban_hang/config/config.dart';
 import 'package:quan_ly_ban_hang/config/get_config.dart';
-import 'package:quan_ly_ban_hang/modules/init.dart';
-import 'package:quan_ly_ban_hang/modules/routers.dart';
 import 'package:quan_ly_ban_hang/modules/splash/splash_screen.dart';
+import 'package:quan_ly_ban_hang/routers/init.dart';
+import 'package:quan_ly_ban_hang/routers/routers.dart';
 
 Future<void> main() async {
   await GetStorage.init();
@@ -54,11 +55,12 @@ class MyApp extends StatelessWidget {
       // },
       localizationsDelegates: const [
         // Add this line
-        // GlobalMaterialLocalizations.delegate,
-        // GlobalCupertinoLocalizations.delegate,
-        // GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate, // uses `flutter_localizations`
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
       ],
-      //supportedLocales: const [Locale('vn'),Locale('u')],
+      supportedLocales: const [Locale('vi')],
       transitionDuration: const Duration(milliseconds: 300),
       defaultTransition: Transition.fadeIn,
       //  initialRoute: LoginScreen.routeName,

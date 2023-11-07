@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
@@ -56,9 +57,18 @@ class _StatisticalScreenState extends State<StatisticalScreen>
                 actions: [
                   InkWell(
                     onTap: () async {
-                      statisticalController.date =
-                          await ShareFuntion.dateTimePickerMaterial() ??
-                              DateTime.now();
+                      statisticalController.date = DateTime.now();
+                      await ShareFuntion.dateTimePickerCupertino(
+                          onchange: (date) {
+                            statisticalController.date = date;
+                          },
+                          dateOrder: DatePickerDateOrder.dmy,
+                          mode: CupertinoDatePickerMode.monthYear);
+                      //         DateTime.now();
+                      // statisticalController.date =
+                      //     await ShareFuntion.dateTimePickerMaterial() ??
+                      //         DateTime.now();
+
                       statisticalController.update();
                     },
                     child: textBodyMedium(

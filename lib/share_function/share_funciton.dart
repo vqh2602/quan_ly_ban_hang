@@ -18,12 +18,13 @@ import 'package:url_launcher/url_launcher.dart';
 enum TypeDate { ddMMyyyy, yyyyMMdd, ddMMyyyyhhmm, hhmm, dd, yyyy, mM }
 
 class ShareFuntion with UserMixin {
-  static void dateTimePickerCupertino(
+  static Future<void> dateTimePickerCupertino(
       {required Function(DateTime) onchange,
       DatePickerDateOrder? dateOrder,
       DateTime? initialDateTime,
-      CupertinoDatePickerMode mode = CupertinoDatePickerMode.dateAndTime}) {
-    Get.bottomSheet(
+      CupertinoDatePickerMode mode =
+          CupertinoDatePickerMode.dateAndTime}) async {
+    await Get.bottomSheet(
         backgroundColor: Get.theme.colorScheme.background,
         Container(
           height: 250,
@@ -31,7 +32,6 @@ class ShareFuntion with UserMixin {
           child: CupertinoDatePicker(
               onDateTimeChanged: onchange,
               initialDateTime: initialDateTime ?? DateTime.now(),
-
               //backgroundColor: Colors.white,
               dateOrder: dateOrder ?? DatePickerDateOrder.dmy,
               mode: mode),
@@ -46,6 +46,7 @@ class ShareFuntion with UserMixin {
   }) async {
     return await showDatePicker(
         context: context ?? Get.context!,
+        locale: const Locale('vi'),
         initialDate: DateTime.now(),
         firstDate: DateTime(1900),
         lastDate: DateTime(2101));
@@ -264,7 +265,7 @@ class ShareFuntion with UserMixin {
   }
 
   static String? validateSDT(String? s) {
-        if (s == null || s.isEmpty || s == '') {
+    if (s == null || s.isEmpty || s == '') {
       return 'Số điện thoại là bắt buộc';
     }
     // Sử dụng biểu thức chính quy (regex) để kiểm tra xem chuỗi có chỉ chứa số không.
@@ -287,7 +288,8 @@ class ShareFuntion with UserMixin {
     if (s == null || s.isEmpty || s == '') {
       return 'Họ và tên là bắt buộc';
     }
-    final regex = RegExp(r'^[a-zA-Z0-9ÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰĐđ\s]*$');
+    final regex = RegExp(
+        r'^[a-zA-Z0-9ÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰĐđ\s]*$');
 
     // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
     if (!regex.hasMatch(s)) {
