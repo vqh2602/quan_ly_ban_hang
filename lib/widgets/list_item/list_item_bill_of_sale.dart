@@ -57,13 +57,13 @@ Widget itemBillOfSale({SalesOrder? salesOrder, List<Status>? listStatus}) {
           ),
           cHeight(8),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              textTitleMedium(
-                  ShareFuntion.formatCurrency(
-                    salesOrder?.profit ?? 0,
-                  ),
-                  color: b500),
+              // textTitleMedium(
+              //     ShareFuntion.formatCurrency(
+              //       salesOrder?.profit ?? 0,
+              //     ),
+              //     color: b500),
               textTitleMedium(
                   ShareFuntion.formatCurrency(salesOrder?.totalMoney ?? 0),
                   color: a500)

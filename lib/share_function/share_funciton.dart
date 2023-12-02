@@ -225,6 +225,19 @@ class ShareFuntion with UserMixin {
     update();
   }
 
+  static searchListCustomer(
+      {required List? list, required String value, required Function update}) {
+    for (var role in list ?? []) {
+      if (role?.data?.phone == value.toLowerCase().trim() ||
+          role?.key?.toLowerCase().contains(value.toLowerCase()) ||
+          role?.value?.toLowerCase().contains(value.toLowerCase())) {
+        list?.remove(role);
+        list?.insert(0, role);
+      }
+    }
+    update();
+  }
+
   /// tìm đối tượng có trong list 1 nhưng k có trong list 2
   static List<T> findUniqueObjects<T>(List<T> list1, List<T> list2) {
     Set<T> set2 = Set.from(list2); // Chuyển list2 thành một Set
@@ -292,7 +305,7 @@ class ShareFuntion with UserMixin {
         r'^[a-zA-Z0-9ÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰĐđ\s]*$');
 
     // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
-    if (!regex.hasMatch(s)) {
+    if (regex.hasMatch(s)) {
     } else {
       return 'Tên không chứa ký tự đặc biệt';
     }

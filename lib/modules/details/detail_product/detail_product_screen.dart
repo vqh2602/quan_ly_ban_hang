@@ -541,6 +541,11 @@ class _DetailProductState extends State<DetailProductSreen> {
                 centerTitle: false,
                 surfaceTintColor: bg500,
                 backgroundColor: bg500,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    Get.back(result: detailProductController.idCreate);
+                  }),
                 actions: [
                   Container(
                     margin: const EdgeInsets.only(right: 20),

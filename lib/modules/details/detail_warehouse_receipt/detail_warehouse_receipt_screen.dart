@@ -5,6 +5,8 @@ import 'package:flutx_ui/flutx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
+import 'package:quan_ly_ban_hang/data/models/select_option_item.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_product/detail_product_screen.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_warehouse_receipt/detail_warehouse_receipt_controller.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
@@ -220,6 +222,63 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                                   value:
                                                       detailWarehouseReceiptController
                                                           .listProductSelect,
+                                                  titleSubmit: 'Thêm mới',
+                                                  onSubmitted: () async {
+                                                    if (ShareFuntion()
+                                                        .checkPermissionUserLogin(
+                                                            permission: [
+                                                          'QL',
+                                                          'NK',
+                                                          'C_NK',
+                                                          'AD'
+                                                        ])) {
+                                                      var id =
+                                                          await Get.toNamed(
+                                                              DetailProductSreen
+                                                                  .routeName,
+                                                              arguments: {
+                                                            'type': 'create'
+                                                          });
+                                                      // print(id);
+                                                      await detailWarehouseReceiptController
+                                                          .getListProduct(
+                                                              isCache: false);
+                                                      // print(
+                                                      //     detailWarehouseReceiptController
+                                                      //         .listProductSelect
+                                                      //         ?.length);
+                                                      SelectOptionItem?
+                                                          productCreate =
+                                                          detailWarehouseReceiptController
+                                                              .listProduct
+                                                              ?.where((element) =>
+                                                                  element
+                                                                      .value ==
+                                                                  id)
+                                                              .firstOrNull;
+                                                      if (productCreate !=
+                                                          null) {
+                                                        detailWarehouseReceiptController
+                                                            .listProductSelect
+                                                            ?.add(
+                                                                productCreate);
+                                                        detailWarehouseReceiptController
+                                                            .fillDataProduct();
+                                                      }
+                                                      // print(detailWarehouseReceiptController
+                                                      //     .listProductSelect);
+                                                      detailWarehouseReceiptController
+                                                          .resetDataProduct();
+                                                      detailWarehouseReceiptController
+                                                          .updateUI();
+                                                    } else {
+                                                      buildToast(
+                                                          message:
+                                                              'Không có quyền xem thông tin',
+                                                          status: TypeToast
+                                                              .toastError);
+                                                    }
+                                                  },
                                                   onSelect: (p0) {
                                                     if (detailWarehouseReceiptController
                                                             .listProductSelect
@@ -383,15 +442,15 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                         children: [
                           // textTitleMedium( 'Thông tin'),
                           cHeight(4),
-                          titleEditTitle(
-                              title: 'Tổng tiền',
-                              value: ShareFuntion.formatCurrency(isEdit
-                                  ? detailWarehouseReceiptController
-                                      .calculateTotalMoney()
-                                  : detailWarehouseReceiptController
-                                          .warehouseReceipt?.totalMoney ??
-                                      0),
-                              showEdit: false),
+                          // titleEditTitle(
+                          //     title: 'Tổng tiền',
+                          //     value: ShareFuntion.formatCurrency(isEdit
+                          //         ? detailWarehouseReceiptController
+                          //             .calculateTotalMoney()
+                          //         : detailWarehouseReceiptController
+                          //                 .warehouseReceipt?.totalMoney ??
+                          //             0),
+                          //     showEdit: false),
 
                           titleEditTitle(
                               title: 'Thành tiền',
@@ -425,7 +484,7 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                       '',
                               showEdit: false),
                           titleEditTitle(
-                              title: 'Tg tạo đơn',
+                              title: 'Thời gian tạo đơn',
                               value: ShareFuntion.formatDate(
                                   dateTime: isCreate
                                       ? DateTime.now()
@@ -433,140 +492,140 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                           .warehouseReceipt?.timeWarehouse,
                                   type: TypeDate.ddMMyyyyhhmm),
                               showEdit: false),
-                          titleEditTitle(
-                              title: 'T.Thái thanh toán',
-                              valueWidget: statusWidget(
-                                  ShareFuntion.getStatusWithIDFunc(
-                                              isEdit
-                                                  ? detailWarehouseReceiptController
-                                                      .statusPayItemSelect
-                                                      ?.value
-                                                  : detailWarehouseReceiptController
-                                                      .warehouseReceipt
-                                                      ?.paymentStatus,
-                                              listStatus:
-                                                  detailWarehouseReceiptController
-                                                      .listStatus)
-                                          ?.name ??
-                                      '',
-                                  Color(int.parse(
-                                      '0xff${ShareFuntion.getStatusWithIDFunc(isEdit ? detailWarehouseReceiptController.statusPayItemSelect?.value : detailWarehouseReceiptController.warehouseReceipt?.paymentStatus, listStatus: detailWarehouseReceiptController.listStatus)?.color}'))),
-                              value: '',
-                              onTap: () {
-                                Get.bottomSheet(detailWarehouseReceiptController
-                                    .obx((state) => showBottomListChose(
-                                          options:
-                                              detailWarehouseReceiptController
-                                                  .listStatusOption
-                                                  ?.where((element) =>
-                                                      element.data.group ==
-                                                      'Trạng thái thanh toán')
-                                                  .toList(),
-                                          value:
-                                              detailWarehouseReceiptController
-                                                  .statusPayItemSelect,
-                                          onSelect: (p0) {
-                                            detailWarehouseReceiptController
-                                                .statusPayItemSelect = p0;
+                          // titleEditTitle(
+                          //     title: 'T.Thái thanh toán',
+                          //     valueWidget: statusWidget(
+                          //         ShareFuntion.getStatusWithIDFunc(
+                          //                     isEdit
+                          //                         ? detailWarehouseReceiptController
+                          //                             .statusPayItemSelect
+                          //                             ?.value
+                          //                         : detailWarehouseReceiptController
+                          //                             .warehouseReceipt
+                          //                             ?.paymentStatus,
+                          //                     listStatus:
+                          //                         detailWarehouseReceiptController
+                          //                             .listStatus)
+                          //                 ?.name ??
+                          //             '',
+                          //         Color(int.parse(
+                          //             '0xff${ShareFuntion.getStatusWithIDFunc(isEdit ? detailWarehouseReceiptController.statusPayItemSelect?.value : detailWarehouseReceiptController.warehouseReceipt?.paymentStatus, listStatus: detailWarehouseReceiptController.listStatus)?.color}'))),
+                          //     value: '',
+                          //     onTap: () {
+                          //       Get.bottomSheet(detailWarehouseReceiptController
+                          //           .obx((state) => showBottomListChose(
+                          //                 options:
+                          //                     detailWarehouseReceiptController
+                          //                         .listStatusOption
+                          //                         ?.where((element) =>
+                          //                             element.data.group ==
+                          //                             'Trạng thái thanh toán')
+                          //                         .toList(),
+                          //                 value:
+                          //                     detailWarehouseReceiptController
+                          //                         .statusPayItemSelect,
+                          //                 onSelect: (p0) {
+                          //                   detailWarehouseReceiptController
+                          //                       .statusPayItemSelect = p0;
+                          //                   detailWarehouseReceiptController
+                          //                       .updateUI();
+                          //                 },
+                          //                 onSearch: (val) {
+                          //                   ShareFuntion.searchList(
+                          //                       list:
+                          //                           detailWarehouseReceiptController
+                          //                               .listStatusOption,
+                          //                       value: val,
+                          //                       update: () {
+                          //                         detailWarehouseReceiptController
+                          //                             .updateUI();
+                          //                       });
+                          //                 },
+                          //                 buildOption: (p0) => Row(
+                          //                   children: [
+                          //                     CircleAvatar(
+                          //                       radius: 8,
+                          //                       backgroundColor: Color(int.parse(
+                          //                           '0xff${p0.data.color}')),
+                          //                     ),
+                          //                     cWidth(8),
+                          //                     Expanded(
+                          //                         child: textBodyMedium(
+                          //                             p0.key ?? ''))
+                          //                   ],
+                          //                 ),
+                          //               )));
+                          //     },
+                          //     showEdit: isEdit),
+                          // titleEditTitle(
+                          //     title: 'T.Thái giao hàng',
+                          //     valueWidget: statusWidget(
+                          //         ShareFuntion.getStatusWithIDFunc(
+                          //                     isEdit
+                          //                         ? detailWarehouseReceiptController
+                          //                             .statusDeliverItemSelect
+                          //                             ?.value
+                          //                         : detailWarehouseReceiptController
+                          //                             .warehouseReceipt
+                          //                             ?.deliveryStatus,
+                          //                     listStatus:
+                          //                         detailWarehouseReceiptController
+                          //                             .listStatus)
+                          //                 ?.name ??
+                          //             '',
+                          //         Color(int.parse(
+                          //             '0xff${ShareFuntion.getStatusWithIDFunc(isEdit ? detailWarehouseReceiptController.statusDeliverItemSelect?.value : detailWarehouseReceiptController.warehouseReceipt?.deliveryStatus, listStatus: detailWarehouseReceiptController.listStatus)?.color}'))),
+                          //     value: '',
+                          //     onTap: () {
+                          //       Get.bottomSheet(detailWarehouseReceiptController
+                          //           .obx((state) => showBottomListChose(
+                          //                 options:
+                          //                     detailWarehouseReceiptController
+                          //                         .listStatusOption
+                          //                         ?.where((element) =>
+                          //                             element.data.group ==
+                          //                             'trạng thái giao hàng')
+                          //                         .toList(),
+                          //                 value:
+                          //                     detailWarehouseReceiptController
+                          //                         .statusDeliverItemSelect,
+                          //                 onSelect: (p0) {
+                          //                   detailWarehouseReceiptController
+                          //                       .statusDeliverItemSelect = p0;
 
-                                            detailWarehouseReceiptController
-                                                .updateUI();
-                                          },
-                                          onSearch: (val) {
-                                            ShareFuntion.searchList(
-                                                list:
-                                                    detailWarehouseReceiptController
-                                                        .listStatusOption,
-                                                value: val,
-                                                update: () {
-                                                  detailWarehouseReceiptController
-                                                      .updateUI();
-                                                });
-                                          },
-                                          buildOption: (p0) => Row(
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 8,
-                                                backgroundColor: Color(int.parse(
-                                                    '0xff${p0.data.color}')),
-                                              ),
-                                              cWidth(8),
-                                              Expanded(
-                                                  child: textBodyMedium(
-                                                      p0.key ?? ''))
-                                            ],
-                                          ),
-                                        )));
-                              },
-                              showEdit: isEdit),
-                          titleEditTitle(
-                              title: 'T.Thái giao hàng',
-                              valueWidget: statusWidget(
-                                  ShareFuntion.getStatusWithIDFunc(
-                                              isEdit
-                                                  ? detailWarehouseReceiptController
-                                                      .statusDeliverItemSelect
-                                                      ?.value
-                                                  : detailWarehouseReceiptController
-                                                      .warehouseReceipt
-                                                      ?.deliveryStatus,
-                                              listStatus:
-                                                  detailWarehouseReceiptController
-                                                      .listStatus)
-                                          ?.name ??
-                                      '',
-                                  Color(int.parse(
-                                      '0xff${ShareFuntion.getStatusWithIDFunc(isEdit ? detailWarehouseReceiptController.statusDeliverItemSelect?.value : detailWarehouseReceiptController.warehouseReceipt?.deliveryStatus, listStatus: detailWarehouseReceiptController.listStatus)?.color}'))),
-                              value: '',
-                              onTap: () {
-                                Get.bottomSheet(detailWarehouseReceiptController
-                                    .obx((state) => showBottomListChose(
-                                          options:
-                                              detailWarehouseReceiptController
-                                                  .listStatusOption
-                                                  ?.where((element) =>
-                                                      element.data.group ==
-                                                      'trạng thái giao hàng')
-                                                  .toList(),
-                                          value:
-                                              detailWarehouseReceiptController
-                                                  .statusDeliverItemSelect,
-                                          onSelect: (p0) {
-                                            detailWarehouseReceiptController
-                                                .statusDeliverItemSelect = p0;
+                          //                   detailWarehouseReceiptController
+                          //                       .updateUI();
+                          //                 },
+                          //                 onSearch: (val) {
+                          //                   ShareFuntion.searchList(
+                          //                       list:
+                          //                           detailWarehouseReceiptController
+                          //                               .listStatusOption,
+                          //                       value: val,
+                          //                       update: () {
+                          //                         detailWarehouseReceiptController
+                          //                             .updateUI();
+                          //                       });
+                          //                 },
+                          //                 buildOption: (p0) => Row(
+                          //                   children: [
+                          //                     CircleAvatar(
+                          //                       radius: 8,
+                          //                       backgroundColor: Color(int.parse(
+                          //                           '0xff${p0.data.color}')),
+                          //                     ),
+                          //                     cWidth(8),
+                          //                     Expanded(
+                          //                         child: textBodyMedium(
+                          //                             p0.key ?? ''))
+                          //                   ],
+                          //                 ),
+                          //               )));
+                          //     },
+                          //     showEdit: isEdit),
 
-                                            detailWarehouseReceiptController
-                                                .updateUI();
-                                          },
-                                          onSearch: (val) {
-                                            ShareFuntion.searchList(
-                                                list:
-                                                    detailWarehouseReceiptController
-                                                        .listStatusOption,
-                                                value: val,
-                                                update: () {
-                                                  detailWarehouseReceiptController
-                                                      .updateUI();
-                                                });
-                                          },
-                                          buildOption: (p0) => Row(
-                                            children: [
-                                              CircleAvatar(
-                                                radius: 8,
-                                                backgroundColor: Color(int.parse(
-                                                    '0xff${p0.data.color}')),
-                                              ),
-                                              cWidth(8),
-                                              Expanded(
-                                                  child: textBodyMedium(
-                                                      p0.key ?? ''))
-                                            ],
-                                          ),
-                                        )));
-                              },
-                              showEdit: isEdit),
                           titleEditTitle(
-                              title: 'T.Thái duyệt',
+                              title: 'Trạng thái duyệt',
                               valueWidget: statusWidget(
                                   ShareFuntion.getStatusWithIDFunc(
                                               isEdit
@@ -829,6 +888,11 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
         text: detailWarehouseReceiptCustom?.detailWarehouseReceipt?.quantity
                 .toString() ??
             '1');
+    TextEditingController importPriceTE = TextEditingController(
+        text: detailWarehouseReceiptCustom?.detailWarehouseReceipt?.importPrice
+                .toString() ??
+            detailWarehouseReceiptCustom?.product?.importPrice.toString() ??
+            '0');
     TextEditingController noteTE = TextEditingController(
         text: detailWarehouseReceiptCustom?.detailWarehouseReceipt?.note ?? '');
     final formKey = GlobalKey<FormState>();
@@ -880,6 +944,7 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                                       note: noteTE.text,
                                       product:
                                           detailWarehouseReceiptCustom?.product,
+                                      importPriceP: importPriceTE.text,
                                       quantity: quantityTE.text);
                               Get.back();
                             }
@@ -912,12 +977,7 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                               if (val == null) {
                                 return 'Không để trống';
                               }
-                              if (num.parse(val) >
-                                  (detailWarehouseReceiptCustom
-                                          ?.product?.quantity ??
-                                      0)) {
-                                return 'Vượt quá giới hạn kho';
-                              }
+
                               if (num.parse(val) < 1) {
                                 return 'Số lượng không nhỏ hơn 1';
                               }
@@ -925,6 +985,26 @@ class _DetailWarehouseReceiptState extends State<DetailWarehouseReceiptScreen> {
                             },
                             readOnly: (isView || isCreate) ? false : true,
                             decoration: textFieldInputStyle(label: 'Số lượng'),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            onTap: () {},
+                            style: textStyleCustom(fontSize: 16),
+                            controller: importPriceTE,
+                            validator: (val) {
+                              if (val == null) {
+                                return 'Không để trống';
+                              }
+
+                              if (num.parse(val) < 0) {
+                                return 'Giá nhập không nhỏ hơn 0';
+                              }
+                              return null;
+                            },
+                            readOnly: (isView || isCreate) ? false : true,
+                            decoration: textFieldInputStyle(label: 'Giá nhập'),
                             textAlign: TextAlign.center,
                           ),
                         ),

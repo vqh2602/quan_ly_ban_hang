@@ -31,6 +31,7 @@ class CustomerDetailController extends GetxController
   DateTime? birthday;
   bool isResetPassword = false;
   var uuid = const Uuid();
+  String? idCreate = '';
 
   List<SelectOptionItem> listGender = [
     SelectOptionItem(key: 'Nam', value: 'Nam', data: null),
@@ -97,27 +98,27 @@ class CustomerDetailController extends GetxController
 // cập nhật
   Future<void> updateCustomer() async {
     loadingUI();
-     List<Customer>? listCheck =
-          await checkUniqueCustomerMixin(phone: phoneTE?.text);
-    
-  // kiểm tra sdt đã tồn tại hay chưa, nếu tồn tại phải 2 id bằng nhau mới cho sửa
+    List<Customer>? listCheck =
+        await checkUniqueCustomerMixin(phone: phoneTE?.text);
+
+    // kiểm tra sdt đã tồn tại hay chưa, nếu tồn tại phải 2 id bằng nhau mới cho sửa
     if ((listCheck == null || listCheck.length <= 1) &&
         ((listCheck?.length ?? 0) < 1
             ? listCheck?.firstOrNull?.uid != customer?.uid
             : listCheck?.firstOrNull?.uid == customer?.uid)) {
-  customer = await updateDetailCustomerMixin(
-      customer: customer?.copyWith(
-          name: nameTE?.text,
-          phone: phoneTE?.text,
-          address: addressTE?.text,
-          gender: genderItemSelect?.value,
-          note: noteTE?.text),
-      id: customer?.id);
-}else{
-  buildToast(
-      message: 'CCCD hoặc số điện thoại đã tồn tại trong hệ thống',
-      status: TypeToast.getError);
-}
+      customer = await updateDetailCustomerMixin(
+          customer: customer?.copyWith(
+              name: nameTE?.text,
+              phone: phoneTE?.text,
+              address: addressTE?.text,
+              gender: genderItemSelect?.value,
+              note: noteTE?.text),
+          id: customer?.id);
+    } else {
+      buildToast(
+          message: 'CCCD hoặc số điện thoại đã tồn tại trong hệ thống',
+          status: TypeToast.getError);
+    }
     changeUI();
   }
 
@@ -154,6 +155,7 @@ class CustomerDetailController extends GetxController
 
         changeUI();
         if (result != null) {
+          idCreate = result.uid;
           initData();
         }
       } else {

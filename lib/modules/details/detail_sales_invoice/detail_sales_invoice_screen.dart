@@ -5,6 +5,8 @@ import 'package:flutx_ui/flutx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
+import 'package:quan_ly_ban_hang/data/models/select_option_item.dart';
+import 'package:quan_ly_ban_hang/modules/details/detail_customer/customer_detail_screen.dart';
 import 'package:quan_ly_ban_hang/modules/details/detail_sales_invoice/detail_sales_invoice_controller.dart';
 import 'package:quan_ly_ban_hang/modules/print_pos/print_pos.dart';
 import 'package:quan_ly_ban_hang/widgets/base/base.dart';
@@ -205,8 +207,61 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                                 detailSalesInvoiceController
                                                     .updateUI();
                                               },
+                                              onSubmitted: () async {
+                                                if (ShareFuntion()
+                                                    .checkPermissionUserLogin(
+                                                        permission: [
+                                                      'QL',
+                                                      'BH',
+                                                      'GH',
+                                                      'C_KH',
+                                                      'AD'
+                                                    ])) {
+                                                  var id = await Get.toNamed(
+                                                      CustomerDetailScreen
+                                                          .routeName,
+                                                      arguments: {
+                                                        'type': 'create'
+                                                      });
+
+                                                  await detailSalesInvoiceController
+                                                      .getListCustomer();
+                                                  // print(
+                                                  //     detailSalesInvoiceController
+                                                  //         .listCustomer);
+
+                                                  SelectOptionItem?
+                                                      customerCreate =
+                                                      detailSalesInvoiceController
+                                                          .listCustomer
+                                                          ?.where((element) =>
+                                                              element.value ==
+                                                              id)
+                                                          .firstOrNull;
+                                                  if (customerCreate != null) {
+                                                    detailSalesInvoiceController
+                                                            .customerItemSelect =
+                                                        customerCreate;
+                                                  }
+                                                  detailSalesInvoiceController
+                                                      .resetDataCustomer();
+                                                  // print(
+                                                  //     detailSalesInvoiceController
+                                                  //         .customerItemSelect);
+
+                                                  detailSalesInvoiceController
+                                                      .updateUI();
+                                                } else {
+                                                  buildToast(
+                                                      message:
+                                                          'Không có quyền xem thông tin',
+                                                      status:
+                                                          TypeToast.toastError);
+                                                }
+                                              },
+                                              titleSubmit: 'Thêm mới',
                                               onSearch: (val) {
-                                                ShareFuntion.searchList(
+                                                ShareFuntion.searchListCustomer(
                                                     list:
                                                         detailSalesInvoiceController
                                                             .listCustomer,
@@ -562,32 +617,32 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                 );
                               },
                               showEdit: isEdit),
-                          titleEditTitle(
-                              title: 'Thanh toán 1 phần',
-                              value: ShareFuntion.formatCurrency(isEdit
-                                  ? num.parse(detailSalesInvoiceController
-                                          .partlyPaidTE?.text ??
-                                      '0')
-                                  : detailSalesInvoiceController
-                                          .salesOrder?.partlyPaid ??
-                                      0),
-                              onTap: () {
-                                Get.bottomSheet(
-                                  showBottomTextInput(
-                                      detailSalesInvoiceController.partlyPaidTE,
-                                      keyboardType: TextInputType.number,
-                                      onCancel: () {
-                                    detailSalesInvoiceController.partlyPaidTE
-                                        ?.text = detailSalesInvoiceController
-                                            .salesOrder?.partlyPaid
-                                            .toString() ??
-                                        '0';
-                                  }, onSubmitted: () {
-                                    detailSalesInvoiceController.updateUI();
-                                  }),
-                                );
-                              },
-                              showEdit: isEdit),
+                          // titleEditTitle(
+                          //     title: 'Thanh toán 1 phần',
+                          //     value: ShareFuntion.formatCurrency(isEdit
+                          //         ? num.parse(detailSalesInvoiceController
+                          //                 .partlyPaidTE?.text ??
+                          //             '0')
+                          //         : detailSalesInvoiceController
+                          //                 .salesOrder?.partlyPaid ??
+                          //             0),
+                          //     onTap: () {
+                          //       Get.bottomSheet(
+                          //         showBottomTextInput(
+                          //             detailSalesInvoiceController.partlyPaidTE,
+                          //             keyboardType: TextInputType.number,
+                          //             onCancel: () {
+                          //           detailSalesInvoiceController.partlyPaidTE
+                          //               ?.text = detailSalesInvoiceController
+                          //                   .salesOrder?.partlyPaid
+                          //                   .toString() ??
+                          //               '0';
+                          //         }, onSubmitted: () {
+                          //           detailSalesInvoiceController.updateUI();
+                          //         }),
+                          //       );
+                          //     },
+                          //     showEdit: isEdit),
                           titleEditTitle(
                               title: 'Thành tiền',
                               value: ShareFuntion.formatCurrency(
@@ -600,45 +655,45 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                               ),
                               showEdit: false,
                               colorValue: a500),
-                          titleEditTitle(
-                            title: 'Tiền khách đưa',
-                            value: ShareFuntion.formatCurrency(
-                              isEdit
-                                  ? num.parse(detailSalesInvoiceController
-                                          .moneyGuestsTE?.text ??
-                                      '0')
-                                  : detailSalesInvoiceController
-                                          .salesOrder?.moneyGuests ??
-                                      0,
-                            ),
-                            showEdit: isEdit,
-                            onTap: () {
-                              Get.bottomSheet(
-                                showBottomTextInput(
-                                    detailSalesInvoiceController.moneyGuestsTE,
-                                    onCancel: () {
-                                  detailSalesInvoiceController.moneyGuestsTE
-                                      ?.text = detailSalesInvoiceController
-                                          .salesOrder?.moneyGuests
-                                          .toString() ??
-                                      '0';
-                                }, onSubmitted: () {
-                                  detailSalesInvoiceController.updateUI();
-                                }),
-                              );
-                            },
-                          ),
-                          titleEditTitle(
-                              title: 'Trả lại',
-                              value: ShareFuntion.formatCurrency(
-                                isEdit
-                                    ? detailSalesInvoiceController
-                                        .calculateChangeMoney()
-                                    : detailSalesInvoiceController
-                                            .salesOrder?.changeMoney ??
-                                        0,
-                              ),
-                              showEdit: false),
+                          // titleEditTitle(
+                          //   title: 'Tiền khách đưa',
+                          //   value: ShareFuntion.formatCurrency(
+                          //     isEdit
+                          //         ? num.parse(detailSalesInvoiceController
+                          //                 .moneyGuestsTE?.text ??
+                          //             '0')
+                          //         : detailSalesInvoiceController
+                          //                 .salesOrder?.moneyGuests ??
+                          //             0,
+                          //   ),
+                          //   showEdit: isEdit,
+                          //   onTap: () {
+                          //     Get.bottomSheet(
+                          //       showBottomTextInput(
+                          //           detailSalesInvoiceController.moneyGuestsTE,
+                          //           onCancel: () {
+                          //         detailSalesInvoiceController.moneyGuestsTE
+                          //             ?.text = detailSalesInvoiceController
+                          //                 .salesOrder?.moneyGuests
+                          //                 .toString() ??
+                          //             '0';
+                          //       }, onSubmitted: () {
+                          //         detailSalesInvoiceController.updateUI();
+                          //       }),
+                          //     );
+                          //   },
+                          // ),
+                          // titleEditTitle(
+                          //     title: 'Trả lại',
+                          //     value: ShareFuntion.formatCurrency(
+                          //       isEdit
+                          //           ? detailSalesInvoiceController
+                          //               .calculateChangeMoney()
+                          //           : detailSalesInvoiceController
+                          //                   .salesOrder?.changeMoney ??
+                          //               0,
+                          //     ),
+                          //     showEdit: false),
                         ],
                       )),
                       cHeight(16),
@@ -657,7 +712,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                       '',
                               showEdit: false),
                           titleEditTitle(
-                              title: 'Tg đặt hàng',
+                              title: 'Thời gian đặt hàng',
                               value: ShareFuntion.formatDate(
                                   dateTime: isCreate
                                       ? DateTime.now()
@@ -666,21 +721,21 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                   type: TypeDate.ddMMyyyyhhmm),
                               showEdit: false),
                           titleEditTitle(
-                              title: 'Tg thanh toán',
+                              title: 'Thời gian thanh toán',
                               value: ShareFuntion.formatDate(
                                   dateTime: detailSalesInvoiceController
                                       .salesOrder?.paymentTime,
                                   type: TypeDate.ddMMyyyyhhmm),
                               showEdit: false),
                           titleEditTitle(
-                              title: 'Tg giao hàng',
+                              title: 'Thời gian giao hàng',
                               value: ShareFuntion.formatDate(
                                   dateTime: detailSalesInvoiceController
                                       .salesOrder?.deliveryTime,
                                   type: TypeDate.ddMMyyyyhhmm),
                               showEdit: false),
                           titleEditTitle(
-                              title: 'T.Thái thanh toán',
+                              title: 'Trạng thái thanh toán',
                               valueWidget: statusWidget(
                                   ShareFuntion.getStatusWithIDFunc(
                                               isEdit
@@ -744,7 +799,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                               },
                               showEdit: isEdit),
                           titleEditTitle(
-                              title: 'T.Thái giao hàng',
+                              title: 'Trạng thái giao hàng',
                               valueWidget: statusWidget(
                                   ShareFuntion.getStatusWithIDFunc(
                                               isEdit
@@ -776,6 +831,68 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                           onSelect: (p0) {
                                             detailSalesInvoiceController
                                                 .statusDeliverItemSelect = p0;
+
+                                            detailSalesInvoiceController
+                                                .updateUI();
+                                          },
+                                          onSearch: (val) {
+                                            ShareFuntion.searchList(
+                                                list:
+                                                    detailSalesInvoiceController
+                                                        .listStatusOption,
+                                                value: val,
+                                                update: () {
+                                                  detailSalesInvoiceController
+                                                      .updateUI();
+                                                });
+                                          },
+                                          buildOption: (p0) => Row(
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 8,
+                                                backgroundColor: Color(int.parse(
+                                                    '0xff${p0.data.color}')),
+                                              ),
+                                              cWidth(8),
+                                              Expanded(
+                                                  child: textBodyMedium(
+                                                      p0.key ?? ''))
+                                            ],
+                                          ),
+                                        )));
+                              },
+                              showEdit: isEdit),
+                          titleEditTitle(
+                              title: 'Phương thức thanh toán',
+                              valueWidget: statusWidget(
+                                  ShareFuntion.getStatusWithIDFunc(
+                                              isEdit
+                                                  ? detailSalesInvoiceController
+                                                      .statuspaymentsIDSelect
+                                                      ?.value
+                                                  : detailSalesInvoiceController
+                                                      .salesOrder?.paymentsId,
+                                              listStatus:
+                                                  detailSalesInvoiceController
+                                                      .listStatus)
+                                          ?.name ??
+                                      '',
+                                  Colors.black),
+                              value: '',
+                              onTap: () {
+                                Get.bottomSheet(detailSalesInvoiceController
+                                    .obx((state) => showBottomListChose(
+                                          options: detailSalesInvoiceController
+                                              .listStatusOption
+                                              ?.where((element) =>
+                                                  element.data.group ==
+                                                  'Hình thức thanh toán')
+                                              .toList(),
+                                          value: detailSalesInvoiceController
+                                              .statuspaymentsIDSelect,
+                                          onSelect: (p0) {
+                                            detailSalesInvoiceController
+                                                .statuspaymentsIDSelect = p0;
 
                                             detailSalesInvoiceController
                                                 .updateUI();

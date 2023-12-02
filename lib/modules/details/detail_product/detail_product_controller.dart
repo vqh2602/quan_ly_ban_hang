@@ -22,6 +22,7 @@ class DetailProductController extends GetxController
   List<SelectOptionItem>? listCategorySelect = []; // ds nhãn được chọn
   ImgurRepo imgurRepo = ImgurRepo();
   var uuid = const Uuid();
+  String? idCreate = '';
 
   TextEditingController? codeTE, // mã sản phẩm
       nameTE, // tên sản phẩm
@@ -179,6 +180,7 @@ class DetailProductController extends GetxController
               listCategorySelect?.map((e) => e.value ?? '').toList() ?? [],
         ));
         if (result != null) {
+          idCreate = result.uid;
           initResetData();
         }
       } else {

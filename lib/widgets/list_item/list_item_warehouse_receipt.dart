@@ -54,7 +54,7 @@ Widget itemWarehouseReceipt(
           cHeight(8),
           statusStatus(
             status1: ShareFuntion.getStatusWithIDFunc(
-                warehouseReceipt?.paymentStatus,
+                warehouseReceipt?.browsingStatus,
                 listStatus: listStatus),
             status2: ShareFuntion.getStatusWithIDFunc(
                 warehouseReceipt?.deliveryStatus,

@@ -62,7 +62,11 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
           ? AppBar(
               title: textLableLarge('Thông tin khách hàng'),
               centerTitle: false,
-              // leading: const SizedBox(),
+              leading: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    Get.back(result: customerDetailController.idCreate);
+                  }),
               surfaceTintColor: bg500,
               backgroundColor: bg500,
               actions: [
@@ -129,8 +133,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                                   onTap: () {},
                                   style: textStyleCustom(fontSize: 16),
                                   controller: customerDetailController.nameTE,
-                                  validator:
-                                      ShareFuntion.validateName,
+                                  validator: ShareFuntion.validateName,
                                   readOnly: (isView || isCreate) ? false : true,
                                   decoration:
                                       textFieldInputStyle(label: 'Họ & tên(*)'),
@@ -150,7 +153,8 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                         readOnly: (isView || isCreate) ? false : true,
                         controller: customerDetailController.phoneTE,
                         validator: ShareFuntion.validateSDT,
-                        decoration: textFieldInputStyle(label: 'Số điện thoại (*)'),
+                        decoration:
+                            textFieldInputStyle(label: 'Số điện thoại (*)'),
                         maxLines: 1,
                       ),
                       const SizedBox(

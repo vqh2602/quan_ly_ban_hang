@@ -47,6 +47,8 @@ class DetailSalesInvoiceController extends GetxController
 
   SelectOptionItem? statusPayItemSelect; // tt thanh toán
   SelectOptionItem? statusDeliverItemSelect; // trạng thái giao
+  SelectOptionItem? statuspaymentsIDSelect; // tt phương thưc sthanh toán
+
   SelectOptionItem? customerItemSelect;
   List<SelectOptionItem>? listProductSelect = []; // ds sản phẩm đc chọn
   SelectOptionItem? personnelSaleItemSelect; // nhân viên bán hàng đc chọn
@@ -106,6 +108,7 @@ class DetailSalesInvoiceController extends GetxController
     uidCreate = uuid.v4();
 
     customerItemSelect = null;
+    listProductSelect = [];
     listDetailSalesOrderCustomEdit = [];
     personnelShipperItemSelect = null;
     //fill dữ liệu vào các trường select
@@ -123,6 +126,10 @@ class DetailSalesInvoiceController extends GetxController
     personnelSaleItemSelect = listPersonnel
         ?.where((element) => element.value == userLogin?.uId)
         .firstOrNull;
+    statuspaymentsIDSelect = listStatusOption
+        ?.where((element) =>
+            element.value == '90601b31-a59c-4ce9-9a31-7d621286b6f2')
+        .firstOrNull;
     // personnelShipperItemSelect = listPersonnel
     //     ?.where((element) => element.value == salesOrder?.personnelShipperId)
     //     .firstOrNull;
@@ -137,7 +144,6 @@ class DetailSalesInvoiceController extends GetxController
     salesOrder = await getDetailSalesOrderMixin(id: id);
     customer = await getDetailCustomerWithUIDMixin(id: salesOrder?.customerId);
     await getListDetailProductOrder(idSalesOrder: salesOrder?.uid);
-
 //fill dữ liệu vào các trường select
     customerItemSelect = listCustomer
         ?.where((element) => element.value == customer?.uid)
@@ -154,6 +160,10 @@ class DetailSalesInvoiceController extends GetxController
         .firstOrNull;
     personnelShipperItemSelect = listPersonnel
         ?.where((element) => element.value == salesOrder?.personnelShipperId)
+        .firstOrNull;
+
+    statuspaymentsIDSelect = listStatusOption
+        ?.where((element) => element.value == salesOrder?.paymentsId)
         .firstOrNull;
     initTE(salesOrder: salesOrder);
     changeUI();
@@ -234,6 +244,7 @@ class DetailSalesInvoiceController extends GetxController
       personnelShipperName: personnelShipperItemSelect?.key,
       personnelSalespersonId: personnelSaleItemSelect?.value,
       personnelShipperId: personnelShipperItemSelect?.value,
+      paymentsId: statuspaymentsIDSelect?.value,
       customerId: customerItemSelect?.value,
       customerName: customerItemSelect?.key,
       totalMoney: calculateTotalMoney(),
@@ -263,8 +274,8 @@ class DetailSalesInvoiceController extends GetxController
     if (customerItemSelect?.value != null &&
         personnelSaleItemSelect?.value != null &&
         personnelShipperItemSelect?.value != null &&
-        double.parse(partlyPaidTE?.text ?? '0') <= calculateTotalMoney() &&
-         double.parse(moneyGuestsTE?.text ?? '0') >= calculateTotalMoney() &&
+        // double.parse(partlyPaidTE?.text ?? '0') <= calculateTotalMoney() &&
+        //  double.parse(moneyGuestsTE?.text ?? '0') >= calculateTotalMoney() &&
         listDetailSalesOrderCustomEdit != null &&
         (listDetailSalesOrderCustomEdit?.length ?? 0) > 0) {
       salesOrder = await createDetailSalesOrderMixin(
@@ -278,6 +289,7 @@ class DetailSalesInvoiceController extends GetxController
               moneyGuests: double.parse(moneyGuestsTE?.text ?? '0'),
               paymentStatus: statusPayItemSelect?.value,
               deliveryStatus: statusDeliverItemSelect?.value,
+              paymentsId: statuspaymentsIDSelect?.value,
               personnelSalespersonName: personnelSaleItemSelect?.key,
               personnelShipperName: personnelShipperItemSelect?.key,
               personnelSalespersonId: personnelSaleItemSelect?.value,
@@ -308,11 +320,11 @@ class DetailSalesInvoiceController extends GetxController
     } else {
       buildToast(
           message:
-              'Không để trống các trường thông tin: khách hàng, nhân viên, sản phẩm...',
+              'Không để trống các trường thông tin: khách hàng, nhân viên, sản phẩm...\nHoặc thanh toán một phần & tiền khách đưa sai giá trị',
           status: TypeToast.toastError);
-      buildToast(
-          message: 'Hoặc thanh toán một phần & tiền khách đưa sai giá trị',
-          status: TypeToast.toastError);
+      // buildToast(
+      //     message: 'Hoặc thanh toán một phần & tiền khách đưa sai giá trị',
+      //     status: TypeToast.toastError);
     }
     changeUI();
   }
@@ -606,7 +618,7 @@ class DetailSalesInvoiceController extends GetxController
   }
 
   getListCustomer() async {
-    List<Customer>? result = await getListCustomerMixin(isCache: true);
+    List<Customer>? result = await getListCustomerMixin(isCache: false);
     listCustomer = result
         ?.map((e) => SelectOptionItem(key: e.name ?? '', value: e.uid, data: e))
         .toList();
@@ -626,6 +638,16 @@ class DetailSalesInvoiceController extends GetxController
     listPersonnel = result
         ?.map((e) => SelectOptionItem(key: e.name ?? '', value: e.uId, data: e))
         .toList();
+    update();
+  }
+
+// khi tạo mới kh bằng cách tạo nhanh -> cpạ nhật list kh sẽ khiên sthay đổi địa chỉ ô nhớ
+// => xóa và convert lại ds cho đúng địa chỉ
+  resetDataCustomer() {
+    SelectOptionItem? customerBackup = customerItemSelect;
+    customerItemSelect = listCustomer
+        ?.where((element) => element.value == customerBackup?.value)
+        .firstOrNull;
     update();
   }
 

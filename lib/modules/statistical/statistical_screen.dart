@@ -79,6 +79,9 @@ class _StatisticalScreenState extends State<StatisticalScreen>
                     icon: const Icon(LucideIcons.sparkles),
                     onPressed: () async {
                       await statisticalController.getListOderByFilter();
+                      await statisticalController.getListWarehouseFilter();
+                      await statisticalController
+                          .getListRequestReturnFilter();
                       setState(() {});
                     },
                   )

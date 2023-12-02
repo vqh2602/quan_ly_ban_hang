@@ -313,48 +313,48 @@ class DetailRequestReturnController extends GetxController
       delete = data2;
 
       for (var element1 in update) {
-        await updateQuantityProduct(
-            product: element1.product,
-            quantityNew: element1.detailRequestReturn?.quantity ?? 0,
-            quantityHistory: listDetailRequestReturnCustom
-                    ?.where((element) =>
-                        element.detailRequestReturn?.productId ==
-                        element1.detailRequestReturn?.productId)
-                    .firstOrNull
-                    ?.detailRequestReturn
-                    ?.quantity ??
-                0);
+        // await updateQuantityProduct(
+        //     product: element1.product,
+        //     quantityNew: element1.detailRequestReturn?.quantity ?? 0,
+        //     quantityHistory: listDetailRequestReturnCustom
+        //             ?.where((element) =>
+        //                 element.detailRequestReturn?.productId ==
+        //                 element1.detailRequestReturn?.productId)
+        //             .firstOrNull
+        //             ?.detailRequestReturn
+        //             ?.quantity ??
+        //         0);
         await updateDetailProductInRequestReturnMixin(
             detailRequestReturn: element1.detailRequestReturn);
       }
       for (var element1 in create) {
-        await updateQuantityProduct(
-            product: element1?.product,
-            isNumberSalse: true,
-            quantityNew: element1?.detailRequestReturn?.quantity ?? 0,
-            quantityHistory: listDetailRequestReturnCustom
-                    ?.where((element) =>
-                        element.detailRequestReturn?.productId ==
-                        element1?.detailRequestReturn?.productId)
-                    .firstOrNull
-                    ?.detailRequestReturn
-                    ?.quantity ??
-                0);
+        // await updateQuantityProduct(
+        //     product: element1?.product,
+        //     isNumberSalse: true,
+        //     quantityNew: element1?.detailRequestReturn?.quantity ?? 0,
+        //     quantityHistory: listDetailRequestReturnCustom
+        //             ?.where((element) =>
+        //                 element.detailRequestReturn?.productId ==
+        //                 element1?.detailRequestReturn?.productId)
+        //             .firstOrNull
+        //             ?.detailRequestReturn
+        //             ?.quantity ??
+        //         0);
         await createDetailProductInRequestReturnMixin(
             detailRequestReturn: element1?.detailRequestReturn);
       }
       for (var element1 in delete) {
-        await updateQuantityProduct(
-            product: element1?.product,
-            quantityNew: 0,
-            quantityHistory: listDetailRequestReturnCustom
-                    ?.where((element) =>
-                        element.detailRequestReturn?.productId ==
-                        element1?.detailRequestReturn?.productId)
-                    .firstOrNull
-                    ?.detailRequestReturn
-                    ?.quantity ??
-                0);
+        // await updateQuantityProduct(
+        //     product: element1?.product,
+        //     quantityNew: 0,
+        //     quantityHistory: listDetailRequestReturnCustom
+        //             ?.where((element) =>
+        //                 element.detailRequestReturn?.productId ==
+        //                 element1?.detailRequestReturn?.productId)
+        //             .firstOrNull
+        //             ?.detailRequestReturn
+        //             ?.quantity ??
+        //         0);
         await deleteDetailProductInRequestReturnMixin(
             detailRequestReturn: element1?.detailRequestReturn);
       }
@@ -363,11 +363,11 @@ class DetailRequestReturnController extends GetxController
       listDetailRequestReturnCustomEdit?.forEach((element1) async {
         await createDetailProductInRequestReturnMixin(
             detailRequestReturn: element1.detailRequestReturn);
-        await updateQuantityProduct(
-            product: element1.product,
-            isNumberSalse: true,
-            quantityNew: element1.detailRequestReturn?.quantity ?? 0,
-            quantityHistory: 0);
+        // await updateQuantityProduct(
+        //     product: element1.product,
+        //     isNumberSalse: true,
+        //     quantityNew: element1.detailRequestReturn?.quantity ?? 0,
+        //     quantityHistory: 0);
       });
       // print(create1);
     }
@@ -376,42 +376,22 @@ class DetailRequestReturnController extends GetxController
     update();
   }
 
-  //hàm cập nhật và tính lại số lượng sản phẩm
-  updateQuantityProduct(
-      {Product? product,
-      num? quantityNew,
-      num? quantityHistory,
-      isNumberSalse = false}) async {
-    if (quantityNew != null &&
-        quantityHistory != null &&
-        quantityNew < quantityHistory &&
-        quantityNew > 0) {
-      await updateDetailProductMixin(
-          product: product?.copyWith(
-              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
-              quantity:
-                  (product.quantity ?? 0) + (quantityHistory - quantityNew)));
-      return;
-    }
+// gắn trạng thái đã duyệt thì cập nhật giá nhập và số lượng
+  updateProduct() {
+    listDetailRequestReturnCustomEdit?.forEach((element) async {
+      await updateQuantityProduct(
+        product: element.product,
+        quantityNew: element.detailRequestReturn?.quantity ?? 0,
+      );
+    });
+  }
 
-    if (quantityNew != null &&
-        quantityHistory != null &&
-        quantityNew > quantityHistory) {
+  //hàm cập nhật và tính lại số lượng sản phẩm
+  updateQuantityProduct({Product? product, num? quantityNew}) async {
+    if (quantityNew != null && quantityNew > 0) {
       await updateDetailProductMixin(
           product: product?.copyWith(
-              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
-              quantity:
-                  (product.quantity ?? 0) - (quantityNew - quantityHistory)));
-      return;
-    }
-    if (quantityNew != null &&
-        quantityHistory != null &&
-        quantityNew < quantityHistory &&
-        quantityNew == 0) {
-      await updateDetailProductMixin(
-          product: product?.copyWith(
-              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
-              quantity: (product.quantity ?? 0) + (quantityHistory)));
+              quantity: ((product.quantity ?? 0) - quantityNew)));
       return;
     }
   }

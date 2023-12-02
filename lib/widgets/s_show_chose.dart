@@ -16,6 +16,7 @@ Widget showBottomListChose(
     Function? onSubmitted,
     Function? onSearch,
     String? title,
+    String? titleSubmit,
     Widget Function(SelectOptionItem)? buildOption}) {
   return StatefulBuilder(
       builder: ((context, setState) => Container(
@@ -65,7 +66,7 @@ Widget showBottomListChose(
                           if (onSubmitted != null) onSubmitted();
                         },
                         icon: textBodyMedium(
-                          'Thêm',
+                          titleSubmit ?? 'Thêm',
                           color: Get.theme.primaryColor,
                         ))
                   ],
@@ -207,6 +208,7 @@ Widget showBottomListMutilChose(
     Function? onCancel,
     Function? onSubmitted,
     String? title,
+    String? titleSubmit,
     Widget Function(SelectOptionItem)? buildOption}) {
   return StatefulBuilder(
       builder: ((context, setState) => Container(
@@ -256,7 +258,7 @@ Widget showBottomListMutilChose(
                           if (onSubmitted != null) onSubmitted();
                         },
                         icon: textBodyMedium(
-                          'Thêm',
+                          titleSubmit ?? 'Thêm',
                           color: Get.theme.primaryColor,
                         ))
                   ],
