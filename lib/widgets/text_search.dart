@@ -8,11 +8,15 @@ Widget textSearch({
   EdgeInsets? padding,
   double widthSearch = 65,
   required Function onTapSearch,
+  Function? onChange,
   FocusNode? focusNode,
 }) {
   return TextField(
       controller: textController,
       focusNode: focusNode,
+      onChanged: (value) {
+        onChange != null ? onChange(value) : null;
+      },
       decoration: InputDecoration(
         hintText: hintText ?? 'Nhập từ khoá',
         contentPadding: padding ?? const EdgeInsets.fromLTRB(12, 12, 12, 12),

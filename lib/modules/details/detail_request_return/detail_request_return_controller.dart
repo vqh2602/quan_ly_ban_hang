@@ -19,7 +19,6 @@ import 'package:quan_ly_ban_hang/share_function/mixin/supplier_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/personnel_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/product_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/user_mixin.dart';
-import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:uuid/uuid.dart';
 
@@ -205,13 +204,11 @@ class DetailRequestReturnController extends GetxController
             '00f36339-cf48-4b84-8eef-c52081ee0013' &&
         requestReturn?.browsingStatus ==
             '6616adbe-cec8-4477-94a8-4175d7d2cabe')) {
-      if (!ShareFuntion().checkPermissionUserLogin(permission: ['QL', 'AD'])) {
-        buildToast(
-            message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
-            status: TypeToast.getError);
-        changeUI();
-        return;
-      }
+      buildToast(
+          message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
+          status: TypeToast.getError);
+      changeUI();
+      return;
     } else {}
 
     // cập nhật ds sản phâm trong hoá đơn
@@ -220,7 +217,9 @@ class DetailRequestReturnController extends GetxController
     requestReturn = await updateDetailRequestReturnMixin(
         requestReturn: requestReturn?.copyWith(
       note: noteTE?.text,
+      name: nameTE?.text,
       browsingStatus: statusBrowsingItemSelect?.value,
+      supplierStatus: statusSupplierItemSelect?.value,
       supplierName: supplierItemSelect?.key,
       supplierID: supplierItemSelect?.value,
       personnelWarehouseStaffId: personnelWarehouseItemSelect?.value,
@@ -229,20 +228,28 @@ class DetailRequestReturnController extends GetxController
     ));
 
     await getListDetailProductOrder(idRequestReturn: requestReturn?.uid);
-
+    if (requestReturn?.browsingStatus ==
+        '6616adbe-cec8-4477-94a8-4175d7d2cabe') {
+      await updateProduct();
+    }
     changeUI();
   }
 
-  // tạo hoá đơn bán
+  // tạo hoá đơn yc
   createSaleOder() async {
     loadingUI();
     if (supplierItemSelect?.value != null &&
         personnelWarehouseItemSelect?.value != null &&
+        nameTE?.text != null &&
+        nameTE?.text != '' &&
+        num.parse(totalAmountRefundedTE?.text ?? '0') <=
+            calculateTotalMoney() &&
         listDetailRequestReturnCustomEdit != null &&
         (listDetailRequestReturnCustomEdit?.length ?? 0) > 0) {
       requestReturn = await createDetailRequestReturnMixin(
           requestReturn: RequestReturn(
         note: noteTE?.text,
+        name: nameTE?.text,
         supplierID: supplierItemSelect?.value,
         supplierName: supplierItemSelect?.key,
         totalMoney: calculateTotalMoney(),
@@ -254,8 +261,14 @@ class DetailRequestReturnController extends GetxController
         personnelWarehouseStaffName: personnelWarehouseItemSelect?.key,
         uid: uidCreate,
       ));
-      // cập nhật ds sản phâm trong hoá đơn
-      await updateDetailProductInRequestReturn();
+      if (requestReturn?.id != null) {
+        // cập nhật ds sản phâm trong hoá đơn
+        await updateDetailProductInRequestReturn();
+      }
+      if (requestReturn?.browsingStatus ==
+          '6616adbe-cec8-4477-94a8-4175d7d2cabe') {
+        await updateProduct();
+      }
 
       await initDataCreate();
     } else {
@@ -305,48 +318,48 @@ class DetailRequestReturnController extends GetxController
       delete = data2;
 
       for (var element1 in update) {
-        await updateQuantityProduct(
-            product: element1.product,
-            quantityNew: element1.detailRequestReturn?.quantity ?? 0,
-            quantityHistory: listDetailRequestReturnCustom
-                    ?.where((element) =>
-                        element.detailRequestReturn?.productId ==
-                        element1.detailRequestReturn?.productId)
-                    .firstOrNull
-                    ?.detailRequestReturn
-                    ?.quantity ??
-                0);
+        // await updateQuantityProduct(
+        //     product: element1.product,
+        //     quantityNew: element1.detailRequestReturn?.quantity ?? 0,
+        //     quantityHistory: listDetailRequestReturnCustom
+        //             ?.where((element) =>
+        //                 element.detailRequestReturn?.productId ==
+        //                 element1.detailRequestReturn?.productId)
+        //             .firstOrNull
+        //             ?.detailRequestReturn
+        //             ?.quantity ??
+        //         0);
         await updateDetailProductInRequestReturnMixin(
             detailRequestReturn: element1.detailRequestReturn);
       }
       for (var element1 in create) {
-        await updateQuantityProduct(
-            product: element1?.product,
-            isNumberSalse: true,
-            quantityNew: element1?.detailRequestReturn?.quantity ?? 0,
-            quantityHistory: listDetailRequestReturnCustom
-                    ?.where((element) =>
-                        element.detailRequestReturn?.productId ==
-                        element1?.detailRequestReturn?.productId)
-                    .firstOrNull
-                    ?.detailRequestReturn
-                    ?.quantity ??
-                0);
+        // await updateQuantityProduct(
+        //     product: element1?.product,
+        //     isNumberSalse: true,
+        //     quantityNew: element1?.detailRequestReturn?.quantity ?? 0,
+        //     quantityHistory: listDetailRequestReturnCustom
+        //             ?.where((element) =>
+        //                 element.detailRequestReturn?.productId ==
+        //                 element1?.detailRequestReturn?.productId)
+        //             .firstOrNull
+        //             ?.detailRequestReturn
+        //             ?.quantity ??
+        //         0);
         await createDetailProductInRequestReturnMixin(
             detailRequestReturn: element1?.detailRequestReturn);
       }
       for (var element1 in delete) {
-        await updateQuantityProduct(
-            product: element1?.product,
-            quantityNew: 0,
-            quantityHistory: listDetailRequestReturnCustom
-                    ?.where((element) =>
-                        element.detailRequestReturn?.productId ==
-                        element1?.detailRequestReturn?.productId)
-                    .firstOrNull
-                    ?.detailRequestReturn
-                    ?.quantity ??
-                0);
+        // await updateQuantityProduct(
+        //     product: element1?.product,
+        //     quantityNew: 0,
+        //     quantityHistory: listDetailRequestReturnCustom
+        //             ?.where((element) =>
+        //                 element.detailRequestReturn?.productId ==
+        //                 element1?.detailRequestReturn?.productId)
+        //             .firstOrNull
+        //             ?.detailRequestReturn
+        //             ?.quantity ??
+        //         0);
         await deleteDetailProductInRequestReturnMixin(
             detailRequestReturn: element1?.detailRequestReturn);
       }
@@ -355,11 +368,11 @@ class DetailRequestReturnController extends GetxController
       listDetailRequestReturnCustomEdit?.forEach((element1) async {
         await createDetailProductInRequestReturnMixin(
             detailRequestReturn: element1.detailRequestReturn);
-        await updateQuantityProduct(
-            product: element1.product,
-            isNumberSalse: true,
-            quantityNew: element1.detailRequestReturn?.quantity ?? 0,
-            quantityHistory: 0);
+        // await updateQuantityProduct(
+        //     product: element1.product,
+        //     isNumberSalse: true,
+        //     quantityNew: element1.detailRequestReturn?.quantity ?? 0,
+        //     quantityHistory: 0);
       });
       // print(create1);
     }
@@ -368,42 +381,22 @@ class DetailRequestReturnController extends GetxController
     update();
   }
 
-  //hàm cập nhật và tính lại số lượng sản phẩm
-  updateQuantityProduct(
-      {Product? product,
-      num? quantityNew,
-      num? quantityHistory,
-      isNumberSalse = false}) async {
-    if (quantityNew != null &&
-        quantityHistory != null &&
-        quantityNew < quantityHistory &&
-        quantityNew > 0) {
-      await updateDetailProductMixin(
-          product: product?.copyWith(
-              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
-              quantity:
-                  (product.quantity ?? 0) + (quantityHistory - quantityNew)));
-      return;
-    }
+// gắn trạng thái đã duyệt thì cập nhật giá nhập và số lượng
+  updateProduct() {
+    listDetailRequestReturnCustomEdit?.forEach((element) async {
+      await updateQuantityProduct(
+        product: element.product,
+        quantityNew: element.detailRequestReturn?.quantity ?? 0,
+      );
+    });
+  }
 
-    if (quantityNew != null &&
-        quantityHistory != null &&
-        quantityNew > quantityHistory) {
+  //hàm cập nhật và tính lại số lượng sản phẩm
+  updateQuantityProduct({Product? product, num? quantityNew}) async {
+    if (quantityNew != null && quantityNew > 0) {
       await updateDetailProductMixin(
           product: product?.copyWith(
-              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
-              quantity:
-                  (product.quantity ?? 0) - (quantityNew - quantityHistory)));
-      return;
-    }
-    if (quantityNew != null &&
-        quantityHistory != null &&
-        quantityNew < quantityHistory &&
-        quantityNew == 0) {
-      await updateDetailProductMixin(
-          product: product?.copyWith(
-              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
-              quantity: (product.quantity ?? 0) + (quantityHistory)));
+              quantity: ((product.quantity ?? 0) - quantityNew)));
       return;
     }
   }
@@ -429,7 +422,7 @@ class DetailRequestReturnController extends GetxController
                 requestReturnId: requestReturn?.uid,
                 productId: product?.uid,
                 id: element2.id,
-                quantity: 1,
+                quantity: element2.quantity,
                 importPrice: product?.importPrice,
                 note: '',
                 uid: element2.uid,
@@ -446,8 +439,6 @@ class DetailRequestReturnController extends GetxController
 
       for (var element in listProductSelectData) {
         Product? product = element.data;
-        // nếu sản phẩm đã tồn tại,ghi đè lên
-
         listDetailRequestReturnCustomEdit?.add(DetailRequestReturnCustom(
           detailRequestReturn: DetailRequestReturn(
             uid: uuid.v4(),

@@ -18,6 +18,7 @@ class SalesOrder {
   String? personnelShipperName;
   String? note;
   String? cancellationNotes;
+  String? paymentsId; // id của phương thuc thanh toan
   num? totalMoney;
   num? profit;
   num? changeMoney;
@@ -52,6 +53,7 @@ class SalesOrder {
       this.profit,
       this.changeMoney,
       this.moneyGuests,
+      this.paymentsId,
       this.id,
       this.createdAt,
       this.updatedAt,
@@ -83,6 +85,7 @@ class SalesOrder {
     changeMoney = json['changeMoney'];
     moneyGuests = json['moneyGuests'];
     id = json['\$id'];
+    paymentsId = json['paymentsId'];
     createdAt = json['\$createdAt'];
     updatedAt = json['\$updatedAt'];
     if (json['\$permissions'] != null) {
@@ -116,6 +119,7 @@ class SalesOrder {
     data['totalMoney'] = totalMoney;
     data['profit'] = profit;
     data['paymentTime'] = paymentTime;
+    data['paymentsId'] = paymentsId;
     data['deliveryTime'] = deliveryTime;
     data['changeMoney'] = changeMoney;
     data['moneyGuests'] = moneyGuests;
@@ -153,6 +157,7 @@ class SalesOrder {
     num? profit,
     num? changeMoney,
     num? moneyGuests,
+    String? paymentsId,
     String? id,
     String? createdAt,
     String? updatedAt,
@@ -183,6 +188,7 @@ class SalesOrder {
       cancellationNotes: cancellationNotes ?? this.cancellationNotes,
       totalMoney: totalMoney ?? this.totalMoney,
       profit: profit ?? this.profit,
+      paymentsId: paymentsId ?? this.paymentsId,
       changeMoney: changeMoney ?? this.changeMoney,
       moneyGuests: moneyGuests ?? this.moneyGuests,
       id: id ?? this.id,

@@ -39,6 +39,8 @@ import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_binding.dart
 import 'package:quan_ly_ban_hang/modules/list/list_tools/list_tools_screen.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_warehouse_receipt/list_warehouse_receipt_binding.dart';
 import 'package:quan_ly_ban_hang/modules/list/list_warehouse_receipt/list_warehouse_receipt_screen.dart';
+import 'package:quan_ly_ban_hang/modules/qr_scan/qr_binding.dart';
+import 'package:quan_ly_ban_hang/modules/qr_scan/qr_screen.dart';
 import 'package:quan_ly_ban_hang/modules/splash/splash_binding.dart';
 import 'package:quan_ly_ban_hang/modules/splash/splash_screen.dart';
 
@@ -153,5 +155,10 @@ List<GetPage> routes = [
       name: ListNotifycationSreen.routeName,
       page: () => const ListNotifycationSreen(),
       binding: ListNotifycationBinding(),
+      transition: Transition.downToUp),
+  GetPage(
+      name: QrScan.routeName,
+      page: () => const QrScan(),
+      binding: QrScanBinding(),
       transition: Transition.downToUp),
 ];

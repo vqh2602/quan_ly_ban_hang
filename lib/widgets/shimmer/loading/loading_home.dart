@@ -6,20 +6,14 @@ class LoadingHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-        child: SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
-        children: [
-          ProfilePageShimmer(),
-          VideoShimmer(),
-          VideoShimmer(isRectBox: true, hasBottomBox: true),
-          ListTileShimmer(),
-          ListTileShimmer(),
-          ListTileShimmer(),
-          ListTileShimmer(),
-          ListTileShimmer(),
-        ],
+    children: [
+      ProfileShimmer(),
+      ProfileShimmer(),
+      ProfileShimmer(),
+    ],
       ),
-    ));
+    );
   }
 }

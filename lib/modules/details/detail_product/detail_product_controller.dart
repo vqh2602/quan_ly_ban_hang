@@ -22,6 +22,7 @@ class DetailProductController extends GetxController
   List<SelectOptionItem>? listCategorySelect = []; // ds nhãn được chọn
   ImgurRepo imgurRepo = ImgurRepo();
   var uuid = const Uuid();
+  String? idCreate = '';
 
   TextEditingController? codeTE, // mã sản phẩm
       nameTE, // tên sản phẩm
@@ -109,23 +110,36 @@ class DetailProductController extends GetxController
 // cập nhật sp
   updateProduct() async {
     loadingUI();
-    var result = await updateDetailProductMixin(
-        product: product?.copyWith(
-      code: codeTE?.text,
-      name: nameTE?.text,
-      bardcode: barcodeTE?.text,
-      price: double.parse(priceTE?.text ?? '0'),
-      importPrice: double.parse(importPriceTE?.text ?? '0'),
-      quantity: double.parse(quantityTE?.text ?? '0'),
-      discount: double.parse(discountTE?.text ?? '0'),
-      note: noteTE?.text,
-      image: imageUrl,
-      unit: selectedUnit?.value,
-      category: listCategorySelect?.map((e) => e.value ?? '').toList() ?? [],
-    ));
-    if (result != null) {
-      product = result;
-      getDetaiProduct(null, productData: result);
+    List<Product>? listCheck = await checkUniqueProductMixin(
+        code: codeTE?.text, bardcode: barcodeTE?.text);
+    changeUI();
+    // kiểm tra sdt đã tồn tại hay chưa, nếu tồn tại phải 2 id bằng nhau mới cho sửa
+    if ((listCheck == null || listCheck.length <= 1) &&
+        ((listCheck?.length ?? 0) < 1
+            ? listCheck?.firstOrNull?.uid != product?.uid
+            : listCheck?.firstOrNull?.uid == product?.uid)) {
+      var result = await updateDetailProductMixin(
+          product: product?.copyWith(
+        code: codeTE?.text,
+        name: nameTE?.text,
+        bardcode: barcodeTE?.text,
+        price: double.parse(priceTE?.text ?? '0'),
+        importPrice: double.parse(importPriceTE?.text ?? '0'),
+        quantity: double.parse(quantityTE?.text ?? '0'),
+        discount: double.parse(discountTE?.text ?? '0'),
+        note: noteTE?.text,
+        image: imageUrl,
+        unit: selectedUnit?.value,
+        category: listCategorySelect?.map((e) => e.value ?? '').toList() ?? [],
+      ));
+      if (result != null) {
+        product = result;
+        getDetaiProduct(null, productData: result);
+      }
+    } else {
+      buildToast(
+          message: 'Mã sản phẩm hoặc mã vạch đã tồn tại trong hệ thống',
+          status: TypeToast.getError);
     }
     changeUI();
   }
@@ -145,24 +159,34 @@ class DetailProductController extends GetxController
       changeUI();
       return;
     } else {
-      var result = await createDetailProductMixin(
-          product: Product(
-        uid: uuid.v4(),
-        code: codeTE?.text,
-        name: nameTE?.text,
-        bardcode: barcodeTE?.text,
-        price: double.parse(priceTE?.text ?? '0'),
-        importPrice: double.parse(importPriceTE?.text ?? '0'),
-        quantity: double.parse(quantityTE?.text ?? '0'),
-        discount: double.parse(discountTE?.text ?? '0'),
-        note: noteTE?.text,
-        image: imageUrl,
-        numberSales: 0,
-        unit: selectedUnit?.value,
-        category: listCategorySelect?.map((e) => e.value ?? '').toList() ?? [],
-      ));
-      if (result != null) {
-        initResetData();
+      List<Product>? listCheck = await checkUniqueProductMixin(
+          code: codeTE?.text, bardcode: barcodeTE?.text);
+      if ((listCheck == null || listCheck.isEmpty)) {
+        var result = await createDetailProductMixin(
+            product: Product(
+          uid: uuid.v4(),
+          code: codeTE?.text,
+          name: nameTE?.text,
+          bardcode: barcodeTE?.text,
+          price: double.parse(priceTE?.text ?? '0'),
+          importPrice: double.parse(importPriceTE?.text ?? '0'),
+          quantity: double.parse(quantityTE?.text ?? '0'),
+          discount: double.parse(discountTE?.text ?? '0'),
+          note: noteTE?.text,
+          image: imageUrl,
+          numberSales: 0,
+          unit: selectedUnit?.value,
+          category:
+              listCategorySelect?.map((e) => e.value ?? '').toList() ?? [],
+        ));
+        if (result != null) {
+          idCreate = result.uid;
+          initResetData();
+        }
+      } else {
+        buildToast(
+            message: 'Mã sản phẩm hoặc mã vạch đã tồn tại trong hệ thống',
+            status: TypeToast.getError);
       }
     }
     changeUI();

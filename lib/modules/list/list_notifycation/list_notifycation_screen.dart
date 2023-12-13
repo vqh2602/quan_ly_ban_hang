@@ -74,7 +74,7 @@ class _ListNotifycationState extends State<ListNotifycationSreen> {
                             ),
                             cWidth(20),
                             textBodyLarge(
-                                'Đơn hàng  ${ShareFuntion().checkPermissionUserLogin(permission: [
+                                'Đơn hàng ${ShareFuntion().checkPermissionUserLogin(permission: [
                                       'QL',
                                       'AD',
                                       'BH'
@@ -89,7 +89,7 @@ class _ListNotifycationState extends State<ListNotifycationSreen> {
                         closedHeight: 50,
                         scrollable: true,
                         borderRadius: 10,
-                        openedHeight: 250,
+                        openedHeight: 400,
                         boxShadow: const [],
                       ),
                       if (ShareFuntion().checkPermissionUserLogin(
@@ -185,11 +185,11 @@ class _ListNotifycationState extends State<ListNotifycationSreen> {
 
   _saleOderNoti({bool isPreview = false}) {
     return SizedBox(
-      height: 200,
+      height: 400,
       child: AnimationLimiter(
         child: ListView.builder(
           shrinkWrap: true,
-          padding: const EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.only(bottom: 70),
           itemCount: isPreview
               ? (listNotifycationController.listSalesOrder?.length ?? 0) > 3
                   ? 3
@@ -205,6 +205,10 @@ class _ListNotifycationState extends State<ListNotifycationSreen> {
                   child: itemNotifycation(
                       title:
                           listNotifycationController.listSalesOrder?[index].uid,
+                      des: [
+                        'Khách hàng: ${listNotifycationController.listSalesOrder?[index].customerName}',
+                        
+                      ],
                       onTap: () {
                         Get.toNamed(DetailSalesInvoiceSreen.routeName,
                             arguments: {
@@ -234,7 +238,8 @@ class _ListNotifycationState extends State<ListNotifycationSreen> {
           shrinkWrap: true,
           padding: const EdgeInsets.only(bottom: 20),
           itemCount: isPreview
-              ? (listNotifycationController.listWarehouseReceipt?.length ?? 0) > 3
+              ? (listNotifycationController.listWarehouseReceipt?.length ?? 0) >
+                      3
                   ? 3
                   : listNotifycationController.listWarehouseReceipt?.length ?? 0
               : listNotifycationController.listWarehouseReceipt?.length ?? 0,

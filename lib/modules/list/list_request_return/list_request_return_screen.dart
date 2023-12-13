@@ -99,11 +99,8 @@ class _ListRequestReturnState extends State<ListRequestReturnSreen> {
                 IconButton(
                   icon: const Icon(LucideIcons.filter),
                   onPressed: () {
-                    Get.bottomSheet(showBottomSheetFilter(),
-                        isScrollControlled: true,
-                        isDismissible: true,
-                        elevation: 0,
-                        backgroundColor: Colors.grey.withOpacity(0));
+                    showBottomSheetFilter();
+                 
                   },
                 )
               ],

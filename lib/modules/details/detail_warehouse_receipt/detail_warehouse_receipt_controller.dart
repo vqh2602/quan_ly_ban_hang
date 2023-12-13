@@ -19,7 +19,6 @@ import 'package:quan_ly_ban_hang/share_function/mixin/personnel_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/product_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/user_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/warehouse_receipt_mixin.dart';
-import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:uuid/uuid.dart';
 
@@ -199,17 +198,18 @@ class DetailWarehouseReceiptController extends GetxController
   updateSaleOder() async {
     loadingUI();
     // KIỂM tra trạng thái duyệt => đã duyệt và hoàn tất k cho sửa trừa admin
-    if ((warehouseReceipt?.deliveryStatus ==
-            '7dafedc3-edd3-453a-8724-b2c4d75b3912' &&
+    if ((
+        // warehouseReceipt?.deliveryStatus ==
+        //       '7dafedc3-edd3-453a-8724-b2c4d75b3912' &&
         warehouseReceipt?.browsingStatus ==
             '6616adbe-cec8-4477-94a8-4175d7d2cabe')) {
-      if (!ShareFuntion().checkPermissionUserLogin(permission: ['QL', 'AD'])) {
-        buildToast(
-            message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
-            status: TypeToast.getError);
-        changeUI();
-        return;
-      }
+      // if (!ShareFuntion().checkPermissionUserLogin(permission: ['QL', 'AD'])) {
+      buildToast(
+          message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
+          status: TypeToast.getError);
+      changeUI();
+      return;
+      // }
     } else {}
 
     // cập nhật ds sản phâm trong hoá đơn
@@ -227,7 +227,10 @@ class DetailWarehouseReceiptController extends GetxController
       personnelWarehouseStaffName: personnelWarehouseItemSelect?.key,
       totalMoney: calculateTotalMoney(),
     ));
-
+    if (warehouseReceipt?.browsingStatus ==
+        '6616adbe-cec8-4477-94a8-4175d7d2cabe') {
+      await updateProduct();
+    }
     await getListDetailProductOrder(idWarehouseReceipt: warehouseReceipt?.uid);
 
     changeUI();
@@ -256,7 +259,11 @@ class DetailWarehouseReceiptController extends GetxController
       ));
       // cập nhật ds sản phâm trong hoá đơn
       await updateDetailProductInWarehouseReceipt();
-
+      // nếu gắn trạng thái hoàn thành thì cập nhật giá nhập sp và số lượng
+      if (warehouseReceipt?.browsingStatus ==
+          '6616adbe-cec8-4477-94a8-4175d7d2cabe') {
+        await updateProduct();
+      }
       await initDataCreate();
     } else {
       buildToast(
@@ -368,42 +375,24 @@ class DetailWarehouseReceiptController extends GetxController
     update();
   }
 
+// gắn trạng thái đã duyệt thì cập nhật giá nhập và số lượng
+  updateProduct() {
+    listDetailWarehouseReceiptCustom?.forEach((element) async {
+      await updateQuantityProduct(
+          product: element.product,
+          quantityNew: element.detailWarehouseReceipt?.quantity ?? 0,
+          importPrice: element.detailWarehouseReceipt?.importPrice);
+    });
+  }
+
   //hàm cập nhật và tính lại số lượng sản phẩm
   updateQuantityProduct(
-      {Product? product,
-      num? quantityNew,
-      num? quantityHistory,
-      isNumberSalse = false}) async {
-    if (quantityNew != null &&
-        quantityHistory != null &&
-        quantityNew < quantityHistory &&
-        quantityNew > 0) {
+      {Product? product, num? quantityNew, num? importPrice}) async {
+    if (quantityNew != null && quantityNew > 0) {
       await updateDetailProductMixin(
           product: product?.copyWith(
-              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
-              quantity:
-                  (product.quantity ?? 0) + (quantityHistory - quantityNew)));
-      return;
-    }
-
-    if (quantityNew != null &&
-        quantityHistory != null &&
-        quantityNew > quantityHistory) {
-      await updateDetailProductMixin(
-          product: product?.copyWith(
-              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
-              quantity:
-                  (product.quantity ?? 0) - (quantityNew - quantityHistory)));
-      return;
-    }
-    if (quantityNew != null &&
-        quantityHistory != null &&
-        quantityNew < quantityHistory &&
-        quantityNew == 0) {
-      await updateDetailProductMixin(
-          product: product?.copyWith(
-              numberSales: isNumberSalse ? product.numberSales ?? 0 + 1 : null,
-              quantity: (product.quantity ?? 0) + (quantityHistory)));
+              quantity: ((product.quantity ?? 0) + quantityNew),
+              importPrice: importPrice));
       return;
     }
   }
@@ -430,8 +419,8 @@ class DetailWarehouseReceiptController extends GetxController
                 wareHouseId: warehouseReceipt?.uid,
                 productId: product?.uid,
                 id: element2.id,
-                quantity: 1,
-                importPrice: product?.importPrice,
+                quantity: element2.quantity,
+                importPrice: element2.importPrice ?? product?.importPrice,
                 note: '',
                 uid: element2.uid,
               ),
@@ -447,8 +436,6 @@ class DetailWarehouseReceiptController extends GetxController
 
       for (var element in listProductSelectData) {
         Product? product = element.data;
-        // nếu sản phẩm đã tồn tại,ghi đè lên
-
         listDetailWarehouseReceiptCustomEdit?.add(DetailWarehouseReceiptCustom(
           detailWarehouseReceipt: DetailWarehouseReceipt(
             uid: uuid.v4(),
@@ -482,7 +469,10 @@ class DetailWarehouseReceiptController extends GetxController
 
   // set lại giá trị của sản phẩm - cập nhật, tạo mới khi hiển thị bottomsheet thay đổi số lượng
   updateProductInWarehouseReceiptEdit(
-      {Product? product, String? quantity, String? note}) {
+      {Product? product,
+      String? quantity,
+      String? importPriceP,
+      String? note}) {
     for (int i = 0;
         i < (listDetailWarehouseReceiptCustomEdit?.length ?? 0);
         i++) {
@@ -492,7 +482,9 @@ class DetailWarehouseReceiptController extends GetxController
             listDetailWarehouseReceiptCustomEdit?[i]
                 .detailWarehouseReceipt
                 ?.copyWith(
-                  importPrice: product?.importPrice,
+                  importPrice: (importPriceP != null && importPriceP != '')
+                      ? num.parse(importPriceP)
+                      : product?.importPrice,
                   note: note,
                   productId: product?.uid,
                   quantity: num.parse(quantity ?? '0'),
@@ -539,6 +531,21 @@ class DetailWarehouseReceiptController extends GetxController
     List<Personnel>? result = await getListPersonnelMixin(isCache: true);
     listPersonnel = result
         ?.map((e) => SelectOptionItem(key: e.name ?? '', value: e.uId, data: e))
+        .toList();
+    update();
+  }
+
+  // khi tạo mới sp bằng cách tạo nhanh -> cpạ nhật list kh sẽ khiên sthay đổi địa chỉ ô nhớ
+// => xóa và convert lại ds cho đúng địa chỉ
+  resetDataProduct() {
+    List<SelectOptionItem>? lstProductBackup = listProductSelect;
+    listProductSelect = listProduct
+        ?.where((element) =>
+            (lstProductBackup
+                    ?.where((element2) => element.value == element2.value)
+                    .length ??
+                0) >
+            0)
         .toList();
     update();
   }

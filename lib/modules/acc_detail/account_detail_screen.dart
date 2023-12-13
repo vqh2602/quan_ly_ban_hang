@@ -83,7 +83,8 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
       body: _buildBody(),
       appBar: (widget.isEdit ?? true)
           ? AppBar(
-              title: textLableLarge('Thông tin tài khoản'),
+              title: textLableLarge(
+                  isCreate ? 'Thêm mới tài khoản' : 'Thông tin tài khoản'),
               // leading: const SizedBox(),
               surfaceTintColor: bg500,
               backgroundColor: bg500,
@@ -166,7 +167,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                                   style: textStyleCustom(fontSize: 16),
                                   controller: accountDetailController.nameTE,
                                   validator:
-                                      accountDetailController.validateString,
+                                      ShareFuntion.validateName,
                                   readOnly: (isView || isCreate) ? false : true,
                                   decoration:
                                       textFieldInputStyle(label: 'Họ & tên(*)'),
@@ -178,9 +179,10 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                                   onTap: () {},
                                   style: textStyleCustom(fontSize: 16),
                                   controller: accountDetailController.CCCDTE,
+                                  keyboardType:
+                                      const TextInputType.numberWithOptions(),
                                   readOnly: (isView || isCreate) ? false : true,
-                                  validator:
-                                      accountDetailController.validateString,
+                                  validator: ShareFuntion.validateCCCD,
                                   decoration:
                                       textFieldInputStyle(label: 'Số CCCD (*)'),
                                 ),
@@ -197,7 +199,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                         style: textStyleCustom(fontSize: 16),
                         readOnly: (isView || isCreate) ? false : true,
                         controller: accountDetailController.phoneTE,
-                        validator: accountDetailController.validateString,
+                        validator: ShareFuntion.validateSDT,
                         decoration: textFieldInputStyle(label: 'Số điện thoại'),
                         maxLines: 1,
                       ),
@@ -205,13 +207,16 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                         height: 4 * 5,
                       ),
                       TextFormField(
-                        onTap: () {
+                        onTap: () async {
                           if (isCreate || isView) {
-                            ShareFuntion.dateTimePicker(onchange: (date) {
+                            DateTime? date =
+                                await ShareFuntion.dateTimePickerMaterial(
+                                    context: context);
+                            if (date != null) {
                               accountDetailController.birthday = date;
                               accountDetailController.updateDataTextEditing();
                               accountDetailController.update();
-                            });
+                            }
                           }
                         },
                         style: textStyleCustom(fontSize: 16),
@@ -263,7 +268,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                               style: textStyleCustom(fontSize: 16),
                               controller: accountDetailController.departmentTE,
                               validator: accountDetailController.validateString,
-                              decoration: textFieldInputStyle(label: 'Chức vụ'),
+                              decoration: textFieldInputStyle(label: 'Chức vụ (*)'),
                               readOnly: true,
                               keyboardType: TextInputType.number,
                             ),
@@ -300,7 +305,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                               validator: accountDetailController.validateString,
                               readOnly: true,
                               decoration:
-                                  textFieldInputStyle(label: 'Giới tính'),
+                                  textFieldInputStyle(label: 'Giới tính (*)'),
                             ),
                           )
                         ],
@@ -332,7 +337,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen> {
                                         }
                                         accountDetailController
                                             .updateDataTextEditing();
-                                        accountDetailController.updateUI();
+                                        // accountDetailController.updateUI();
                                       },
                                       buildOption: (p0) =>
                                           textBodyMedium(p0.key ?? ''),

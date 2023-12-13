@@ -19,7 +19,7 @@ class SupplierDetailController extends GetxController
         AppWriteMixin,
         SupplierMixin {
   ImgurRepo imgurRepo = ImgurRepo();
-  late TextEditingController? phoneTE, addressTE, genderTE, noteTE, nameTE;
+  late TextEditingController? phoneTE, addressTE, noteTE, nameTE;
   Supplier? supplier;
   User? userLogin;
   String? avatar;
@@ -60,7 +60,6 @@ class SupplierDetailController extends GetxController
     phoneTE = TextEditingController();
     addressTE = TextEditingController();
     nameTE = TextEditingController();
-    genderTE = TextEditingController();
     noteTE = TextEditingController();
   }
 
@@ -93,12 +92,10 @@ class SupplierDetailController extends GetxController
         nameTE?.text == '' ||
         phoneTE?.text == null ||
         phoneTE?.text == '' ||
-        genderTE?.text == null ||
-        genderTE?.text == '' ||
         addressTE?.text == null ||
         addressTE?.text == '') {
       buildToast(
-          message: 'Không để trống dữ liệu: tên, sdt, chức vụ,...',
+          message: 'Không để trống dữ liệu: tên, sdt,địa chỉ,...',
           status: TypeToast.toastError);
       changeUI();
       return;

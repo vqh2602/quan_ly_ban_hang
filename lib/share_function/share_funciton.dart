@@ -18,21 +18,38 @@ import 'package:url_launcher/url_launcher.dart';
 enum TypeDate { ddMMyyyy, yyyyMMdd, ddMMyyyyhhmm, hhmm, dd, yyyy, mM }
 
 class ShareFuntion with UserMixin {
-  static void dateTimePicker({
-    required Function(DateTime) onchange,
-  }) {
-    Get.bottomSheet(
+  static Future<void> dateTimePickerCupertino(
+      {required Function(DateTime) onchange,
+      DatePickerDateOrder? dateOrder,
+      DateTime? initialDateTime,
+      CupertinoDatePickerMode mode =
+          CupertinoDatePickerMode.dateAndTime}) async {
+    await Get.bottomSheet(
         backgroundColor: Get.theme.colorScheme.background,
         Container(
-          height: 200,
+          height: 250,
           padding: EdgeInsets.zero,
           child: CupertinoDatePicker(
               onDateTimeChanged: onchange,
-              initialDateTime: DateTime.now(),
+              initialDateTime: initialDateTime ?? DateTime.now(),
               //backgroundColor: Colors.white,
-              dateOrder: DatePickerDateOrder.dmy,
-              mode: CupertinoDatePickerMode.monthYear),
+              dateOrder: dateOrder ?? DatePickerDateOrder.dmy,
+              mode: mode),
         ));
+  }
+
+  static Future<DateTime?> dateTimePickerMaterial({
+    BuildContext? context,
+    DateTime? currentDate,
+    DatePickerEntryMode initialEntryMode = DatePickerEntryMode.calendar,
+    DatePickerMode initialDatePickerMode = DatePickerMode.day,
+  }) async {
+    return await showDatePicker(
+        context: context ?? Get.context!,
+        locale: const Locale('vi'),
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2101));
   }
 
   static String formatDate({required TypeDate type, dynamic dateTime}) {
@@ -208,6 +225,31 @@ class ShareFuntion with UserMixin {
     update();
   }
 
+  static searchListCustomer(
+      {required List? list, required String value, required Function update}) {
+    for (var role in list ?? []) {
+      if (role?.data?.phone == value.toLowerCase().trim() ||
+          role?.key?.toLowerCase().contains(value.toLowerCase()) ||
+          role?.value?.toLowerCase().contains(value.toLowerCase())) {
+        list?.remove(role);
+        list?.insert(0, role);
+      }
+    }
+    update();
+  }
+    static searchListPerson(
+      {required List? list, required String value, required Function update}) {
+    for (var role in list ?? []) {
+      if (role?.data?.phone == value.toLowerCase().trim() ||
+          role?.key?.toLowerCase().contains(value.toLowerCase()) ||
+          role?.value?.toLowerCase().contains(value.toLowerCase())) {
+        list?.remove(role);
+        list?.insert(0, role);
+      }
+    }
+    update();
+  }
+
   /// tìm đối tượng có trong list 1 nhưng k có trong list 2
   static List<T> findUniqueObjects<T>(List<T> list1, List<T> list2) {
     Set<T> set2 = Set.from(list2); // Chuyển list2 thành một Set
@@ -234,4 +276,61 @@ class ShareFuntion with UserMixin {
     return per;
   }
 
+  static String? validateCCCD(String? s) {
+    if (s == null || s.isEmpty || s == '') {
+      return 'CCCD là bắt buộc';
+    }
+    // Sử dụng biểu thức chính quy (regex) để kiểm tra xem chuỗi có chỉ chứa số không.
+    final numericRegex = RegExp(r'^[0-9]+$');
+
+    // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
+    return (numericRegex.hasMatch(s) && s.length == 12)
+        ? null
+        : 'CCCD phải là số và có 12 kí tự';
   }
+
+  static String? validateSDT(String? s) {
+    if (s == null || s.isEmpty || s == '') {
+      return 'Số điện thoại là bắt buộc';
+    }
+    // Sử dụng biểu thức chính quy (regex) để kiểm tra xem chuỗi có chỉ chứa số không.
+    final numericRegex = RegExp(r'^[0-9]+$');
+
+    // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
+    if (numericRegex.hasMatch(s) && s.length == 10) {
+      // Kiểm tra xem ký tự đầu tiên của chuỗi có phải là số 0 không.
+      if (s[0] != '0') {
+        return 'Ký tự đầu tiên phải là số 0';
+      }
+    } else {
+      return 'SDT phải là số và có 10 kí tự';
+    }
+    return null;
+  }
+
+  static String? validateName(String? s) {
+    // Sử dụng biểu thức chính quy (regex) để kiểm tra
+    if (s == null || s.isEmpty || s == '') {
+      return 'Họ và tên là bắt buộc';
+    }
+    final regex = RegExp(
+        r"^[a-zA-ZÀ-Ỹà-ỹẠ-Ỵạ-ỵĂăÂâÉéÊêÍíÓóÔôƠơÚúĨĩỸỹĐđ\s]+$");
+
+    // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
+    if (regex.hasMatch(s)) {
+    } else {
+      return 'Tên không chứa ký tự đặc biệt';
+    }
+    return null;
+  }
+}
+
+/// xoá phần tử giống nhau
+Iterable<T> distinct<T>(Iterable<T> elements) sync* {
+  final visited = <T>{};
+  for (final el in elements) {
+    if (visited.contains(el)) continue;
+    yield el;
+    visited.add(el);
+  }
+}

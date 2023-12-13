@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/data/models/request_return.dart';
 import 'package:quan_ly_ban_hang/data/models/select_option_item.dart';
 import 'package:quan_ly_ban_hang/data/models/status.dart';
+import 'package:quan_ly_ban_hang/data/models/supplier.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/appwrite_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/filterdata_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/request_return_mixin.dart';
+import 'package:quan_ly_ban_hang/share_function/mixin/supplier_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 
 class ListRequestReturnController extends GetxController
@@ -15,6 +17,7 @@ class ListRequestReturnController extends GetxController
         StateMixin,
         AppWriteMixin,
         FilterDataMixin,
+        SupplierMixin,
         RequestReturnMixin {
   List<RequestReturn>? listRequestReturn = [];
   List<RequestReturn>? listRequestReturnResult = [];
@@ -30,6 +33,7 @@ class ListRequestReturnController extends GetxController
     await initRequestReturnMixin();
     await getListRequestReturn();
     await getListStatus();
+    await getListSupplier();
     changeUI();
   }
 
@@ -48,13 +52,21 @@ class ListRequestReturnController extends GetxController
     listStatus = await getListStatusMixin();
   }
 
+  getListSupplier() async {
+    List<Supplier>? result = await getListSupplierMixin(isCache: true);
+    listSupplier = result
+        ?.map((e) => SelectOptionItem(key: e.name ?? '', value: e.uid, data: e))
+        .toList();
+    update();
+  }
+
   searchAndSortList() {
     if (textSearchTE.text == '') {
       listRequestReturnResult = [...listRequestReturn ?? []];
     } else {
       listRequestReturnResult = listRequestReturn
           ?.where((element) =>
-              element.uid
+              element.name
                   ?.toLowerCase()
                   .contains(textSearchTE.text.toLowerCase()) ??
               false)

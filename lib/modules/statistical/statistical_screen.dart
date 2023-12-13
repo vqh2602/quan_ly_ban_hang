@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:quan_ly_ban_hang/c_theme/c_theme.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/widgets/chart/barchart1.dart';
 import 'package:quan_ly_ban_hang/widgets/chart/line_chart_sample2.dart';
-import 'package:quan_ly_ban_hang/widgets/chart/radar_chart_sample1.dart';
+// import 'package:quan_ly_ban_hang/widgets/chart/radar_chart_sample1.dart';
 import 'package:quan_ly_ban_hang/widgets/compoment/block_statistical.dart';
 import 'package:quan_ly_ban_hang/widgets/hide_widget.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
@@ -55,14 +56,20 @@ class _StatisticalScreenState extends State<StatisticalScreen>
                 backgroundColor: bg500,
                 actions: [
                   InkWell(
-                    onTap: () {
-                      ShareFuntion.dateTimePicker(
-                        onchange: (date) {
-                          statisticalController.date = date;
+                    onTap: () async {
+                      statisticalController.date = DateTime.now();
+                      await ShareFuntion.dateTimePickerCupertino(
+                          onchange: (date) {
+                            statisticalController.date = date;
+                          },
+                          dateOrder: DatePickerDateOrder.dmy,
+                          mode: CupertinoDatePickerMode.monthYear);
+                      //         DateTime.now();
+                      // statisticalController.date =
+                      //     await ShareFuntion.dateTimePickerMaterial() ??
+                      //         DateTime.now();
 
-                          statisticalController.update();
-                        },
-                      );
+                      statisticalController.update();
                     },
                     child: textBodyMedium(
                       'T${statisticalController.date.month} ${statisticalController.date.year}',
@@ -72,6 +79,9 @@ class _StatisticalScreenState extends State<StatisticalScreen>
                     icon: const Icon(LucideIcons.sparkles),
                     onPressed: () async {
                       await statisticalController.getListOderByFilter();
+                      await statisticalController.getListWarehouseFilter();
+                      await statisticalController
+                          .getListRequestReturnFilter();
                       setState(() {});
                     },
                   )
@@ -246,20 +256,21 @@ class _StatisticalScreenState extends State<StatisticalScreen>
               icon: Icon(FontAwesomeIcons.handHoldingBox, color: b500),
               onTap: () {}),
           cHeight(20),
-          blockStatistical(
-              title: 'Tỷ lệ thành công',
-              date:
-                  'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
-              isFormatCurrency: false,
-              value:
-                  '${statisticalController.calculateTotalSuccessRate().toStringAsFixed(2)} %',
-              color: a500,
-              margin: EdgeInsets.zero,
-              padding:
-                  const EdgeInsets.only(top: 8, right: 8, left: 20, bottom: 8),
-              height: 90,
-              icon: Icon(FontAwesomeIcons.boxCheck, color: a500),
-              onTap: () {}),
+          // blockStatistical(
+          //     title: 'Tỷ lệ thành công',
+          //     date:
+          //         'tháng ${statisticalController.date.month}/${statisticalController.date.year}',
+          //     isFormatCurrency: false,
+          //     value:
+          //         '${statisticalController.calculateTotalSuccessRate().toStringAsFixed(2)} %',
+          //     color: a500,
+          //     margin: EdgeInsets.zero,
+          //     padding:
+          //         const EdgeInsets.only(top: 8, right: 8, left: 20, bottom: 8),
+          //     height: 90,
+          //     icon: Icon(FontAwesomeIcons.boxCheck, color: a500),
+          //     onTap: () {}),
+         
           cHeight(50)
         ]),
       ),
@@ -333,18 +344,18 @@ class _StatisticalScreenState extends State<StatisticalScreen>
                         .calculateTotalRevenue(isNumberSalse: true)
                         .toString())),
                 cHeight(20),
-                textTitleMedium('Biểu đồ tỷ lệ thành công'),
-                PieChartSample2(
-                  x: double.parse(statisticalController
-                      .calculateTotalSuccessRate(type: 0)
-                      .toString()),
-                  y: double.parse(statisticalController
-                      .calculateTotalSuccessRate(type: 2)
-                      .toString()),
-                  z: double.parse(statisticalController
-                      .calculateTotalSuccessRate(type: 1)
-                      .toString()),
-                )
+                // textTitleMedium('Biểu đồ tỷ lệ thành công'),
+                // PieChartSample2(
+                //   x: double.parse(statisticalController
+                //       .calculateTotalSuccessRate(type: 0)
+                //       .toString()),
+                //   y: double.parse(statisticalController
+                //       .calculateTotalSuccessRate(type: 2)
+                //       .toString()),
+                //   z: double.parse(statisticalController
+                //       .calculateTotalSuccessRate(type: 1)
+                //       .toString()),
+                // )
               ])),
         ));
   }

@@ -233,7 +233,9 @@ class _DraggableHomeState extends State<DraggableHome> {
                   : AnimatedOpacity(
                       opacity: fullyCollapsed ? 1 : 0,
                       duration: const Duration(milliseconds: 100),
-                      child: widget.title,
+                      child: AbsorbPointer(
+                          absorbing: fullyCollapsed ? false : true,
+                          child: widget.title),
                     ),
               // collapsedHeight: appBarHeight,
               toolbarHeight: 60,

@@ -27,6 +27,8 @@ import 'package:quan_ly_ban_hang/widgets/list_item/list_item_product.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_tool.dart';
 import 'package:quan_ly_ban_hang/widgets/list_item/list_item_warehouse_receipt.dart';
 import 'package:quan_ly_ban_hang/widgets/loading_custom.dart';
+import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loading_home.dart';
+import 'package:quan_ly_ban_hang/widgets/shimmer/loading/loding_list.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 import 'package:quan_ly_ban_hang/widgets/widgets.dart';
 
@@ -156,29 +158,29 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                       ),
                     ),
                     listSalesOrderController.obx(
-                      (state) => Container(
-                        // margin: alignment_20_0(),
-                        constraints: const BoxConstraints(maxHeight: 460),
-                        child: ListView.builder(
-                            itemCount: (listSalesOrderController
-                                            .listSalesOrder?.length ??
-                                        0) >
-                                    5
-                                ? 5
-                                : listSalesOrderController
-                                    .listSalesOrder?.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.only(top: 12),
-                            itemBuilder: (context, indext) {
-                              return itemBillOfSale(
-                                  listStatus:
-                                      listSalesOrderController.listStatus,
-                                  salesOrder: listSalesOrderController
-                                      .listSalesOrder![indext]);
-                            }),
-                      ),
-                    ),
+                        (state) => Container(
+                              // margin: alignment_20_0(),
+                              constraints: const BoxConstraints(maxHeight: 460),
+                              child: ListView.builder(
+                                  itemCount: (listSalesOrderController
+                                                  .listSalesOrder?.length ??
+                                              0) >
+                                          5
+                                      ? 5
+                                      : listSalesOrderController
+                                          .listSalesOrder?.length,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.only(top: 12),
+                                  itemBuilder: (context, indext) {
+                                    return itemBillOfSale(
+                                        listStatus:
+                                            listSalesOrderController.listStatus,
+                                        salesOrder: listSalesOrderController
+                                            .listSalesOrder![indext]);
+                                  }),
+                            ),
+                        onLoading: const LoadingHome()),
                   ],
                   if (ShareFuntion().checkPermissionUserLogin(
                       permission: ['QL', 'NK', 'AD'])) ...[
@@ -205,30 +207,32 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                       ),
                     ),
                     listWarehouseReceiptController.obx(
-                      (state) => Container(
-                        // margin: alignment_20_0(),
-                        constraints: const BoxConstraints(maxHeight: 460),
-                        child: ListView.builder(
-                            itemCount: (listWarehouseReceiptController
-                                            .listWarehouseReceipt?.length ??
-                                        0) >
-                                    5
-                                ? 5
-                                : listWarehouseReceiptController
-                                    .listWarehouseReceipt?.length,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.only(top: 12),
-                            itemBuilder: (context, indext) {
-                              return itemWarehouseReceipt(
-                                  listStatus:
-                                      listWarehouseReceiptController.listStatus,
-                                  warehouseReceipt:
-                                      listWarehouseReceiptController
-                                          .listWarehouseReceipt![indext]);
-                            }),
-                      ),
-                    ),
+                        (state) => Container(
+                              // margin: alignment_20_0(),
+                              constraints: const BoxConstraints(maxHeight: 460),
+                              child: ListView.builder(
+                                  itemCount: (listWarehouseReceiptController
+                                                  .listWarehouseReceipt
+                                                  ?.length ??
+                                              0) >
+                                          5
+                                      ? 5
+                                      : listWarehouseReceiptController
+                                          .listWarehouseReceipt?.length,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.only(top: 12),
+                                  itemBuilder: (context, indext) {
+                                    return itemWarehouseReceipt(
+                                        listStatus:
+                                            listWarehouseReceiptController
+                                                .listStatus,
+                                        warehouseReceipt:
+                                            listWarehouseReceiptController
+                                                .listWarehouseReceipt![indext]);
+                                  }),
+                            ),
+                        onLoading: const LoadingHome()),
                   ],
                   Container(
                     margin: alignment_20_0(),
@@ -252,23 +256,24 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                     ),
                   ),
                   listProductController.obx(
-                    (state) => Container(
-                      // margin: alignment_20_0(),
-                      constraints: const BoxConstraints(maxHeight: 760),
-                      child: ListView.builder(
-                          itemCount:
-                              listProductController.listProduct?.length ?? 0,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.only(top: 12),
-                          itemBuilder: (context, indext) {
-                            return itemProduct(
-                                product:
-                                    listProductController.listProduct?[indext],
-                                listUnit: listProductController.listUnit);
-                          }),
-                    ),
-                  ),
+                      (state) => Container(
+                            // margin: alignment_20_0(),
+                            constraints: const BoxConstraints(maxHeight: 760),
+                            child: ListView.builder(
+                                itemCount:
+                                    listProductController.listProduct?.length ??
+                                        0,
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: const EdgeInsets.only(top: 12),
+                                itemBuilder: (context, indext) {
+                                  return itemProduct(
+                                      product: listProductController
+                                          .listProduct?[indext],
+                                      listUnit: listProductController.listUnit);
+                                }),
+                          ),
+                      onLoading: const LoadingHome()),
                   cHeight(100)
                 ],
                 // headerExpandedHeight: 0.3,
@@ -320,7 +325,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                                   onTap: () {}),
                             ],
                           ),
-                      onLoading: const LoadingCustom()),
+                      onLoading: const LoadingListPHome()),
                   Padding(
                       padding: alignment_20_0(),
                       child:

@@ -63,37 +63,6 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
         (state) => buildBody(
               context: context,
               backgroundColor: bg500,
-              // createFloatingActionButton:
-              //  AnimatedSlide(
-              //   duration: const Duration(milliseconds: 300),
-              //   offset: (showFab && !isEdit) ? Offset.zero : const Offset(0, 2),
-              //   child: AnimatedOpacity(
-              //     duration: const Duration(milliseconds: 300),
-              //     opacity: showFab ? 1 : 0,
-              //     child: FloatingActionButton.extended(
-              //       label: Wrap(
-              //           crossAxisAlignment: WrapCrossAlignment.center,
-              //           spacing: 8,
-              //           children: [
-              //             const Icon(
-              //               FontAwesomeIcons.print,
-              //               color: Colors.white,
-              //             ),
-              //             textLableMedium('In hoá đơn', color: Colors.white)
-              //           ]),
-              //       onPressed: () async {
-              //         // await NetworkPrinter().printTicket(await mainESCPOS());
-              //         await NativePrinter().nativePrint(
-              //           customer: detailRequestReturnController.customer,
-              //           detailRequestReturnCustom: detailRequestReturnController
-              //               .listDetailRequestReturnCustom,
-              //           requestReturn: detailRequestReturnController.requestReturn,
-              //         );
-              //       },
-              //     ),
-              //   ),
-              // ),
-
               body: SafeArea(
                   // margin: alignment_20_0(),
                   // constraints: const BoxConstraints(maxHeight: 750),
@@ -156,7 +125,9 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                                                 )));
                                   },
                                   icon: const Icon(
-                                      FontAwesomeIcons.lightPenToSquare, size: 18,),
+                                    FontAwesomeIcons.lightPenToSquare,
+                                    size: 18,
+                                  ),
                                   color: Get.theme.primaryColor,
                                 ),
                             ],
@@ -262,7 +233,9 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                                                 )));
                                   },
                                   icon: const Icon(
-                                      FontAwesomeIcons.lightPenToSquare, size: 18,),
+                                    FontAwesomeIcons.lightPenToSquare,
+                                    size: 18,
+                                  ),
                                   color: Get.theme.primaryColor,
                                 ),
                             ],
@@ -283,78 +256,87 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                                 padding: const EdgeInsets.only(top: 12),
                                 itemBuilder: (context, indext) {
                                   return itemProduct(
-                                    product: isEdit
-                                        ? (detailRequestReturnController
-                                            .listDetailRequestReturnCustomEdit?[
-                                                indext]
-                                            .product
-                                            ?.copyWith(
-                                            importPrice:
-                                                detailRequestReturnController
-                                                    .listDetailRequestReturnCustomEdit?[
-                                                        indext]
-                                                    .detailRequestReturn
-                                                    ?.importPrice,
-                                          ))
-                                        : detailRequestReturnController
-                                            .listDetailRequestReturnCustom?[
-                                                indext]
-                                            .product
-                                            ?.copyWith(
-                                            importPrice:
-                                                detailRequestReturnController
-                                                    .listDetailRequestReturnCustom?[
-                                                        indext]
-                                                    .detailRequestReturn
-                                                    ?.importPrice,
-                                          ),
-                                    listUnit:
-                                        detailRequestReturnController.listUnit,
-                                    isImportPrice: true,
-                                    margin: const EdgeInsets.only(
-                                        bottom: 12, top: 8, left: 8, right: 8),
-                                    quantity: double.tryParse(isEdit
-                                        ? (detailRequestReturnController
-                                                .listDetailRequestReturnCustomEdit?[
-                                                    indext]
-                                                .detailRequestReturn
-                                                ?.quantity
-                                                .toString() ??
-                                            '0')
-                                        : detailRequestReturnController
-                                                .listDetailRequestReturnCustom?[
-                                                    indext]
-                                                .detailRequestReturn
-                                                ?.quantity
-                                                .toString() ??
-                                            '0'),
-                                    onTap: isEdit
-                                        ? () {
-                                            if (isEdit) {
-                                              showBottomSheetAddProduct(
-                                                  detailRequestReturnCustom: isEdit
-                                                      ? (detailRequestReturnController
-                                                              .listDetailRequestReturnCustomEdit?[
-                                                          indext])
-                                                      : (detailRequestReturnController
-                                                              .listDetailRequestReturnCustom?[
-                                                          indext]));
+                                      product: isEdit
+                                          ? (detailRequestReturnController
+                                              .listDetailRequestReturnCustomEdit?[
+                                                  indext]
+                                              .product
+                                              ?.copyWith(
+                                              importPrice:
+                                                  detailRequestReturnController
+                                                      .listDetailRequestReturnCustomEdit?[
+                                                          indext]
+                                                      .detailRequestReturn
+                                                      ?.importPrice,
+                                            ))
+                                          : detailRequestReturnController
+                                              .listDetailRequestReturnCustom?[
+                                                  indext]
+                                              .product
+                                              ?.copyWith(
+                                              importPrice:
+                                                  detailRequestReturnController
+                                                      .listDetailRequestReturnCustom?[
+                                                          indext]
+                                                      .detailRequestReturn
+                                                      ?.importPrice,
+                                            ),
+                                      listUnit: detailRequestReturnController
+                                          .listUnit,
+                                      isImportPrice: true,
+                                      margin: const EdgeInsets.only(
+                                          bottom: 12,
+                                          top: 8,
+                                          left: 8,
+                                          right: 8),
+                                      quantity: double.tryParse(isEdit
+                                          ? (detailRequestReturnController
+                                                  .listDetailRequestReturnCustomEdit?[
+                                                      indext]
+                                                  .detailRequestReturn
+                                                  ?.quantity
+                                                  .toString() ??
+                                              '0')
+                                          : detailRequestReturnController
+                                                  .listDetailRequestReturnCustom?[
+                                                      indext]
+                                                  .detailRequestReturn
+                                                  ?.quantity
+                                                  .toString() ??
+                                              '0'),
+                                      onTap: isEdit
+                                          ? () {
+                                              if (isEdit) {
+                                                showBottomSheetAddProduct(
+                                                    detailRequestReturnCustom: isEdit
+                                                        ? (detailRequestReturnController
+                                                                .listDetailRequestReturnCustomEdit?[
+                                                            indext])
+                                                        : (detailRequestReturnController
+                                                                .listDetailRequestReturnCustom?[
+                                                            indext]));
+                                              }
                                             }
-                                          }
-                                        : null,
-                                    // onHoverDelete: () {
-                                    //   ShareFuntion.onPopDialog(
-                                    //       context: context,
-                                    //       onCancel: () {
-                                    //         Get.back();
-                                    //       },
-                                    //       onSubmit: () {
-                                    //         Get.back();
-                                    //       },
-                                    //       title:
-                                    //           'Xoá sản phẩm ra khỏi danh sách');
-                                    // }
-                                  );
+                                          : null,
+                                      onHoverDelete: () {
+                                        isEdit
+                                            ? ShareFuntion.onPopDialog(
+                                                context: context,
+                                                onCancel: () {
+                                                  Get.back();
+                                                },
+                                                onSubmit: () {
+                                                  detailRequestReturnController
+                                                      .listDetailRequestReturnCustomEdit
+                                                      ?.removeAt(indext);
+                                                  detailRequestReturnController
+                                                      .updateUI();
+                                                  Get.back();
+                                                },
+                                                title:
+                                                    'Xoá sản phẩm ra khỏi danh sách')
+                                            : null;
+                                      });
                                 }),
                           ),
                           cHeight(8),
@@ -388,7 +370,7 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                                           .requestReturn?.totalAmountRefunded ??
                                       0,
                             ),
-                            showEdit: false,
+                            showEdit: isEdit,
                             colorValue: a500,
                             onTap: () {
                               Get.bottomSheet(
@@ -447,8 +429,10 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                           titleEditTitle(
                               title: 'Tg tạo đơn',
                               value: ShareFuntion.formatDate(
-                                  dateTime: detailRequestReturnController
-                                      .requestReturn?.timeRequestReturn,
+                                  dateTime: isCreate
+                                      ? DateTime.now()
+                                      : detailRequestReturnController
+                                          .requestReturn?.timeRequestReturn,
                                   type: TypeDate.ddMMyyyyhhmm),
                               showEdit: false),
                           titleEditTitle(
@@ -654,8 +638,17 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                                               ),
                                               cWidth(8),
                                               Expanded(
-                                                  child: textBodyMedium(
-                                                      p0.key ?? ''))
+                                                  child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  textBodyMedium(p0.key ?? ''),
+                                                  textBodySmall(
+                                                      p0.data?.department ??
+                                                          ''),
+                                                ],
+                                              ))
                                             ],
                                           ),
                                         )));
@@ -703,7 +696,7 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                 ),
               )),
               appBar: AppBar(
-                title: textTitleLarge('Thông tin đơn nhập kho'),
+                title: textTitleLarge('Thông tin yêu cầu đổi trả'),
                 centerTitle: false,
                 surfaceTintColor: bg500,
                 backgroundColor: bg500,
@@ -844,12 +837,15 @@ class _DetailRequestReturnState extends State<DetailRequestReturnScreen> {
                               if (val == null) {
                                 return 'Không để trống';
                               }
-                              // if (num.parse(val) >
-                              //     (detailRequestReturnCustom
-                              //             ?.product?.quantity ??
-                              //         0)) {
-                              //   return 'Vượt quá giới hạn kho';
-                              // }
+                              if (num.parse(val) < 1) {
+                                return 'Số lượng không nhỏ hơn 1';
+                              }
+                              if (num.parse(val) >
+                                  (detailRequestReturnCustom
+                                          ?.product?.quantity ??
+                                      0)) {
+                                return 'Vượt quá giới hạn kho';
+                              }
                               return null;
                             },
                             readOnly: (isView || isCreate) ? false : true,

@@ -57,33 +57,34 @@ class _ListSalesOrderState extends State<ListSalesOrderSreen> {
                   );
                 },
                 child: AnimationLimiter(
-                  child:listSalesOrderController.listSalesOrderResult != null &&
-                            listSalesOrderController.listSalesOrderResult!.isEmpty
-                        ? emptyWidget(
-                            onTap: () async {
-                              await listSalesOrderController.getListSalesOrder();
-                            },
-                          )
-                        : ListView.builder(
-                    itemCount:
-                        listSalesOrderController.listSalesOrderResult?.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return AnimationConfiguration.staggeredList(
-                        position: index,
-                        duration: const Duration(milliseconds: 500),
-                        child: SlideAnimation(
-                          verticalOffset: 50.0,
-                          child: FadeInAnimation(
-                            child: itemBillOfSale(
-                                salesOrder: listSalesOrderController
-                                    .listSalesOrderResult![index],
-                                listStatus:
-                                    listSalesOrderController.listStatus),
-                          ),
+                  child: listSalesOrderController.listSalesOrderResult !=
+                              null &&
+                          listSalesOrderController.listSalesOrderResult!.isEmpty
+                      ? emptyWidget(
+                          onTap: () async {
+                            await listSalesOrderController.getListSalesOrder();
+                          },
+                        )
+                      : ListView.builder(
+                          itemCount: listSalesOrderController
+                              .listSalesOrderResult?.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return AnimationConfiguration.staggeredList(
+                              position: index,
+                              duration: const Duration(milliseconds: 500),
+                              child: SlideAnimation(
+                                verticalOffset: 50.0,
+                                child: FadeInAnimation(
+                                  child: itemBillOfSale(
+                                      salesOrder: listSalesOrderController
+                                          .listSalesOrderResult![index],
+                                      listStatus:
+                                          listSalesOrderController.listStatus),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
               ),
             ),
@@ -96,11 +97,7 @@ class _ListSalesOrderState extends State<ListSalesOrderSreen> {
                 IconButton(
                   icon: const Icon(LucideIcons.filter),
                   onPressed: () {
-                    Get.bottomSheet(showBottomSheetFilter(),
-                        isScrollControlled: true,
-                        isDismissible: true,
-                        elevation: 0,
-                        backgroundColor: Colors.grey.withOpacity(0));
+                    showBottomSheetFilter();
                   },
                 )
               ],
@@ -155,53 +152,95 @@ class _ListSalesOrderState extends State<ListSalesOrderSreen> {
                         onTapSearch: () {},
                         textController: listSalesOrderController.textSearchTE),
                     cHeight(20),
-                    InkWell(
-                      child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            textTitleMedium('Khách hàng'),
-                            IconButton(
-                                onPressed: () {
-                                  Get.bottomSheet(listSalesOrderController
-                                      .obx((state) => showBottomListChose(
-                                            options: listSalesOrderController
-                                                .listCustomer,
-                                            value: listSalesOrderController
-                                                .customerItemSelectFilter,
-                                            onSelect: (p0) {
-                                              if (listSalesOrderController
-                                                      .customerItemSelectFilter ==
-                                                  p0) {
-                                                listSalesOrderController
-                                                        .customerItemSelectFilter =
-                                                    null;
-                                              } else {
-                                                listSalesOrderController
-                                                    .customerItemSelectFilter = p0;
-                                              }
+                    Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          textTitleMedium('Khách hàng'),
+                          IconButton(
+                              onPressed: () {
+                                Get.bottomSheet(listSalesOrderController
+                                    .obx((state) => showBottomListChose(
+                                          options: listSalesOrderController
+                                              .listCustomer,
+                                          value: listSalesOrderController
+                                              .customerItemSelectFilter,
+                                          onSelect: (p0) {
+                                            if (listSalesOrderController
+                                                    .customerItemSelectFilter ==
+                                                p0) {
                                               listSalesOrderController
-                                                  .updateUI();
-                                            },
-                                            onSearch: (val) {
-                                              ShareFuntion.searchList(
-                                                  list: listSalesOrderController
-                                                      .listCustomer,
-                                                  value: val,
-                                                  update: () {
-                                                    listSalesOrderController
-                                                        .updateUI();
-                                                  });
-                                            },
-                                            buildOption: (p0) =>
-                                                textBodyMedium(p0.key ?? ''),
-                                          )));
-                                },
-                                icon: const Icon(LucideIcons.chevronRight))
-                          ]),
-                    ),
+                                                      .customerItemSelectFilter =
+                                                  null;
+                                            } else {
+                                              listSalesOrderController
+                                                  .customerItemSelectFilter = p0;
+                                            }
+                                            listSalesOrderController.updateUI();
+                                          },
+                                          onSearch: (val) {
+                                            ShareFuntion.searchList(
+                                                list: listSalesOrderController
+                                                    .listCustomer,
+                                                value: val,
+                                                update: () {
+                                                  listSalesOrderController
+                                                      .updateUI();
+                                                });
+                                          },
+                                          buildOption: (p0) =>
+                                              textBodyMedium(p0.key ?? ''),
+                                        )));
+                              },
+                              icon: const Icon(LucideIcons.chevronRight)),
+                        ]),
                     textBodyMedium(listSalesOrderController
                             .customerItemSelectFilter?.key ??
+                        'Trống'),
+                    Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          textTitleMedium('Nhân viên giao'),
+                          IconButton(
+                              onPressed: () {
+                                Get.bottomSheet(listSalesOrderController
+                                    .obx((state) => showBottomListChose(
+                                          options: listSalesOrderController
+                                              .listPersonnel,
+                                          value: listSalesOrderController
+                                              .personnelItemSelectFilter,
+                                          onSelect: (p0) {
+                                            if (listSalesOrderController
+                                                    .personnelItemSelectFilter ==
+                                                p0) {
+                                              listSalesOrderController
+                                                      .personnelItemSelectFilter =
+                                                  null;
+                                            } else {
+                                              listSalesOrderController
+                                                  .personnelItemSelectFilter = p0;
+                                            }
+                                            listSalesOrderController.updateUI();
+                                          },
+                                          onSearch: (val) {
+                                            ShareFuntion.searchList(
+                                                list: listSalesOrderController
+                                                    .listPersonnel,
+                                                value: val,
+                                                update: () {
+                                                  listSalesOrderController
+                                                      .updateUI();
+                                                });
+                                          },
+                                          buildOption: (p0) =>
+                                              textBodyMedium(p0.key ?? ''),
+                                        )));
+                              },
+                              icon: const Icon(LucideIcons.chevronRight))
+                        ]),
+                    textBodyMedium(listSalesOrderController
+                            .personnelItemSelectFilter?.key ??
                         'Trống'),
                     cHeight(20),
                     textTitleMedium('Trạng thái giao hàng'),

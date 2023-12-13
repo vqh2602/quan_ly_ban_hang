@@ -5,7 +5,7 @@ import 'package:quan_ly_ban_hang/config/config.dart';
 import 'package:quan_ly_ban_hang/data/models/user.dart';
 import 'package:quan_ly_ban_hang/data/repositories/appwrite_repo.dart';
 import 'package:quan_ly_ban_hang/data/storage.dart';
-import 'package:quan_ly_ban_hang/modules/init.dart';
+import 'package:quan_ly_ban_hang/routers/init.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 
 mixin UserMixin {
@@ -42,7 +42,6 @@ mixin UserMixin {
     }
     return result;
   }
-
   Future<void> saveUserInBox({User? user, Map? dataUser}) async {
     await box.write(Storages.dataUser, dataUser ?? user?.toJson());
   }

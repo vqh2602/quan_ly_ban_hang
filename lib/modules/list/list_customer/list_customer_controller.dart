@@ -24,6 +24,7 @@ class ListCustomerController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     loadingUI();
+    await initRequestReturnMixin();
     await getListCustomers();
     await getListUnit();
     changeUI();

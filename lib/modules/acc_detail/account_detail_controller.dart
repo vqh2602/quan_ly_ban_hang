@@ -74,7 +74,7 @@ class AccountDetailController extends GetxController
 
     // await initData();
     // await getDataUser();
-    // changeUI();
+    changeUI();
   }
 
 // lấy ds list data
@@ -134,7 +134,7 @@ class AccountDetailController extends GetxController
             type: TypeDate.ddMMyyyy,
             dateTime: user?.birthday != null
                 ? DateTime.parse(user!.birthday!.toString())
-                : null));
+                : DateTime.now()));
     addressTE = TextEditingController(text: user?.address);
     nameTE = TextEditingController(text: user?.name);
     CCCDTE = TextEditingController(text: user?.cccd);
@@ -154,8 +154,9 @@ class AccountDetailController extends GetxController
     birthday = DateTime.parse(user?.birthday ?? DateTime.now().toString());
     departmentItemSelect = null;
     genderItemSelect = null;
-    listPermissionSelect = null;
+    listPermissionSelect = [];
     update();
+    changeUI();
   }
 
   setValueSelect(User? user) {
@@ -180,6 +181,7 @@ class AccountDetailController extends GetxController
     listPermissionSelect?.forEach((element) {
       x = '$x,${element.value}';
     });
+
     permissionTE = TextEditingController(text: x);
     birtTE = TextEditingController(
         text: ShareFuntion.formatDate(
@@ -208,22 +210,35 @@ class AccountDetailController extends GetxController
 // cập nhật - có cập nhật ng dùng trong box k
   Future<void> updateUser({bool isUpdateUserLogin = false}) async {
     loadingUI();
-    user = await updateDetailUserMixin(
-        user: user?.copyWith(
-            avatar: avatar,
-            phone: phoneTE?.text,
-            name: nameTE?.text,
-            birthday: birthday.toString(),
-            address: addressTE?.text,
-            cccd: CCCDTE?.text,
-            resetPassword: isResetPassword,
-            password: isResetPassword ? '12345678' : null,
-            permission:
-                listPermissionSelect?.map((e) => e.value ?? '').toList(),
-            department: departmentItemSelect?.value,
-            gender: genderItemSelect?.value),
-        isUpdateUserLogin: isUpdateUserLogin,
-        id: user?.$id);
+    List<Personnel>? listCheck = await checkUniquePersonnelMixin(
+        cccd: CCCDTE?.text, phone: phoneTE?.text);
+
+// kiểm tra sdt đã tồn tại hay chưa, nếu tồn tại phải 2 id bằng nhau mới cho sửa
+    if ((listCheck == null || listCheck.length <= 1) &&
+        ((listCheck?.length ?? 0) < 1
+            ? listCheck?.firstOrNull?.uId != user?.uId
+            : listCheck?.firstOrNull?.uId == user?.uId)) {
+      user = await updateDetailUserMixin(
+          user: user?.copyWith(
+              avatar: avatar,
+              phone: phoneTE?.text,
+              name: nameTE?.text,
+              birthday: birthday.toString(),
+              address: addressTE?.text,
+              cccd: CCCDTE?.text,
+              resetPassword: isResetPassword,
+              password: isResetPassword ? '12345678' : null,
+              permission:
+                  listPermissionSelect?.map((e) => e.value ?? '').toList(),
+              department: departmentItemSelect?.value,
+              gender: genderItemSelect?.value),
+          isUpdateUserLogin: isUpdateUserLogin,
+          id: user?.$id);
+    } else {
+      buildToast(
+          message: 'CCCD hoặc số điện thoại đã tồn tại trong hệ thống',
+          status: TypeToast.getError);
+    }
     changeUI();
   }
 
@@ -250,22 +265,31 @@ class AccountDetailController extends GetxController
       changeUI();
       return;
     } else {
-      var result = await createDetailPersonnelMixin(
-          personnel: Personnel(
-              uId: uuid.v4(),
-              name: nameTE?.text,
-              phone: phoneTE?.text,
-              cccd: CCCDTE?.text,
-              gender: genderTE?.text,
-              birthday: birthday.toString(),
-              address: addressTE?.text,
-              resetPassword: true,
-              password: '12345678',
-              department: departmentTE?.text,
-              avatar: avatar));
-      changeUI();
-      if (result != null) {
-        initData();
+      List<Personnel>? listCheck = await checkUniquePersonnelMixin(
+          cccd: CCCDTE?.text, phone: phoneTE?.text);
+
+      if ((listCheck == null || listCheck.isEmpty)) {
+        var result = await createDetailPersonnelMixin(
+            personnel: Personnel(
+                uId: uuid.v4(),
+                name: nameTE?.text,
+                phone: phoneTE?.text,
+                cccd: CCCDTE?.text,
+                gender: genderTE?.text,
+                birthday: birthday.toString(),
+                address: addressTE?.text,
+                resetPassword: true,
+                password: '12345678',
+                department: departmentItemSelect?.value,
+                avatar: avatar));
+        changeUI();
+        if (result != null) {
+          initData();
+        }
+      } else {
+        buildToast(
+            message: 'CCCD hoặc số điện thoại đã tồn tại trong hệ thống',
+            status: TypeToast.getError);
       }
     }
     changeUI();

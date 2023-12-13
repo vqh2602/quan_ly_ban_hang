@@ -46,7 +46,7 @@ List<DataTool> listDataTools = [
       group: 'hoadon',
       onTap: () {
         if (ShareFuntion()
-            .checkPermissionUserLogin(permission: ['QL', 'C_HD', 'BH' 'AD'])) {
+            .checkPermissionUserLogin(permission: ['QL', 'C_HD', 'BH' ,'AD'])) {
           Get.toNamed(DetailSalesInvoiceSreen.routeName,
               arguments: {'type': 'create'});
         } else {

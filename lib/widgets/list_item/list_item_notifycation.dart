@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quan_ly_ban_hang/widgets/text_custom.dart';
 
-Widget itemNotifycation({String? title, String? date, Function? onTap}) {
+Widget itemNotifycation(
+    {String? title, String? date, List<String>? des, Function? onTap}) {
   return GestureDetector(
     onTap: () {
       if (onTap != null) {
@@ -22,6 +23,9 @@ Widget itemNotifycation({String? title, String? date, Function? onTap}) {
         children: [
           textTitleMedium('Đơn hàng ${title?.replaceAll('-', ' ')}',
               maxLines: 1),
+          if (des != null) ...[
+            for (var item in des) textBodySmall(item),
+          ],
           textBodySmall(date ?? ''),
         ],
       ),

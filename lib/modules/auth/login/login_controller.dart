@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutx_ui/flutx.dart';
 import 'package:get/get.dart';
@@ -37,7 +36,7 @@ class LoginController extends GetxController
     GlobalKey<FormState> keyForm1 = GlobalKey<FormState>(debugLabel: '_FormL2');
     user = await loginMixin(phone: phoneTE.text, password: passWTE.text);
 
-    if (user?.resetPassword) {
+    if (user != null && user.resetPassword) {
       await Get.dialog(StatefulBuilder(
         builder: (context, setState) {
           return Material(
@@ -78,13 +77,22 @@ class LoginController extends GetxController
                       Align(
                         alignment: Alignment.center,
                         child: FxButton.medium(
-                            onPressed: () {
+                            onPressed: () async {
                               if (keyForm1.currentState?.validate() ?? false) {
                                 isChangePass = true;
-                                updateDetailUserMixin(
+                                await updateDetailUserMixin(
                                     user: user?.copyWith(
                                         resetPassword: false,
                                         password: resetPassTE.text));
+                                if (isChangePass) {
+                                  Future.delayed(
+                                      const Duration(milliseconds: 500), () {
+                                    user != null
+                                        ? Get.offAndToNamed(
+                                            SplashScreen.routeName)
+                                        : null;
+                                  });
+                                } else {}
                               }
                             },
                             child: textBodyLarge('Đổi mật khẩu',
@@ -96,14 +104,8 @@ class LoginController extends GetxController
           );
         },
       ), barrierDismissible: false, useSafeArea: false);
-
-      if (isChangePass) {
-        Future.delayed(const Duration(seconds: 2), () {
-          user != null ? Get.offAndToNamed(SplashScreen.routeName) : null;
-        });
-      } else {}
     } else {
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(const Duration(milliseconds: 300), () {
         user != null ? Get.offAndToNamed(SplashScreen.routeName) : null;
       });
     }
