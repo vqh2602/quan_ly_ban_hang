@@ -138,7 +138,7 @@ class _SupplierDetailScreenState extends State<SupplierDetailScreen> {
                         onTap: () {},
                         style: textStyleCustom(fontSize: 16),
                         readOnly: (isView || isCreate) ? false : true,
-                        validator: ShareFuntion.validateSDT,
+                        // validator: ShareFuntion.validateSDT,
                         keyboardType: TextInputType.phone,
                         controller: supplierDetailController.phoneTE,
                         decoration:

@@ -2,12 +2,14 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:quan_ly_ban_hang/data/models/customer.dart';
+import 'package:quan_ly_ban_hang/data/models/personnel.dart';
 import 'package:quan_ly_ban_hang/data/models/sales_order.dart';
 import 'package:quan_ly_ban_hang/data/models/select_option_item.dart';
 import 'package:quan_ly_ban_hang/data/models/status.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/appwrite_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/customer_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/filterdata_mixin.dart';
+import 'package:quan_ly_ban_hang/share_function/mixin/personnel_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/sales_order_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 
@@ -18,11 +20,14 @@ class ListSalesOrderController extends GetxController
         AppWriteMixin,
         FilterDataMixin,
         SalesOrderMixin,
+        PersonnelMixin,
         CustomerMixin {
   List<SalesOrder>? listSalesOrder = [];
   List<SalesOrder>? listSalesOrderResult = [];
   List<Status>? listStatus = [];
   List<Status>? listStatusSelectFilter = [];
+  List<SelectOptionItem>? listPersonnel = [];
+  SelectOptionItem? personnelItemSelectFilter;
   List<SelectOptionItem>? listCustomer = [];
   SelectOptionItem? customerItemSelectFilter;
   TextEditingController textSearchTE = TextEditingController();
@@ -37,6 +42,7 @@ class ListSalesOrderController extends GetxController
     await getListSalesOrder();
     await getListStatus();
     await getListCustomer();
+    await getListPersonnels();
     changeUI();
   }
 
@@ -63,6 +69,14 @@ class ListSalesOrderController extends GetxController
     update();
   }
 
+  getListPersonnels() async {
+    List<Personnel>? result = await getListPersonnelMixin(isCache: true);
+    listPersonnel = result
+        ?.map((e) => SelectOptionItem(key: e.name ?? '', value: e.uId, data: e))
+        .toList();
+    update();
+  }
+
   Status? getUnitWithID(String? id) {
     if (id == null) return null;
     return ShareFuntion.getStatusWithIDFunc(id, listStatus: listStatus);
@@ -84,6 +98,13 @@ class ListSalesOrderController extends GetxController
       listSalesOrderResult = listSalesOrderResult
           ?.where((element) =>
               element.customerId == customerItemSelectFilter?.value)
+          .toList();
+    }
+
+    if (personnelItemSelectFilter != null) {
+      listSalesOrderResult = listSalesOrderResult
+          ?.where((element) =>
+              element.personnelShipperId == personnelItemSelectFilter?.value)
           .toList();
     }
 

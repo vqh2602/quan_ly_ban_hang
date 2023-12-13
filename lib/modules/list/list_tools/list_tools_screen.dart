@@ -48,6 +48,10 @@ class _ListToolsState extends State<ListToolsSreen> {
               padding: const EdgeInsets.only(bottom: 12),
               child: textSearch(
                   focusNode: _focus,
+                  onChange: (value){
+                     listToolsController
+                        .onSearch(listToolsController.textSearchTE.text);
+                  },
                   onTapSearch: () {
                     listToolsController
                         .onSearch(listToolsController.textSearchTE.text);
@@ -62,8 +66,7 @@ class _ListToolsState extends State<ListToolsSreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (listToolsController.textSearchTE.text != "" &&
-                          _focus.hasFocus) ...[
+                      if (listToolsController.textSearchTE.text != "" ) ...[
                         textBodyMedium(
                             'Kết quả tìm kiếm: ${listToolsController.textSearchTE.text}',
                             color: Colors.grey),

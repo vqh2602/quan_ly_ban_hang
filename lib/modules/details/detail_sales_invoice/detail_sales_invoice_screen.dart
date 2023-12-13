@@ -1029,7 +1029,7 @@ class _DetailSalesInvoiceState extends State<DetailSalesInvoiceSreen> {
                                                 .updateUI();
                                           },
                                           onSearch: (val) {
-                                            ShareFuntion.searchList(
+                                            ShareFuntion.searchListPerson(
                                                 list:
                                                     detailSalesInvoiceController
                                                         .listPersonnel,

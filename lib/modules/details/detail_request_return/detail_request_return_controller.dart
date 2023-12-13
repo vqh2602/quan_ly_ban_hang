@@ -19,7 +19,6 @@ import 'package:quan_ly_ban_hang/share_function/mixin/supplier_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/personnel_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/product_mixin.dart';
 import 'package:quan_ly_ban_hang/share_function/mixin/user_mixin.dart';
-import 'package:quan_ly_ban_hang/share_function/share_funciton.dart';
 import 'package:quan_ly_ban_hang/widgets/build_toast.dart';
 import 'package:uuid/uuid.dart';
 
@@ -205,13 +204,11 @@ class DetailRequestReturnController extends GetxController
             '00f36339-cf48-4b84-8eef-c52081ee0013' &&
         requestReturn?.browsingStatus ==
             '6616adbe-cec8-4477-94a8-4175d7d2cabe')) {
-      if (!ShareFuntion().checkPermissionUserLogin(permission: ['QL', 'AD'])) {
-        buildToast(
-            message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
-            status: TypeToast.getError);
-        changeUI();
-        return;
-      }
+      buildToast(
+          message: 'Không được phép sửa sau khi đã gắn trạng thái hoàn thành',
+          status: TypeToast.getError);
+      changeUI();
+      return;
     } else {}
 
     // cập nhật ds sản phâm trong hoá đơn
@@ -222,6 +219,7 @@ class DetailRequestReturnController extends GetxController
       note: noteTE?.text,
       name: nameTE?.text,
       browsingStatus: statusBrowsingItemSelect?.value,
+      supplierStatus: statusSupplierItemSelect?.value,
       supplierName: supplierItemSelect?.key,
       supplierID: supplierItemSelect?.value,
       personnelWarehouseStaffId: personnelWarehouseItemSelect?.value,
@@ -230,7 +228,10 @@ class DetailRequestReturnController extends GetxController
     ));
 
     await getListDetailProductOrder(idRequestReturn: requestReturn?.uid);
-
+    if (requestReturn?.browsingStatus ==
+        '6616adbe-cec8-4477-94a8-4175d7d2cabe') {
+      await updateProduct();
+    }
     changeUI();
   }
 
@@ -263,6 +264,10 @@ class DetailRequestReturnController extends GetxController
       if (requestReturn?.id != null) {
         // cập nhật ds sản phâm trong hoá đơn
         await updateDetailProductInRequestReturn();
+      }
+      if (requestReturn?.browsingStatus ==
+          '6616adbe-cec8-4477-94a8-4175d7d2cabe') {
+        await updateProduct();
       }
 
       await initDataCreate();

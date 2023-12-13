@@ -164,7 +164,7 @@ class _ListWarehouseReceiptState extends State<ListWarehouseReceiptSreen> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            textTitleMedium('Khách hàng'),
+                            textTitleMedium('Kho'),
                             IconButton(
                                 onPressed: () {
                                   Get.bottomSheet(listWarehouseReceiptController

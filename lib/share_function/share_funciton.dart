@@ -237,6 +237,18 @@ class ShareFuntion with UserMixin {
     }
     update();
   }
+    static searchListPerson(
+      {required List? list, required String value, required Function update}) {
+    for (var role in list ?? []) {
+      if (role?.data?.phone == value.toLowerCase().trim() ||
+          role?.key?.toLowerCase().contains(value.toLowerCase()) ||
+          role?.value?.toLowerCase().contains(value.toLowerCase())) {
+        list?.remove(role);
+        list?.insert(0, role);
+      }
+    }
+    update();
+  }
 
   /// tìm đối tượng có trong list 1 nhưng k có trong list 2
   static List<T> findUniqueObjects<T>(List<T> list1, List<T> list2) {
@@ -302,7 +314,7 @@ class ShareFuntion with UserMixin {
       return 'Họ và tên là bắt buộc';
     }
     final regex = RegExp(
-        r'^[a-zA-Z0-9ÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰĐđ\s]*$');
+        r"^[a-zA-ZÀ-Ỹà-ỹẠ-Ỵạ-ỵĂăÂâÉéÊêÍíÓóÔôƠơÚúĨĩỸỹĐđ\s]+$");
 
     // Kiểm tra chiều dài của chuỗi và xem nó phù hợp với yêu cầu.
     if (regex.hasMatch(s)) {
