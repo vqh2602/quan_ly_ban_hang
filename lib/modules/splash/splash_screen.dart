@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   width: Get.width * 0.5,
                   margin: const EdgeInsets.only(bottom: 20),
                   child: Image.asset(
-                    'assets/logo/logo.png',
+                    'assets/logo/lg.png',
                     width: 70,
                     fit: BoxFit.cover,
                   ),

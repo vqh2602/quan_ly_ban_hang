@@ -141,7 +141,7 @@ flavorizr:
     dev:
       app:
         name: OMIYAGE (dev)
-        icon: assets/logo/logo.jpg
+        icon: assets/logo/lg.png
       android:
         applicationId: com.vqh2602.qlbh.quan_ly_ban_hang
       ios:
@@ -149,7 +149,7 @@ flavorizr:
     prod:
       app:
         name: OMIYAGE
-        icon: assets/logo/logo.jpg
+        icon: assets/logo/lg.png
       android:
         applicationId: com.vqh2602.qlbh.quan_ly_ban_hang
       ios:
@@ -160,6 +160,6 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/logo/logo.png"
+  image_path: "assets/logo/lg.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   

@@ -168,7 +168,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                                           5
                                       ? 5
                                       : listSalesOrderController
-                                          .listSalesOrder?.length,
+                                          .listSalesOrder?.length ?? 0,
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   padding: const EdgeInsets.only(top: 12),
@@ -177,7 +177,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                                         listStatus:
                                             listSalesOrderController.listStatus,
                                         salesOrder: listSalesOrderController
-                                            .listSalesOrder![indext]);
+                                            .listSalesOrder?[indext]);
                                   }),
                             ),
                         onLoading: const LoadingHome()),
@@ -218,7 +218,8 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                                           5
                                       ? 5
                                       : listWarehouseReceiptController
-                                          .listWarehouseReceipt?.length,
+                                              .listWarehouseReceipt?.length ??
+                                          0,
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   padding: const EdgeInsets.only(top: 12),
@@ -229,7 +230,7 @@ class _DashBroadScreenState extends State<DashBroadScreen> {
                                                 .listStatus,
                                         warehouseReceipt:
                                             listWarehouseReceiptController
-                                                .listWarehouseReceipt![indext]);
+                                                .listWarehouseReceipt?[indext]);
                                   }),
                             ),
                         onLoading: const LoadingHome()),
