@@ -140,7 +140,7 @@ flavorizr:
   flavors:
     dev:
       app:
-        name: OMIYAGE (dev)
+        name: UNIK (dev)
         icon: assets/logo/lg.png
       android:
         applicationId: com.vqh2602.qlbh.quan_ly_ban_hang
@@ -148,7 +148,7 @@ flavorizr:
         bundleId: com.vqh2602.qlbh.quanLyBanHang
     prod:
       app:
-        name: OMIYAGE
+        name: UNIK
         icon: assets/logo/lg.png
       android:
         applicationId: com.vqh2602.qlbh.quan_ly_ban_hang

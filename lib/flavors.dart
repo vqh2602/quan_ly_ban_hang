@@ -11,11 +11,12 @@ class F {
   static String get title {
     switch (appFlavor) {
       case Flavor.dev:
-        return 'OMIYAGE (dev)';
+        return 'UNIK (dev)';
       case Flavor.prod:
-        return 'OMIYAGE';
+        return 'UNIK';
       default:
         return 'title';
     }
   }
+
 }
